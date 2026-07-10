@@ -96,10 +96,10 @@ function Run-Portable {
     git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
     Set-Location $TargetDir
     
-    Write-Host "[INFO] Installing Temporary Dependencies..." -ForegroundColor Green
-    # In portable mode, we just use the global python to avoid the slow venv creation, 
-    # but we suppress output.
-    python -m pip install -r requirements.txt --quiet
+    Write-Host "[INFO] Installing Temporary Dependencies (this may take a minute)..." -ForegroundColor Green
+    # We use --user to ensure it doesn't require Admin rights for global Python installs.
+    # Removed --quiet so you can see the progress bar.
+    python -m pip install -r requirements.txt --user
     
     Write-Host "[INFO] Launching Portable Toolkit..." -ForegroundColor Cyan
     python main.py
