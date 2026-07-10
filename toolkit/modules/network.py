@@ -1,69 +1,55 @@
-import subprocess
-import requests
-import socket
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Button, Static, Input
-from textual import work
-
-class NetworkingModule(Vertical):
-    """The Networking module."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("Networking Dashboard", classes="module-title")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [5] NETWORKING")
+        print("=============================================================")
+        print("[1] Public IP")
+        print("[2] Local IP")
+        print("[3] MAC Address")
+        print("[4] DNS")
+        print("[5] Flush DNS")
+        print("[6] Ping")
+        print("[7] Traceroute")
+        print("[8] Port Check")
+        print("[9] WiFi Passwords")
+        print("[10] Connected Devices")
+        print("[11] Open Ports")
+        print("[12] Network Speed Test")
+        print("[13] Proxy Settings")
+        print("[14] VPN Status")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        with Horizontal(id="network-actions"):
-            yield Button("Get IPs", id="btn-net-ips", variant="primary")
-            
-        yield Static("", id="network-ip-output")
-        
-        yield Label("Ping Utility", classes="section-label")
-        with Horizontal(id="ping-input-row"):
-            yield Input(placeholder="Enter IP or Domain (e.g. google.com)", id="ping-input")
-            yield Button("Ping", id="btn-net-ping", variant="success")
-            
-        yield Static("", id="network-ping-output", classes="terminal-output")
-
-    @work(thread=True)
-    def fetch_ips(self) -> None:
-        self.app.call_from_thread(self.update_ip_output, "Fetching IPs...")
-        
-        try:
-            hostname = socket.gethostname()
-            local_ip = socket.gethostbyname(hostname)
-        except Exception:
-            local_ip = "Unknown"
-            
-        try:
-            public_ip = requests.get('https://api.ipify.org', timeout=5).text
-        except Exception:
-            public_ip = "Unavailable (Check internet connection)"
-
-        text = f"Hostname: {hostname}\nLocal IP: {local_ip}\nPublic IP: {public_ip}"
-        self.app.call_from_thread(self.update_ip_output, text)
-
-    def update_ip_output(self, text: str) -> None:
-        self.query_one("#network-ip-output", Static).update(text)
-
-    @work(thread=True)
-    def run_ping(self, target: str) -> None:
-        self.app.call_from_thread(self.update_ping_output, f"Pinging {target}...")
-        try:
-            # -n 4 is for Windows ping (count)
-            result = subprocess.check_output(['ping', '-n', '4', target], text=True, stderr=subprocess.STDOUT)
-            self.app.call_from_thread(self.update_ping_output, result)
-        except subprocess.CalledProcessError as e:
-            self.app.call_from_thread(self.update_ping_output, e.output)
-        except Exception as e:
-            self.app.call_from_thread(self.update_ping_output, f"Error: {str(e)}")
-
-    def update_ping_output(self, text: str) -> None:
-        self.query_one("#network-ping-output", Static).update(text)
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-net-ips":
-            self.fetch_ips()
-        elif event.button.id == "btn-net-ping":
-            target = self.query_one("#ping-input", Input).value.strip()
-            if target:
-                self.run_ping(target)
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] Public IP coming soon...")
+        elif choice == '2':
+            print("[INFO] Local IP coming soon...")
+        elif choice == '3':
+            print("[INFO] MAC Address coming soon...")
+        elif choice == '4':
+            print("[INFO] DNS coming soon...")
+        elif choice == '5':
+            print("[INFO] Flush DNS coming soon...")
+        elif choice == '6':
+            print("[INFO] Ping coming soon...")
+        elif choice == '7':
+            print("[INFO] Traceroute coming soon...")
+        elif choice == '8':
+            print("[INFO] Port Check coming soon...")
+        elif choice == '9':
+            print("[INFO] WiFi Passwords coming soon...")
+        elif choice == '10':
+            print("[INFO] Connected Devices coming soon...")
+        elif choice == '11':
+            print("[INFO] Open Ports coming soon...")
+        elif choice == '12':
+            print("[INFO] Network Speed Test coming soon...")
+        elif choice == '13':
+            print("[INFO] Proxy Settings coming soon...")
+        elif choice == '14':
+            print("[INFO] VPN Status coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

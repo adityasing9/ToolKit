@@ -1,4 +1,3 @@
-textual
 psutil
 yt-dlp
 requests

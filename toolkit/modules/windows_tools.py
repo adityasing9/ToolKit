@@ -1,46 +1,59 @@
-import platform
-import subprocess
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Button, Static, TabbedContent, TabPane
-from textual import work
-
-class WindowsToolkitModule(Vertical):
-    """The Windows Toolkit module."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("Windows Toolkit", classes="module-title")
-        with TabbedContent():
-            with TabPane("System Overview", id="win-overview"):
-                yield Vertical(id="win-overview-container")
-            with TabPane("Maintenance", id="win-maintenance"):
-                yield Button("Run SFC Scan (System File Checker)", id="btn-sfc", variant="warning")
-                yield Button("Check for Windows Updates", id="btn-wu", variant="primary")
-                yield Static("", id="maintenance-output")
-
-    def on_mount(self) -> None:
-        self.load_overview()
-
-    @work(thread=True)
-    def load_overview(self) -> None:
-        sys_info = platform.uname()
-        # In a real app we'd use WMI or PowerShell to get deeper info
-        try:
-            # Get Windows Version via cmd
-            cmd_output = subprocess.check_output('ver', shell=True, text=True).strip()
-        except Exception:
-            cmd_output = "Unknown"
-
-        text = f"OS: {sys_info.system} {sys_info.release}\nNode: {sys_info.node}\nVersion: {cmd_output}\nArchitecture: {sys_info.machine}\nProcessor: {sys_info.processor}"
-        self.app.call_from_thread(self.update_overview, text)
-
-    def update_overview(self, text: str) -> None:
-        container = self.query_one("#win-overview-container")
-        container.mount(Static(text))
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        output = self.query_one("#maintenance-output", Static)
-        if event.button.id == "btn-sfc":
-            output.update("Note: SFC scan requires Administrator privileges.\nCommand: sfc /scannow")
-        elif event.button.id == "btn-wu":
-            output.update("Checking for updates via PowerShell...\n(Command: Get-WindowsUpdate)")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [2] WINDOWS TOOLKIT")
+        print("=============================================================")
+        print("[1] Activation")
+        print("[2] Drivers")
+        print("[3] Windows Update")
+        print("[4] Services")
+        print("[5] Startup Apps")
+        print("[6] Installed Apps")
+        print("[7] Repair Windows")
+        print("[8] DISM Scan")
+        print("[9] SFC Scan")
+        print("[10] Disk Check")
+        print("[11] Restore Point")
+        print("[12] Environment Variables")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
+        
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] Activation tools coming soon...")
+        elif choice == '2':
+            print("[INFO] Drivers tools coming soon...")
+        elif choice == '3':
+            print("[INFO] Windows Update coming soon...")
+        elif choice == '4':
+            print("[INFO] Services coming soon...")
+        elif choice == '5':
+            print("[INFO] Startup Apps coming soon...")
+        elif choice == '6':
+            print("[INFO] Installed Apps coming soon...")
+        elif choice == '7':
+            print("[INFO] Repair Windows coming soon...")
+        elif choice == '8':
+            import subprocess
+            print("[INFO] Running DISM Scan...")
+            try:
+                subprocess.run(["dism", "/Online", "/Cleanup-Image", "/ScanHealth"])
+            except Exception as e:
+                print(f"[ERROR] {e}")
+        elif choice == '9':
+            import subprocess
+            print("[INFO] Running SFC Scan...")
+            try:
+                subprocess.run(["sfc", "/scannow"])
+            except Exception as e:
+                print(f"[ERROR] {e}")
+        elif choice == '10':
+            print("[INFO] Disk Check coming soon...")
+        elif choice == '11':
+            print("[INFO] Restore Point coming soon...")
+        elif choice == '12':
+            print("[INFO] Environment Variables coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

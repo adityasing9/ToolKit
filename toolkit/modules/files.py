@@ -1,64 +1,61 @@
-import os
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Input, Button, Static
-from textual import work
-
-class FileFolderModule(Vertical):
-    """The File & Folder module."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("File & Folder Tools", classes="module-title")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [6] FILE & FOLDER")
+        print("=============================================================")
+        print("[1] Hide File")
+        print("[2] Unhide File")
+        print("[3] Hide Folder")
+        print("[4] Unhide Folder")
+        print("[5] Secure Folder")
+        print("[6] Unlock Folder")
+        print("[7] Encrypt Folder")
+        print("[8] Decrypt Folder")
+        print("[9] Find Large Files")
+        print("[10] Duplicate Finder")
+        print("[11] Folder Size")
+        print("[12] Rename Multiple Files")
+        print("[13] Compress")
+        print("[14] Extract ZIP")
+        print("[15] File Hash")
+        print("[16] Secure Delete")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        yield Label("Folder Size Calculator", classes="section-label")
-        with Horizontal(id="folder-size-input-row"):
-            yield Input(placeholder="Enter absolute path (e.g. C:\\Users)", id="folder-path-input")
-            yield Button("Calculate Size", id="btn-calc-size", variant="primary")
-            
-        yield Static("", id="folder-size-output")
-
-    def get_size(self, start_path='.'):
-        total_size = 0
-        try:
-            for dirpath, dirnames, filenames in os.walk(start_path):
-                for f in filenames:
-                    fp = os.path.join(dirpath, f)
-                    if not os.path.islink(fp):
-                        total_size += os.path.getsize(fp)
-        except Exception:
-            pass # ignore permission errors
-        return total_size
-
-    def format_size(self, size_bytes):
-        if size_bytes == 0:
-            return "0B"
-        size_name = ("B", "KB", "MB", "GB", "TB", "PB")
-        i = 0
-        while size_bytes >= 1024 and i < len(size_name) - 1:
-            size_bytes /= 1024.0
-            i += 1
-        return f"{size_bytes:.2f} {size_name[i]}"
-
-    @work(thread=True)
-    def calculate_size_worker(self, path: str) -> None:
-        if not os.path.exists(path):
-            self.app.call_from_thread(self.update_output, f"Path does not exist: {path}")
-            return
-            
-        if not os.path.isdir(path):
-            self.app.call_from_thread(self.update_output, f"Path is not a directory: {path}")
-            return
-
-        size = self.get_size(path)
-        formatted = self.format_size(size)
-        self.app.call_from_thread(self.update_output, f"Total Size of '{path}': {formatted}")
-
-    def update_output(self, text: str) -> None:
-        self.query_one("#folder-size-output", Static).update(text)
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-calc-size":
-            path = self.query_one("#folder-path-input", Input).value.strip()
-            if path:
-                self.query_one("#folder-size-output", Static).update("Calculating... (This may take a while for large directories)")
-                self.calculate_size_worker(path)
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] Hide File coming soon...")
+        elif choice == '2':
+            print("[INFO] Unhide File coming soon...")
+        elif choice == '3':
+            print("[INFO] Hide Folder coming soon...")
+        elif choice == '4':
+            print("[INFO] Unhide Folder coming soon...")
+        elif choice == '5':
+            print("[INFO] Secure Folder coming soon...")
+        elif choice == '6':
+            print("[INFO] Unlock Folder coming soon...")
+        elif choice == '7':
+            print("[INFO] Encrypt Folder coming soon...")
+        elif choice == '8':
+            print("[INFO] Decrypt Folder coming soon...")
+        elif choice == '9':
+            print("[INFO] Find Large Files coming soon...")
+        elif choice == '10':
+            print("[INFO] Duplicate Finder coming soon...")
+        elif choice == '11':
+            print("[INFO] Folder Size coming soon...")
+        elif choice == '12':
+            print("[INFO] Rename Multiple Files coming soon...")
+        elif choice == '13':
+            print("[INFO] Compress coming soon...")
+        elif choice == '14':
+            print("[INFO] Extract ZIP coming soon...")
+        elif choice == '15':
+            print("[INFO] File Hash coming soon...")
+        elif choice == '16':
+            print("[INFO] Secure Delete coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

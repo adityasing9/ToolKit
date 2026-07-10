@@ -1,40 +1,58 @@
-import subprocess
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Button, Static
-
-class CleanupModule(Vertical):
-    """The Cleanup & Maintenance module."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("Cleanup & Maintenance", classes="module-title")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [12] CLEANUP & MAINTENANCE")
+        print("=============================================================")
+        print("[1] Temp")
+        print("[2] Prefetch")
+        print("[3] Windows Temp")
+        print("[4] Recycle Bin")
+        print("[5] DNS Cache")
+        print("[6] Thumbnail Cache")
+        print("[7] Recent Files")
+        print("[8] PowerShell History")
+        print("[9] Browser Cache")
+        print("[10] Windows Logs")
+        print("[11] Disk Cleanup")
+        print("[12] Optimize Drives")
+        print("[13] Winget Upgrade")
+        print("[14] Winget Repair")
+        print("[15] App Repair")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        yield Label("Quick Actions", classes="section-label")
-        with Horizontal(id="cleanup-actions"):
-            yield Button("Open Disk Cleanup", id="btn-disk-cleanup", variant="primary")
-            yield Button("Clear DNS Cache", id="btn-dns-flush", variant="warning")
-            yield Button("Empty Recycle Bin", id="btn-empty-bin", variant="error")
-            
-        yield Static("", id="cleanup-output", classes="terminal-output")
-
-    def update_output(self, text: str) -> None:
-        self.query_one("#cleanup-output", Static).update(text)
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-disk-cleanup":
-            subprocess.Popen(['cleanmgr'], shell=True)
-            self.update_output("Launched Windows Disk Cleanup tool.")
-        elif event.button.id == "btn-dns-flush":
-            try:
-                subprocess.check_output(['ipconfig', '/flushdns'], shell=True)
-                self.update_output("Successfully flushed the DNS Resolver Cache.")
-            except Exception as e:
-                self.update_output(f"Failed to flush DNS cache: {str(e)}")
-        elif event.button.id == "btn-empty-bin":
-            try:
-                # Use PowerShell to empty recycle bin with confirmation
-                cmd = ['powershell', '-NoProfile', '-Command', 'Clear-RecycleBin -Force']
-                subprocess.check_output(cmd, shell=True)
-                self.update_output("Recycle Bin emptied successfully.")
-            except Exception as e:
-                self.update_output(f"Failed to empty Recycle Bin.\nError: {str(e)}")
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] Temp coming soon...")
+        elif choice == '2':
+            print("[INFO] Prefetch coming soon...")
+        elif choice == '3':
+            print("[INFO] Windows Temp coming soon...")
+        elif choice == '4':
+            print("[INFO] Recycle Bin coming soon...")
+        elif choice == '5':
+            print("[INFO] DNS Cache coming soon...")
+        elif choice == '6':
+            print("[INFO] Thumbnail Cache coming soon...")
+        elif choice == '7':
+            print("[INFO] Recent Files coming soon...")
+        elif choice == '8':
+            print("[INFO] PowerShell History coming soon...")
+        elif choice == '9':
+            print("[INFO] Browser Cache coming soon...")
+        elif choice == '10':
+            print("[INFO] Windows Logs coming soon...")
+        elif choice == '11':
+            print("[INFO] Disk Cleanup coming soon...")
+        elif choice == '12':
+            print("[INFO] Optimize Drives coming soon...")
+        elif choice == '13':
+            print("[INFO] Winget Upgrade coming soon...")
+        elif choice == '14':
+            print("[INFO] Winget Repair coming soon...")
+        elif choice == '15':
+            print("[INFO] App Repair coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

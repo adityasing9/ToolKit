@@ -1,46 +1,43 @@
-import os
-import qrcode
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Button, Input, Static
-from textual import work
-
-class QRModule(Vertical):
-    """The QR & Barcode module."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("QR Code Generator", classes="module-title")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [10] QR / BARCODE")
+        print("=============================================================")
+        print("[1] Generate QR")
+        print("[2] Generate Barcode")
+        print("[3] QR from Text")
+        print("[4] QR from URL")
+        print("[5] WiFi QR")
+        print("[6] Email QR")
+        print("[7] Phone QR")
+        print("[8] Scan QR")
+        print("[9] Save PNG")
+        print("[10] SVG Export")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        with Horizontal(id="qr-input-row"):
-            yield Input(placeholder="Enter Text or URL to encode", id="qr-input")
-            yield Button("Generate QR Code", id="btn-gen-qr", variant="primary")
-            
-        yield Static("", id="qr-output", classes="terminal-output")
-
-    @work(thread=True)
-    def generate_qr(self, data: str) -> None:
-        try:
-            desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-            # Create a safe filename
-            safe_name = "".join([c if c.isalnum() else "_" for c in data[:10]])
-            filepath = os.path.join(desktop, f"qrcode_{safe_name}.png")
-            
-            qr = qrcode.QRCode(version=1, box_size=10, border=5)
-            qr.add_data(data)
-            qr.make(fit=True)
-            img = qr.make_image(fill_color="black", back_color="white")
-            img.save(filepath)
-            
-            self.app.call_from_thread(self.update_output, f"Successfully generated QR code.\nSaved to: {filepath}")
-        except Exception as e:
-            self.app.call_from_thread(self.update_output, f"Failed to generate QR code: {str(e)}")
-
-    def update_output(self, text: str) -> None:
-        self.query_one("#qr-output", Static).update(text)
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-gen-qr":
-            data = self.query_one("#qr-input", Input).value.strip()
-            if data:
-                self.query_one("#qr-output", Static).update("Generating...")
-                self.generate_qr(data)
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] Generate QR coming soon...")
+        elif choice == '2':
+            print("[INFO] Generate Barcode coming soon...")
+        elif choice == '3':
+            print("[INFO] QR from Text coming soon...")
+        elif choice == '4':
+            print("[INFO] QR from URL coming soon...")
+        elif choice == '5':
+            print("[INFO] WiFi QR coming soon...")
+        elif choice == '6':
+            print("[INFO] Email QR coming soon...")
+        elif choice == '7':
+            print("[INFO] Phone QR coming soon...")
+        elif choice == '8':
+            print("[INFO] Scan QR coming soon...")
+        elif choice == '9':
+            print("[INFO] Save PNG coming soon...")
+        elif choice == '10':
+            print("[INFO] SVG Export coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

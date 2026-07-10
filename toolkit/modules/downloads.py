@@ -1,48 +1,52 @@
-import os
-from textual.app import ComposeResult
-from textual.containers import Vertical, Horizontal
-from textual.widgets import Label, Input, Button, Static
-from textual import work
-import yt_dlp
-
-class DownloadsModule(Vertical):
-    """The Downloads module featuring yt-dlp."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("Downloads (yt-dlp Integration)", classes="module-title")
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [7] DOWNLOADS")
+        print("=============================================================")
+        print("[1] YT-DLP")
+        print("[2] Download Video")
+        print("[3] Download Playlist")
+        print("[4] Download Audio")
+        print("[5] Download Thumbnail")
+        print("[6] Ultra Quality")
+        print("[7] 4K")
+        print("[8] 8K")
+        print("[9] Subtitles")
+        print("[10] Cookies")
+        print("[11] FFmpeg")
+        print("[12] Download Progress")
+        print("[13] History")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        with Horizontal(id="download-input-row"):
-            yield Input(placeholder="Enter Video URL", id="download-url")
-            yield Button("Download", id="btn-download", variant="primary")
-            
-        yield Static("Downloads will be saved to your Desktop.", id="download-status", classes="terminal-output")
-
-    @work(thread=True)
-    def download_video(self, url: str) -> None:
-        self.app.call_from_thread(self.update_status, f"Starting download for: {url}")
-        
-        desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-        ydl_opts = {
-            'outtmpl': os.path.join(desktop, '%(title)s.%(ext)s'),
-            'format': 'best',
-            'quiet': True,
-            'no_warnings': True,
-        }
-        
-        try:
-            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-                info = ydl.extract_info(url, download=True)
-                title = info.get('title', 'Unknown Title')
-                self.app.call_from_thread(self.update_status, f"Successfully downloaded: {title}\nSaved to Desktop.")
-        except Exception as e:
-            self.app.call_from_thread(self.update_status, f"Download failed: {str(e)}")
-
-    def update_status(self, text: str) -> None:
-        self.query_one("#download-status", Static).update(text)
-
-    def on_button_pressed(self, event: Button.Pressed) -> None:
-        if event.button.id == "btn-download":
-            url = self.query_one("#download-url", Input).value.strip()
-            if url:
-                self.query_one("#download-url", Input).value = ""
-                self.download_video(url)
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] YT-DLP coming soon...")
+        elif choice == '2':
+            print("[INFO] Download Video coming soon...")
+        elif choice == '3':
+            print("[INFO] Download Playlist coming soon...")
+        elif choice == '4':
+            print("[INFO] Download Audio coming soon...")
+        elif choice == '5':
+            print("[INFO] Download Thumbnail coming soon...")
+        elif choice == '6':
+            print("[INFO] Ultra Quality coming soon...")
+        elif choice == '7':
+            print("[INFO] 4K coming soon...")
+        elif choice == '8':
+            print("[INFO] 8K coming soon...")
+        elif choice == '9':
+            print("[INFO] Subtitles coming soon...")
+        elif choice == '10':
+            print("[INFO] Cookies coming soon...")
+        elif choice == '11':
+            print("[INFO] FFmpeg coming soon...")
+        elif choice == '12':
+            print("[INFO] Download Progress coming soon...")
+        elif choice == '13':
+            print("[INFO] History coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")

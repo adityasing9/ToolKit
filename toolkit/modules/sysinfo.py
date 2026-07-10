@@ -1,71 +1,58 @@
-import platform
-import psutil
-from textual.app import ComposeResult
-from textual.containers import Vertical
-from textual.widgets import Label, DataTable
-from textual import work
-
-class SysInfoModule(Vertical):
-    """The System Info module for deep hardware diagnostics."""
-
-    def compose(self) -> ComposeResult:
-        yield Label("System Information", classes="module-title")
-        yield DataTable(id="sysinfo-table")
-
-    def on_mount(self) -> None:
-        table = self.query_one("#sysinfo-table", DataTable)
-        table.add_columns("Component", "Detail")
-        table.cursor_type = "row"
-        self.load_sysinfo()
-
-    @work(thread=True)
-    def load_sysinfo(self) -> None:
-        sys_info = platform.uname()
+def show_menu():
+    while True:
+        print("\n=============================================================")
+        print("              [11] SYSTEM INFORMATION")
+        print("=============================================================")
+        print("[1] CPU")
+        print("[2] RAM")
+        print("[3] GPU")
+        print("[4] Disk")
+        print("[5] Battery")
+        print("[6] Motherboard")
+        print("[7] BIOS")
+        print("[8] Windows Version")
+        print("[9] Installed Programs")
+        print("[10] Startup Time")
+        print("[11] Processes")
+        print("[12] Running Services")
+        print("[13] Disk Usage")
+        print("[14] Temperature")
+        print("[15] Health")
+        print("[0] Back to Main Menu")
+        print("=============================================================")
         
-        info_list = [
-            ("OS Node", sys_info.node),
-            ("OS System", sys_info.system),
-            ("OS Release", sys_info.release),
-            ("OS Version", sys_info.version),
-            ("Machine Architecture", sys_info.machine),
-            ("Processor", sys_info.processor),
-        ]
-        
-        # CPU
-        cpu_freq = psutil.cpu_freq()
-        info_list.append(("CPU Physical Cores", str(psutil.cpu_count(logical=False))))
-        info_list.append(("CPU Logical Cores", str(psutil.cpu_count(logical=True))))
-        if cpu_freq:
-            info_list.append(("CPU Max Frequency", f"{cpu_freq.max:.2f}Mhz"))
-            info_list.append(("CPU Current Frequency", f"{cpu_freq.current:.2f}Mhz"))
-            
-        # Memory
-        svmem = psutil.virtual_memory()
-        info_list.append(("Total RAM", self.get_size(svmem.total)))
-        info_list.append(("Available RAM", self.get_size(svmem.available)))
-        
-        # Disks
-        partitions = psutil.disk_partitions()
-        for partition in partitions:
-            try:
-                partition_usage = psutil.disk_usage(partition.mountpoint)
-                info_list.append((f"Disk {partition.device} Total", self.get_size(partition_usage.total)))
-                info_list.append((f"Disk {partition.device} Free", self.get_size(partition_usage.free)))
-                info_list.append((f"Disk {partition.device} FS", partition.fstype))
-            except PermissionError:
-                continue
-
-        self.app.call_from_thread(self.update_table, info_list)
-
-    def update_table(self, info_list: list) -> None:
-        table = self.query_one("#sysinfo-table", DataTable)
-        table.clear()
-        for key, val in info_list:
-            table.add_row(key, val)
-
-    def get_size(self, bytes_val, suffix="B"):
-        factor = 1024
-        for unit in ["", "K", "M", "G", "T", "P"]:
-            if bytes_val < factor:
-                return f"{bytes_val:.2f}{unit}{suffix}"
-            bytes_val /= factor
+        choice = input("Select > ").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            print("[INFO] CPU coming soon...")
+        elif choice == '2':
+            print("[INFO] RAM coming soon...")
+        elif choice == '3':
+            print("[INFO] GPU coming soon...")
+        elif choice == '4':
+            print("[INFO] Disk coming soon...")
+        elif choice == '5':
+            print("[INFO] Battery coming soon...")
+        elif choice == '6':
+            print("[INFO] Motherboard coming soon...")
+        elif choice == '7':
+            print("[INFO] BIOS coming soon...")
+        elif choice == '8':
+            print("[INFO] Windows Version coming soon...")
+        elif choice == '9':
+            print("[INFO] Installed Programs coming soon...")
+        elif choice == '10':
+            print("[INFO] Startup Time coming soon...")
+        elif choice == '11':
+            print("[INFO] Processes coming soon...")
+        elif choice == '12':
+            print("[INFO] Running Services coming soon...")
+        elif choice == '13':
+            print("[INFO] Disk Usage coming soon...")
+        elif choice == '14':
+            print("[INFO] Temperature coming soon...")
+        elif choice == '15':
+            print("[INFO] Health coming soon...")
+        else:
+            print("[ERROR] Invalid choice.")
