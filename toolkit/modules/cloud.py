@@ -23,30 +23,26 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            print("[INFO] Saved Links coming soon...")
+            print("[INFO] Please use [1] Storage & Notes for Saved Links.")
         elif choice == '2':
-            print("[INFO] Commands coming soon...")
-        elif choice == '3':
-            print("[INFO] Secrets coming soon...")
+            print("[INFO] Please use [13] Run Commands for local commands.")
+        elif choice == '3' or choice == '5':
+            print("[INFO] Secrets and API Key management coming soon in Cloud Sync.")
         elif choice == '4':
-            print("[INFO] SSH Keys coming soon...")
-        elif choice == '5':
-            print("[INFO] API Keys coming soon...")
+            print("[INFO] Please use [8] Developer Tools for SSH Keys.")
         elif choice == '6':
-            print("[INFO] Environment Variables coming soon...")
+            print("[INFO] Please use [2] Windows Toolkit for local Environment Variables.")
         elif choice == '7':
-            print("[INFO] Server List coming soon...")
+            print("[INFO] Remote Server management (SSH) coming soon.")
         elif choice == '8':
-            print("[INFO] Remote Notes coming soon...")
-        elif choice == '9':
-            print("[INFO] Projects coming soon...")
-        elif choice == '10':
-            print("[INFO] Terminal Chat coming soon...")
+            print("[INFO] Please use [1] Storage & Notes for local notes.")
+        elif choice == '9' or choice == '10':
+            print("[INFO] Cloud Projects and Terminal Chat coming in v2.0.")
         elif choice == '11':
-            print("[INFO] Sync coming soon...")
+            print("[INFO] Cloud Sync requires an active account. Coming soon.")
         elif choice == '12':
-            print("[INFO] Backup coming soon...")
+            print("[INFO] Cloud Backup coming soon.")
         elif choice == '13':
-            print("[INFO] Restore coming soon...")
+            print("[INFO] Cloud Restore coming soon.")
         else:
             print("[ERROR] Invalid choice.")

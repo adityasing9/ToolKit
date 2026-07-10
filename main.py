@@ -38,8 +38,56 @@ def main():
     # Handle direct CLI arguments
     if args.module:
         module_name = args.module.lower()
-        print(f"[INFO] Launching tool: {module_name}")
-        # TODO: Route to specific module functions here
+        if module_name in ['1', 'storage', 'notes']:
+            from toolkit.modules import storage
+            storage.show_menu()
+        elif module_name in ['2', 'windows', 'toolkit']:
+            from toolkit.modules import windows_tools
+            windows_tools.show_menu()
+        elif module_name in ['3', 'user', 'users']:
+            from toolkit.modules import users
+            users.show_menu()
+        elif module_name in ['4', 'security']:
+            from toolkit.modules import security
+            security.show_menu()
+        elif module_name in ['5', 'network', 'networking']:
+            from toolkit.modules import network
+            network.show_menu()
+        elif module_name in ['6', 'file', 'files']:
+            from toolkit.modules import files
+            files.show_menu()
+        elif module_name in ['7', 'download', 'downloads']:
+            from toolkit.modules import downloads
+            downloads.show_menu()
+        elif module_name in ['8', 'dev', 'developer']:
+            from toolkit.modules import developer
+            developer.show_menu()
+        elif module_name in ['9', 'productivity']:
+            from toolkit.modules import productivity
+            productivity.show_menu()
+        elif module_name in ['10', 'qr', 'barcode']:
+            from toolkit.modules import qr
+            qr.show_menu()
+        elif module_name in ['11', 'sysinfo', 'info']:
+            from toolkit.modules import sysinfo
+            sysinfo.show_menu()
+        elif module_name in ['12', 'clean', 'cleanup']:
+            from toolkit.modules import cleanup
+            cleanup.show_menu()
+        elif module_name in ['13', 'commands', 'encyclopedia']:
+            from toolkit.modules import encyclopedia
+            encyclopedia.show_menu()
+        elif module_name in ['14', 'cloud', 'workspace']:
+            from toolkit.modules import cloud
+            cloud.show_menu()
+        elif module_name in ['15', 'ai', 'assistant']:
+            from toolkit.modules import ai
+            ai.show_menu()
+        elif module_name in ['16', 'settings', 'theme']:
+            from toolkit.modules import settings
+            settings.show_menu()
+        else:
+            print(f"[ERROR] Unknown module '{module_name}'")
         sys.exit(0)
 
     # Main Interactive Loop

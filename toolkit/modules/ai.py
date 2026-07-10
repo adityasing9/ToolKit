@@ -1,3 +1,8 @@
+def mock_ai_response(prompt_type):
+    print(f"\n[INFO] AI Assistant ({prompt_type}) requires an active API key.")
+    print("Please configure your API key in the Settings or Cloud Workspace modules.")
+    print("Feature coming in v2.0.")
+
 def show_menu():
     while True:
         print("\n=============================================================")
@@ -15,7 +20,7 @@ def show_menu():
         print("[10] Fix Error")
         print("[11] Search Docs")
         print("[12] Translate")
-        print("[13] OCR")
+        print("[13] OCR (Image to Text)")
         print("[0] Back to Main Menu")
         print("=============================================================")
         
@@ -23,30 +28,30 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            print("[INFO] Ask AI coming soon...")
+            mock_ai_response("General Query")
         elif choice == '2':
-            print("[INFO] Explain Error coming soon...")
+            mock_ai_response("Explain Error")
         elif choice == '3':
-            print("[INFO] Explain Command coming soon...")
+            mock_ai_response("Explain Command")
         elif choice == '4':
-            print("[INFO] Generate Regex coming soon...")
+            mock_ai_response("Generate Regex")
         elif choice == '5':
-            print("[INFO] Generate SQL coming soon...")
+            mock_ai_response("Generate SQL")
         elif choice == '6':
-            print("[INFO] Generate Bash coming soon...")
+            mock_ai_response("Generate Bash")
         elif choice == '7':
-            print("[INFO] Generate PowerShell coming soon...")
+            mock_ai_response("Generate PowerShell")
         elif choice == '8':
-            print("[INFO] Generate Python coming soon...")
+            mock_ai_response("Generate Python")
         elif choice == '9':
-            print("[INFO] Summarize Logs coming soon...")
+            mock_ai_response("Summarize Logs")
         elif choice == '10':
-            print("[INFO] Fix Error coming soon...")
+            mock_ai_response("Fix Error")
         elif choice == '11':
-            print("[INFO] Search Docs coming soon...")
+            mock_ai_response("Search Docs")
         elif choice == '12':
-            print("[INFO] Translate coming soon...")
+            mock_ai_response("Translate")
         elif choice == '13':
-            print("[INFO] OCR coming soon...")
+            mock_ai_response("OCR")
         else:
             print("[ERROR] Invalid choice.")
