@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import socket
 import subprocess
@@ -8,9 +9,9 @@ def get_public_ip():
     try:
         response = requests.get("https://api.ipify.org?format=json", timeout=5)
         ip = response.json().get("ip")
-        print(f"[SUCCESS] Public IP: {ip}")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Public IP: {ip}")
     except Exception as e:
-        print(f"[ERROR] Could not fetch Public IP: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch Public IP: {e}")
 
 def get_local_ip():
     print("\n[INFO] Fetching Local IP...")
@@ -19,9 +20,9 @@ def get_local_ip():
         s.connect(("8.8.8.8", 80))
         ip = s.getsockname()[0]
         s.close()
-        print(f"[SUCCESS] Local IP: {ip}")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Local IP: {ip}")
     except Exception as e:
-        print(f"[ERROR] Could not fetch Local IP: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch Local IP: {e}")
 
 def get_mac_address():
     print("\n[INFO] Fetching MAC Addresses...")
@@ -29,7 +30,7 @@ def get_mac_address():
         output = subprocess.check_output(["getmac"], text=True)
         print(output.strip())
     except Exception as e:
-        print(f"[ERROR] Could not fetch MAC Address: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch MAC Address: {e}")
 
 def run_ping():
     host = input("Enter host to ping (e.g. google.com): ").strip()
@@ -42,7 +43,7 @@ def run_traceroute():
         subprocess.run(["tracert", host])
 
 def check_wifi_passwords():
-    print("\n--- Saved WiFi Passwords ---")
+    print(f"\n{Colors.CYAN}--- Saved WiFi Passwords ---{Colors.RESET}")
     try:
         output = subprocess.check_output(["netsh", "wlan", "show", "profiles"], text=True)
         profiles = []
@@ -51,7 +52,7 @@ def check_wifi_passwords():
                 profiles.append(line.split(":")[1].strip())
         
         if not profiles:
-            print("[INFO] No saved WiFi profiles found.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} No saved WiFi profiles found.")
             return
 
         for profile in profiles:
@@ -66,38 +67,38 @@ def check_wifi_passwords():
             except subprocess.CalledProcessError:
                 print(f"Network: {profile:<20} | Password: [ERROR READING]")
     except Exception as e:
-        print(f"[ERROR] Could not fetch WiFi passwords: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch WiFi passwords: {e}")
 
 def check_open_ports():
-    print("\n--- Active Connections & Open Ports ---")
+    print(f"\n{Colors.CYAN}--- Active Connections & Open Ports ---{Colors.RESET}")
     try:
         subprocess.run(["netstat", "-ano"])
     except Exception as e:
-        print(f"[ERROR] Could not run netstat: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not run netstat: {e}")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [5] NETWORKING")
-        print("=============================================================")
-        print("[1] Public IP")
-        print("[2] Local IP")
-        print("[3] MAC Address")
-        print("[4] DNS Configuration")
-        print("[5] Flush DNS")
-        print("[6] Ping")
-        print("[7] Traceroute")
-        print("[8] Port Check")
-        print("[9] WiFi Passwords")
-        print("[10] Connected Devices")
-        print("[11] Open Ports")
-        print("[12] Network Speed Test")
-        print("[13] Proxy Settings")
-        print("[14] VPN Status")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [5] NETWORKING{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Public IP")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Local IP")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} MAC Address")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} DNS Configuration")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Flush DNS")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Ping")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Traceroute")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Port Check")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} WiFi Passwords")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Connected Devices")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Open Ports")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Network Speed Test")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Proxy Settings")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} VPN Status")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -115,7 +116,7 @@ def show_menu():
         elif choice == '7':
             run_traceroute()
         elif choice == '8':
-            print("[INFO] Use the Port Scanner in the [4] Security module.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Use the Port Scanner in the [4] Security module.")
         elif choice == '9':
             check_wifi_passwords()
         elif choice == '10':
@@ -123,10 +124,10 @@ def show_menu():
         elif choice == '11':
             check_open_ports()
         elif choice == '12':
-            print("[INFO] Network Speed Test coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Network Speed Test coming soon...")
         elif choice == '13':
-            print("[INFO] Proxy Settings coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Proxy Settings coming soon...")
         elif choice == '14':
-            print("[INFO] VPN Status coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} VPN Status coming soon...")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

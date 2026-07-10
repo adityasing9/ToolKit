@@ -1,34 +1,36 @@
 import sys
 import argparse
+from toolkit.utils import Colors
+Colors.init()
 
 # Force UTF-8 encoding for standard output to support emojis on Windows
 if sys.stdout.encoding != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8')
 
 def print_header():
-    print("=============================================================")
-    print("              ⚡ TERMINAL TOOLKIT v1.0")
-    print("=============================================================")
+    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}              ⚡ TERMINAL TOOLKIT v1.0{Colors.RESET}")
+    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
 
 def print_menu():
     print_header()
     print("\n[1] Storage & Notes")
-    print("[2] Windows Toolkit")
-    print("[3] User Management")
-    print("[4] Security")
-    print("[5] Networking")
-    print("[6] File & Folder")
-    print("[7] Downloads")
-    print("[8] Developer Tools")
-    print("[9] Productivity")
-    print("[10] QR / Barcode")
-    print("[11] System Information")
-    print("[12] Cleanup & Maintenance")
-    print("[13] Run Commands")
-    print("[14] Cloud Workspace")
-    print("[15] AI Assistant")
-    print("[16] Settings")
-    print("[0] Exit\n")
+    print(f"{Colors.GREEN}[2]{Colors.RESET} Windows Toolkit")
+    print(f"{Colors.GREEN}[3]{Colors.RESET} User Management")
+    print(f"{Colors.GREEN}[4]{Colors.RESET} Security")
+    print(f"{Colors.GREEN}[5]{Colors.RESET} Networking")
+    print(f"{Colors.GREEN}[6]{Colors.RESET} File & Folder")
+    print(f"{Colors.GREEN}[7]{Colors.RESET} Downloads")
+    print(f"{Colors.GREEN}[8]{Colors.RESET} Developer Tools")
+    print(f"{Colors.GREEN}[9]{Colors.RESET} Productivity")
+    print(f"{Colors.GREEN}[10]{Colors.RESET} QR / Barcode")
+    print(f"{Colors.GREEN}[11]{Colors.RESET} System Information")
+    print(f"{Colors.GREEN}[12]{Colors.RESET} Cleanup & Maintenance")
+    print(f"{Colors.GREEN}[13]{Colors.RESET} Run Commands")
+    print(f"{Colors.GREEN}[14]{Colors.RESET} Cloud Workspace")
+    print(f"{Colors.GREEN}[15]{Colors.RESET} AI Assistant")
+    print(f"{Colors.GREEN}[16]{Colors.RESET} Settings")
+    print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
     parser = argparse.ArgumentParser(description="Terminal Toolkit CLI")
@@ -87,14 +89,14 @@ def main():
             from toolkit.modules import settings
             settings.show_menu()
         else:
-            print(f"[ERROR] Unknown module '{module_name}'")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
 
     # Main Interactive Loop
     while True:
         print_menu()
         try:
-            choice = input("Select > ").strip()
+            choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         except (KeyboardInterrupt, EOFError):
             print("\nExiting...")
             break
@@ -151,7 +153,7 @@ def main():
             from toolkit.modules import settings
             settings.show_menu()
         else:
-            print("[ERROR] Invalid choice. Please try again.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     main()

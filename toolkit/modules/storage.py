@@ -1,13 +1,14 @@
+from toolkit.utils import Colors
 import os
 import subprocess
 from toolkit.db import get_connection
 
 def manage_links():
-    print("\n--- Links Management ---")
+    print(f"\n{Colors.CYAN}--- Links Management ---{Colors.RESET}")
     print("1. Add Link")
     print("2. List Links")
     print("3. Delete Link")
-    choice = input("Select > ").strip()
+    choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
     
     conn = get_connection()
     cursor = conn.cursor()
@@ -18,12 +19,12 @@ def manage_links():
         tags = input("Tags (comma separated): ").strip()
         cursor.execute("INSERT INTO links (title, url, tags) VALUES (?, ?, ?)", (title, url, tags))
         conn.commit()
-        print("[SUCCESS] Link added.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Link added.")
     elif choice == '2':
         cursor.execute("SELECT id, title, url, tags FROM links")
         rows = cursor.fetchall()
         if not rows:
-            print("[INFO] No links found.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} No links found.")
         else:
             print(f"\n{'ID':<4} | {'Title':<20} | {'URL':<40} | Tags")
             print("-" * 80)
@@ -33,15 +34,15 @@ def manage_links():
         link_id = input("Enter ID to delete: ").strip()
         cursor.execute("DELETE FROM links WHERE id = ?", (link_id,))
         conn.commit()
-        print("[SUCCESS] Link deleted.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Link deleted.")
     conn.close()
 
 def manage_github():
-    print("\n--- Github Repositories ---")
+    print(f"\n{Colors.CYAN}--- Github Repositories ---{Colors.RESET}")
     print("1. Save Repo")
     print("2. List Repos")
     print("3. Clone Repo")
-    choice = input("Select > ").strip()
+    choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
     
     conn = get_connection()
     cursor = conn.cursor()
@@ -52,12 +53,12 @@ def manage_github():
         desc = input("Description: ").strip()
         cursor.execute("INSERT INTO github_repos (name, url, description) VALUES (?, ?, ?)", (name, url, desc))
         conn.commit()
-        print("[SUCCESS] Repo saved.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Repo saved.")
     elif choice == '2':
         cursor.execute("SELECT id, name, url, description FROM github_repos")
         rows = cursor.fetchall()
         if not rows:
-            print("[INFO] No repos found.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} No repos found.")
         else:
             print(f"\n{'ID':<4} | {'Name':<20} | {'URL':<40}")
             print("-" * 70)
@@ -68,18 +69,18 @@ def manage_github():
         cursor.execute("SELECT url FROM github_repos WHERE id = ?", (repo_id,))
         row = cursor.fetchone()
         if row:
-            print(f"[INFO] Cloning {row['url']}...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Cloning {row['url']}...")
             subprocess.run(["git", "clone", row['url']])
         else:
-            print("[ERROR] Repo not found.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Repo not found.")
     conn.close()
 
 def manage_snippets():
-    print("\n--- Code Snippets ---")
+    print(f"\n{Colors.CYAN}--- Code Snippets ---{Colors.RESET}")
     print("1. Add Snippet")
     print("2. View Snippet")
     print("3. Delete Snippet")
-    choice = input("Select > ").strip()
+    choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
     
     conn = get_connection()
     cursor = conn.cursor()
@@ -95,12 +96,12 @@ def manage_snippets():
             code_lines.append(line)
         cursor.execute("INSERT INTO snippets (title, language, code) VALUES (?, ?, ?)", (title, lang, "\n".join(code_lines)))
         conn.commit()
-        print("[SUCCESS] Snippet saved.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Snippet saved.")
     elif choice == '2':
         cursor.execute("SELECT id, title, language FROM snippets")
         rows = cursor.fetchall()
         if not rows:
-            print("[INFO] No snippets found.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} No snippets found.")
         else:
             print(f"\n{'ID':<4} | {'Title':<30} | Language")
             print("-" * 55)
@@ -111,22 +112,22 @@ def manage_snippets():
                 cursor.execute("SELECT code FROM snippets WHERE id = ?", (snip_id,))
                 row = cursor.fetchone()
                 if row:
-                    print("\n--- CODE ---")
+                    print(f"\n{Colors.CYAN}--- CODE ---{Colors.RESET}")
                     print(row['code'])
                     print("------------")
     elif choice == '3':
         snip_id = input("Enter ID to delete: ").strip()
         cursor.execute("DELETE FROM snippets WHERE id = ?", (snip_id,))
         conn.commit()
-        print("[SUCCESS] Snippet deleted.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Snippet deleted.")
     conn.close()
 
 def manage_notes():
-    print("\n--- Quick Notes ---")
+    print(f"\n{Colors.CYAN}--- Quick Notes ---{Colors.RESET}")
     print("1. Add Note")
     print("2. View Notes")
     print("3. Delete Note")
-    choice = input("Select > ").strip()
+    choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
     
     conn = get_connection()
     cursor = conn.cursor()
@@ -141,12 +142,12 @@ def manage_notes():
             lines.append(line)
         cursor.execute("INSERT INTO notes (title, content) VALUES (?, ?)", (title, "\n".join(lines)))
         conn.commit()
-        print("[SUCCESS] Note saved.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Note saved.")
     elif choice == '2':
         cursor.execute("SELECT id, title, created_at FROM notes")
         rows = cursor.fetchall()
         if not rows:
-            print("[INFO] No notes found.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} No notes found.")
         else:
             print(f"\n{'ID':<4} | {'Title':<40} | Date")
             print("-" * 70)
@@ -157,14 +158,14 @@ def manage_notes():
                 cursor.execute("SELECT content FROM notes WHERE id = ?", (note_id,))
                 row = cursor.fetchone()
                 if row:
-                    print("\n--- CONTENT ---")
+                    print(f"\n{Colors.CYAN}--- CONTENT ---{Colors.RESET}")
                     print(row['content'])
                     print("---------------")
     elif choice == '3':
         note_id = input("Enter ID to delete: ").strip()
         cursor.execute("DELETE FROM notes WHERE id = ?", (note_id,))
         conn.commit()
-        print("[SUCCESS] Note deleted.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Note deleted.")
     conn.close()
 
 def export_db():
@@ -174,29 +175,29 @@ def export_db():
     try:
         import shutil
         shutil.copy2(db_path, backup_path)
-        print(f"[SUCCESS] Database exported to: {backup_path}")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Database exported to: {backup_path}")
     except Exception as e:
-        print(f"[ERROR] Export failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Export failed: {e}")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [1] STORAGE & NOTES")
-        print("=============================================================")
-        print("[1] Links")
-        print("[2] Github")
-        print("[3] Commands")
-        print("[4] Snippets")
-        print("[5] Clipboard History")
-        print("[6] Quick Notes")
-        print("[7] Bookmarks")
-        print("[8] Favorites")
-        print("[9] Tags")
-        print("[10] Import / Export")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [1] STORAGE & NOTES{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Links")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Github")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Commands")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Snippets")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Clipboard History")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Quick Notes")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Bookmarks")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Favorites")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Tags")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Import / Export")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -204,16 +205,16 @@ def show_menu():
         elif choice == '2':
             manage_github()
         elif choice == '3':
-            print("[INFO] Please use the main [13] Run Commands module for this.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the main [13] Run Commands module for this.")
         elif choice == '4':
             manage_snippets()
         elif choice == '5':
-            print("[INFO] Please use the [9] Productivity module for Clipboard operations.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the [9] Productivity module for Clipboard operations.")
         elif choice == '6':
             manage_notes()
         elif choice == '7' or choice == '8' or choice == '9':
-            print("[INFO] Use Links and Notes to manage Bookmarks/Favorites/Tags.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Use Links and Notes to manage Bookmarks/Favorites/Tags.")
         elif choice == '10':
             export_db()
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

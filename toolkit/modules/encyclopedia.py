@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import sqlite3
 import subprocess
 from toolkit.db import get_connection
@@ -10,7 +11,7 @@ def list_commands():
     conn.close()
 
     if not rows:
-        print("[INFO] No commands found in the database.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No commands found in the database.")
         return
 
     print(f"\n{'ID':<4} | {'Name':<25} | {'Category':<15} | {'Risk':<6} | {'Command':<20} | Purpose")
@@ -35,7 +36,7 @@ def search_command():
     conn.close()
 
     if not rows:
-        print(f"[INFO] No commands found matching '{query}'.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No commands found matching '{query}'.")
         return
 
     print(f"\n{'ID':<4} | {'Name':<25} | {'Category':<15} | {'Risk':<6} | {'Command':<20} | Purpose")
@@ -47,7 +48,7 @@ def search_command():
 def execute_command():
     cmd_id = input("Enter the ID of the command to execute: ").strip()
     if not cmd_id.isdigit():
-        print("[ERROR] Please enter a valid numeric ID.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Please enter a valid numeric ID.")
         return
 
     conn = get_connection()
@@ -57,7 +58,7 @@ def execute_command():
     conn.close()
 
     if not row:
-        print(f"[ERROR] No command found with ID {cmd_id}.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} No command found with ID {cmd_id}.")
         return
 
     print(f"\n[INFO] You are about to execute: {row['name']} ({row['command']})")
@@ -66,18 +67,18 @@ def execute_command():
     
     confirm = input("Are you sure? (y/n): ").strip().lower()
     if confirm == 'y':
-        print(f"[INFO] Executing '{row['command']}'...")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Executing '{row['command']}'...")
         try:
             # We use subprocess.Popen with shell=True for windows commands
             subprocess.Popen(row['command'], shell=True)
-            print("[SUCCESS] Command launched successfully.")
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Command launched successfully.")
         except Exception as e:
-            print(f"[ERROR] Failed to execute command: {e}")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to execute command: {e}")
     else:
-        print("[INFO] Execution cancelled.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Execution cancelled.")
 
 def add_command():
-    print("\n--- Add New Command ---")
+    print(f"\n{Colors.CYAN}--- Add New Command ---{Colors.RESET}")
     name = input("Name: ").strip()
     command = input("Command: ").strip()
     description = input("Description: ").strip()
@@ -86,7 +87,7 @@ def add_command():
     purpose = input("Purpose: ").strip()
 
     if not name or not command:
-        print("[ERROR] Name and Command are required fields.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Name and Command are required fields.")
         return
 
     conn = get_connection()
@@ -97,12 +98,12 @@ def add_command():
     )
     conn.commit()
     conn.close()
-    print(f"[SUCCESS] Command '{name}' added successfully.")
+    print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Command '{name}' added successfully.")
 
 def delete_command():
     cmd_id = input("Enter the ID of the command to delete: ").strip()
     if not cmd_id.isdigit():
-        print("[ERROR] Please enter a valid numeric ID.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Please enter a valid numeric ID.")
         return
 
     conn = get_connection()
@@ -111,7 +112,7 @@ def delete_command():
     row = cursor.fetchone()
     
     if not row:
-        print(f"[ERROR] No command found with ID {cmd_id}.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} No command found with ID {cmd_id}.")
         conn.close()
         return
 
@@ -119,25 +120,25 @@ def delete_command():
     if confirm == 'y':
         cursor.execute("DELETE FROM commands WHERE id = ?", (cmd_id,))
         conn.commit()
-        print(f"[SUCCESS] Command '{row['name']}' deleted.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Command '{row['name']}' deleted.")
     else:
-        print("[INFO] Deletion cancelled.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Deletion cancelled.")
     conn.close()
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [13] RUN COMMANDS")
-        print("=============================================================")
-        print("[1] List Commands")
-        print("[2] Search Command")
-        print("[3] Execute Command")
-        print("[4] Add Command")
-        print("[5] Delete Command")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [13] RUN COMMANDS{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} List Commands")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Search Command")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Execute Command")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Add Command")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Delete Command")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -151,4 +152,4 @@ def show_menu():
         elif choice == '5':
             delete_command()
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

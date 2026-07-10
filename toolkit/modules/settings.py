@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import sys
 import subprocess
@@ -7,9 +8,9 @@ def apply_theme(color_code):
     try:
         # Changes standard windows cmd color globally
         os.system(f"color {color_code}")
-        print("[SUCCESS] Theme applied.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Theme applied.")
     except Exception as e:
-        print(f"[ERROR] Could not apply theme: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not apply theme: {e}")
 
 def change_font_size():
     print("\n[INFO] Font size cannot be changed programmatically in all terminals.")
@@ -20,14 +21,14 @@ def update_toolkit():
     try:
         subprocess.run(["git", "pull"])
     except Exception as e:
-        print(f"[ERROR] Failed to update: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update: {e}")
 
 def backup_toolkit():
     print("\n[INFO] Backing up Toolkit...")
     print("Run Export in [1] Storage & Notes to backup the Database.")
 
 def check_version():
-    print("\n--- TERMINAL TOOLKIT VERSION ---")
+    print(f"\n{Colors.CYAN}--- TERMINAL TOOLKIT VERSION ---{Colors.RESET}")
     print("Version: 1.0 (CLI Edition)")
     print("Build: Latest GitHub Main Branch")
 
@@ -36,36 +37,36 @@ def reset_toolkit():
     confirm = input("Are you sure? (y/n): ").strip().lower()
     if confirm == 'y':
         os.system("color 07")
-        print("[SUCCESS] Settings reset to default.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Settings reset to default.")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [16] SETTINGS")
-        print("=============================================================")
-        print("[1] Theme (Current)")
-        print("[2] Theme: Light")
-        print("[3] Theme: Dark")
-        print("[4] Theme: Cyberpunk")
-        print("[5] Theme: Green Matrix")
-        print("[6] Theme: Purple")
-        print("[7] Theme: Blue")
-        print("[8] Font Size")
-        print("[9] Update Toolkit")
-        print("[10] Backup")
-        print("[11] Restore")
-        print("[12] Check Version")
-        print("[13] Plugins")
-        print("[14] Extensions")
-        print("[15] Reset")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [16] SETTINGS{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Theme (Current)")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Theme: Light")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Theme: Dark")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Theme: Cyberpunk")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Theme: Green Matrix")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Theme: Purple")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Theme: Blue")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Font Size")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Update Toolkit")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Backup")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Restore")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Check Version")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Plugins")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} Extensions")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} Reset")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
-            print("[INFO] Use options 2-7 to change the theme.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Use options 2-7 to change the theme.")
         elif choice == '2':
             apply_theme("F0") # White bg, black text
         elif choice == '3':
@@ -85,12 +86,12 @@ def show_menu():
         elif choice == '10':
             backup_toolkit()
         elif choice == '11':
-            print("[INFO] Restore functionality coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Restore functionality coming soon...")
         elif choice == '12':
             check_version()
         elif choice == '13' or choice == '14':
-            print("[INFO] Plugin/Extension system coming in v2.0.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Plugin/Extension system coming in v2.0.")
         elif choice == '15':
             reset_toolkit()
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import subprocess
 
@@ -8,10 +9,10 @@ def run_admin_cmd(cmd_list):
         if ctypes.windll.shell32.IsUserAnAdmin():
             subprocess.run(cmd_list)
         else:
-            print("[ERROR] Administrator privileges required for this action.")
-            print(f"[INFO] Command: {' '.join(cmd_list)}")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Administrator privileges required for this action.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Command: {' '.join(cmd_list)}")
     except Exception as e:
-        print(f"[ERROR] Could not execute command: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not execute command: {e}")
 
 def check_activation():
     print("\n[INFO] Checking Windows Activation Status...")
@@ -38,7 +39,7 @@ def open_installed_apps():
     subprocess.Popen(["appwiz.cpl"])
 
 def repair_windows():
-    print("\n--- Repair Windows ---")
+    print(f"\n{Colors.CYAN}--- Repair Windows ---{Colors.RESET}")
     print("This will run DISM RestoreHealth and SFC ScanNow.")
     confirm = input("This process takes time and requires Admin. Continue? (y/n): ").strip().lower()
     if confirm == 'y':
@@ -56,7 +57,7 @@ def run_sfc_scan():
     run_admin_cmd(["sfc", "/scannow"])
 
 def run_chkdsk():
-    print("\n--- Disk Check (chkdsk) ---")
+    print(f"\n{Colors.CYAN}--- Disk Check (chkdsk) ---{Colors.RESET}")
     drive = input("Enter drive letter (e.g. C): ").strip().upper()
     if drive:
         if not drive.endswith(":"):
@@ -64,21 +65,21 @@ def run_chkdsk():
         run_admin_cmd(["chkdsk", drive, "/f"])
 
 def create_restore_point():
-    print("\n--- Create System Restore Point ---")
+    print(f"\n{Colors.CYAN}--- Create System Restore Point ---{Colors.RESET}")
     desc = input("Enter description for restore point: ").strip()
     if not desc:
         desc = "Toolkit_Manual_Restore"
-    print("[INFO] Creating restore point...")
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} Creating restore point...")
     ps_cmd = f'Checkpoint-Computer -Description "{desc}" -RestorePointType "MODIFY_SETTINGS"'
     try:
         import ctypes
         if ctypes.windll.shell32.IsUserAnAdmin():
             subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd])
-            print("[SUCCESS] Restore point created.")
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Restore point created.")
         else:
-            print("[ERROR] Administrator privileges required.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Administrator privileges required.")
     except Exception as e:
-        print(f"[ERROR] Failed to create restore point: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to create restore point: {e}")
 
 def open_env_vars():
     print("\n[INFO] Opening Environment Variables...")
@@ -86,25 +87,25 @@ def open_env_vars():
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [2] WINDOWS TOOLKIT")
-        print("=============================================================")
-        print("[1] Activation Status")
-        print("[2] Drivers Manager")
-        print("[3] Windows Update")
-        print("[4] Services")
-        print("[5] Startup Apps")
-        print("[6] Installed Apps")
-        print("[7] Repair Windows (DISM + SFC)")
-        print("[8] DISM Scan")
-        print("[9] SFC Scan")
-        print("[10] Disk Check (chkdsk)")
-        print("[11] Create Restore Point")
-        print("[12] Environment Variables")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [2] WINDOWS TOOLKIT{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Activation Status")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Drivers Manager")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Windows Update")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Services")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Startup Apps")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Installed Apps")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Repair Windows (DISM + SFC)")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} DISM Scan")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} SFC Scan")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Disk Check (chkdsk)")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Create Restore Point")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Environment Variables")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -132,4 +133,4 @@ def show_menu():
         elif choice == '12':
             open_env_vars()
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

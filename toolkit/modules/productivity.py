@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import sys
 import time
@@ -16,7 +17,7 @@ def generate_password():
     chars = string.ascii_letters + string.digits + "!@#$%^&*()-_=+"
     pwd = "".join(random.choice(chars) for _ in range(length))
     print(f"\n[SUCCESS] Generated Password: {pwd}")
-    print("[INFO] You can copy this to your clipboard.")
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} You can copy this to your clipboard.")
 
 def generate_uuid():
     print(f"\n[SUCCESS] Generated UUID (v4): {uuid.uuid4()}")
@@ -30,7 +31,7 @@ def show_calendar():
     print(f"\n{calendar.month(year, month)}")
 
 def run_stopwatch():
-    print("\n--- Stopwatch ---")
+    print(f"\n{Colors.CYAN}--- Stopwatch ---{Colors.RESET}")
     print("Press Enter to start, and Ctrl+C to stop.")
     input()
     print("Stopwatch started...")
@@ -47,7 +48,7 @@ def run_stopwatch():
 def run_timer():
     seconds = input("Enter seconds to count down: ").strip()
     if not seconds.isdigit():
-        print("[ERROR] Invalid number of seconds.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid number of seconds.")
         return
     seconds = int(seconds)
     print(f"Starting timer for {seconds} seconds...")
@@ -61,7 +62,7 @@ def run_timer():
         print("\n[INFO] Timer cancelled.")
 
 def base64_tool():
-    print("\n--- Base64 Encoder / Decoder ---")
+    print(f"\n{Colors.CYAN}--- Base64 Encoder / Decoder ---{Colors.RESET}")
     mode = input("Select mode - (1) Encode or (2) Decode: ").strip()
     data = input("Enter text: ").strip()
     if not data:
@@ -69,17 +70,17 @@ def base64_tool():
     try:
         if mode == '1':
             encoded = base64.b64encode(data.encode('utf-8')).decode('utf-8')
-            print(f"[SUCCESS] Encoded: {encoded}")
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Encoded: {encoded}")
         elif mode == '2':
             decoded = base64.b64decode(data.encode('utf-8')).decode('utf-8')
-            print(f"[SUCCESS] Decoded: {decoded}")
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Decoded: {decoded}")
         else:
-            print("[ERROR] Invalid mode.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid mode.")
     except Exception as e:
-        print(f"[ERROR] Base64 operation failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Base64 operation failed: {e}")
 
 def json_formatter():
-    print("\n--- JSON Formatter ---")
+    print(f"\n{Colors.CYAN}--- JSON Formatter ---{Colors.RESET}")
     print("Paste your minified JSON below. Press Enter on a blank line to finish:")
     lines = []
     while True:
@@ -96,7 +97,7 @@ def json_formatter():
         print("\n[SUCCESS] Formatted JSON:")
         print(formatted)
     except json.JSONDecodeError as e:
-        print(f"[ERROR] Invalid JSON: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid JSON: {e}")
 
 def generate_lorem():
     paragraphs = input("Enter number of paragraphs (default 1): ").strip()
@@ -107,53 +108,53 @@ def generate_lorem():
         print(lorem + "\n")
 
 def read_clipboard():
-    print("\n--- Clipboard History Viewer ---")
+    print(f"\n{Colors.CYAN}--- Clipboard History Viewer ---{Colors.RESET}")
     try:
         output = subprocess.check_output(["powershell", "-NoProfile", "-Command", "Get-Clipboard"], text=True)
         print(f"Current Clipboard Contents:\n{output}")
     except Exception as e:
-        print(f"[ERROR] Could not read clipboard: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not read clipboard: {e}")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [9] PRODUCTIVITY")
-        print("=============================================================")
-        print("[1] To-do")
-        print("[2] Reminder")
-        print("[3] Calendar")
-        print("[4] Pomodoro")
-        print("[5] Timer")
-        print("[6] Stopwatch")
-        print("[7] Expense Notes")
-        print("[8] Clipboard")
-        print("[9] Password Generator")
-        print("[10] UUID Generator")
-        print("[11] Lorem Ipsum")
-        print("[12] Random Data")
-        print("[13] Base64")
-        print("[14] JSON Formatter")
-        print("[15] Markdown Preview")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [9] PRODUCTIVITY{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} To-do")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Reminder")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Calendar")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Pomodoro")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Timer")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Stopwatch")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Expense Notes")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Clipboard")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Password Generator")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} UUID Generator")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Lorem Ipsum")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Random Data")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Base64")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} JSON Formatter")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} Markdown Preview")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
-            print("[INFO] To-do module coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} To-do module coming soon...")
         elif choice == '2':
-            print("[INFO] Reminder module coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Reminder module coming soon...")
         elif choice == '3':
             show_calendar()
         elif choice == '4':
-            print("[INFO] Pomodoro timer coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Pomodoro timer coming soon...")
         elif choice == '5':
             run_timer()
         elif choice == '6':
             run_stopwatch()
         elif choice == '7':
-            print("[INFO] Expense Notes coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Expense Notes coming soon...")
         elif choice == '8':
             read_clipboard()
         elif choice == '9':
@@ -163,12 +164,12 @@ def show_menu():
         elif choice == '11':
             generate_lorem()
         elif choice == '12':
-            print("[INFO] Random Data generator coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Random Data generator coming soon...")
         elif choice == '13':
             base64_tool()
         elif choice == '14':
             json_formatter()
         elif choice == '15':
-            print("[INFO] Markdown Preview coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Markdown Preview coming soon...")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

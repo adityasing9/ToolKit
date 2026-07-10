@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import sys
 import subprocess
@@ -16,7 +17,7 @@ def is_admin():
 
 def block_website():
     if not is_admin():
-        print("[ERROR] Blocking websites requires Administrator privileges. Please run as Admin.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Blocking websites requires Administrator privileges. Please run as Admin.")
         return
     site = input("Enter website domain to block (e.g. facebook.com): ").strip()
     if not site:
@@ -25,15 +26,15 @@ def block_website():
         with open(HOSTS_FILE, 'a') as f:
             f.write(f"\n127.0.0.1\t{site}")
             f.write(f"\n127.0.0.1\twww.{site}")
-        print(f"[SUCCESS] {site} has been blocked via Hosts file.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} {site} has been blocked via Hosts file.")
         # Flush DNS for immediate effect
         subprocess.run(["ipconfig", "/flushdns"], capture_output=True)
     except Exception as e:
-        print(f"[ERROR] Could not write to hosts file: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not write to hosts file: {e}")
 
 def unblock_website():
     if not is_admin():
-        print("[ERROR] Unblocking websites requires Administrator privileges. Please run as Admin.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Unblocking websites requires Administrator privileges. Please run as Admin.")
         return
     site = input("Enter website domain to unblock (e.g. facebook.com): ").strip()
     if not site:
@@ -45,13 +46,13 @@ def unblock_website():
             for line in lines:
                 if site not in line:
                     f.write(line)
-        print(f"[SUCCESS] {site} has been unblocked.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} {site} has been unblocked.")
         subprocess.run(["ipconfig", "/flushdns"], capture_output=True)
     except Exception as e:
-        print(f"[ERROR] Could not modify hosts file: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not modify hosts file: {e}")
 
 def scan_ports():
-    print("\n--- Port Scanner ---")
+    print(f"\n{Colors.CYAN}--- Port Scanner ---{Colors.RESET}")
     target = input("Enter target IP or Domain (default localhost): ").strip() or "127.0.0.1"
     start_port = input("Start Port (default 1): ").strip()
     end_port = input("End Port (default 1024): ").strip()
@@ -63,7 +64,7 @@ def scan_ports():
     try:
         target_ip = socket.gethostbyname(target)
     except socket.gaierror:
-        print(f"[ERROR] Could not resolve host: {target}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not resolve host: {target}")
         return
         
     open_ports = []
@@ -77,49 +78,49 @@ def scan_ports():
         s.close()
     
     if not open_ports:
-        print("[INFO] No open ports found in range.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No open ports found in range.")
     else:
-        print(f"[SUCCESS] Found {len(open_ports)} open ports.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Found {len(open_ports)} open ports.")
 
 def kill_process():
-    print("\n--- Kill Process ---")
+    print(f"\n{Colors.CYAN}--- Kill Process ---{Colors.RESET}")
     pid = input("Enter Process ID (PID) to kill: ").strip()
     if not pid.isdigit():
-        print("[ERROR] Invalid PID.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid PID.")
         return
     try:
         p = psutil.Process(int(pid))
         p.terminate()
-        print(f"[SUCCESS] Process {pid} terminated.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Process {pid} terminated.")
     except Exception as e:
-        print(f"[ERROR] Could not kill process: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not kill process: {e}")
 
 def open_windows_security():
     print("\n[INFO] Opening Windows Security Center...")
     try:
         subprocess.Popen(["windowsdefender:"])
     except:
-        print("[ERROR] Could not launch Windows Security.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not launch Windows Security.")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [4] SECURITY")
-        print("=============================================================")
-        print("[1] Block Website")
-        print("[2] Unblock Website")
-        print("[3] Firewall Settings")
-        print("[4] Windows Defender")
-        print("[5] BitLocker Status")
-        print("[6] Hosts File Editor")
-        print("[7] Port Scanner")
-        print("[8] Kill Process")
-        print("[9] Startup Malware Scan")
-        print("[10] Windows Security Status")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [4] SECURITY{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Block Website")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Unblock Website")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Firewall Settings")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Windows Defender")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} BitLocker Status")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Hosts File Editor")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Port Scanner")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Kill Process")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Startup Malware Scan")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Windows Security Status")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -136,14 +137,14 @@ def show_menu():
             if is_admin():
                 subprocess.Popen(["notepad", HOSTS_FILE])
             else:
-                print("[ERROR] Editing hosts file requires Administrator privileges.")
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Editing hosts file requires Administrator privileges.")
         elif choice == '7':
             scan_ports()
         elif choice == '8':
             kill_process()
         elif choice == '9':
-            print("[INFO] Startup Malware Scan coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Startup Malware Scan coming soon...")
         elif choice == '10':
             open_windows_security()
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

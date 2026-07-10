@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 def mock_ai_response(prompt_type):
     print(f"\n[INFO] AI Assistant ({prompt_type}) requires an active API key.")
     print("Please configure your API key in the Settings or Cloud Workspace modules.")
@@ -5,26 +6,26 @@ def mock_ai_response(prompt_type):
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [15] AI ASSISTANT")
-        print("=============================================================")
-        print("[1] Ask AI")
-        print("[2] Explain Error")
-        print("[3] Explain Command")
-        print("[4] Generate Regex")
-        print("[5] Generate SQL")
-        print("[6] Generate Bash")
-        print("[7] Generate PowerShell")
-        print("[8] Generate Python")
-        print("[9] Summarize Logs")
-        print("[10] Fix Error")
-        print("[11] Search Docs")
-        print("[12] Translate")
-        print("[13] OCR (Image to Text)")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [15] AI ASSISTANT{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Ask AI")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Explain Error")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Explain Command")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Generate Regex")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Generate SQL")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Generate Bash")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Generate PowerShell")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Generate Python")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Summarize Logs")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Fix Error")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Search Docs")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Translate")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} OCR (Image to Text)")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -54,4 +55,4 @@ def show_menu():
         elif choice == '13':
             mock_ai_response("OCR")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

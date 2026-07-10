@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import shutil
 import subprocess
@@ -5,12 +6,12 @@ import subprocess
 def run_git_cmd(args):
     """Helper to run a git command in the current directory."""
     if not shutil.which("git"):
-        print("[ERROR] Git is not installed or not in PATH.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Git is not installed or not in PATH.")
         return
     try:
         subprocess.run(["git"] + args)
     except Exception as e:
-        print(f"[ERROR] Failed to run Git command: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to run Git command: {e}")
 
 def git_clone():
     url = input("Enter repository URL: ").strip()
@@ -39,34 +40,34 @@ def check_installation(tool_name, cmd_args):
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [8] DEVELOPER TOOLS")
-        print("=============================================================")
-        print("[1] Git")
-        print("[2] Clone Repo")
-        print("[3] Commit")
-        print("[4] Push")
-        print("[5] Pull")
-        print("[6] Status")
-        print("[7] Branch")
-        print("[8] Github URLs")
-        print("[9] SSH Keys")
-        print("[10] Docker")
-        print("[11] Node")
-        print("[12] Python")
-        print("[13] Java")
-        print("[14] Rust")
-        print("[15] Go")
-        print("[16] Flutter")
-        print("[17] Android")
-        print("[18] VS Code")
-        print("[19] WSL")
-        print("[20] VirtualBox")
-        print("[21] VMware")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [8] DEVELOPER TOOLS{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Git")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Clone Repo")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Commit")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Push")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Pull")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Status")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Branch")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Github URLs")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} SSH Keys")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Docker")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Node")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Python")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Java")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} Rust")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} Go")
+        print(f"{Colors.GREEN}[16]{Colors.RESET} Flutter")
+        print(f"{Colors.GREEN}[17]{Colors.RESET} Android")
+        print(f"{Colors.GREEN}[18]{Colors.RESET} VS Code")
+        print(f"{Colors.GREEN}[19]{Colors.RESET} WSL")
+        print(f"{Colors.GREEN}[20]{Colors.RESET} VirtualBox")
+        print(f"{Colors.GREEN}[21]{Colors.RESET} VMware")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -84,9 +85,9 @@ def show_menu():
         elif choice == '7':
             run_git_cmd(["branch", "-a"])
         elif choice == '8':
-            print("[INFO] Github URLs coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Github URLs coming soon...")
         elif choice == '9':
-            print("\n--- SSH Keys ---")
+            print(f"\n{Colors.CYAN}--- SSH Keys ---{Colors.RESET}")
             ssh_dir = os.path.expanduser("~/.ssh")
             if os.path.exists(ssh_dir):
                 files = os.listdir(ssh_dir)
@@ -122,4 +123,4 @@ def show_menu():
         elif choice == '21':
             check_installation("VMware", ["vmrun"])
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

@@ -1,11 +1,12 @@
+from toolkit.utils import Colors
 import os
 import shutil
 import subprocess
 
 def check_ytdlp():
     if not shutil.which("yt-dlp"):
-        print("[ERROR] yt-dlp is not installed or not in PATH.")
-        print("[INFO] Please run: pip install yt-dlp")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} yt-dlp is not installed or not in PATH.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please run: pip install yt-dlp")
         return False
     return True
 
@@ -13,7 +14,7 @@ def download_video(url, quality="best"):
     if not check_ytdlp():
         return
     print(f"\n[INFO] Downloading Video from: {url}")
-    print(f"[INFO] Quality: {quality}")
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} Quality: {quality}")
     
     args = ["yt-dlp", url]
     if quality == "best":
@@ -25,9 +26,9 @@ def download_video(url, quality="best"):
     
     try:
         subprocess.run(args)
-        print("[SUCCESS] Download complete.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Download complete.")
     except Exception as e:
-        print(f"[ERROR] Download failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Download failed: {e}")
 
 def download_audio(url):
     if not check_ytdlp():
@@ -36,9 +37,9 @@ def download_audio(url):
     args = ["yt-dlp", "-x", "--audio-format", "mp3", url]
     try:
         subprocess.run(args)
-        print("[SUCCESS] Audio download complete.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Audio download complete.")
     except Exception as e:
-        print(f"[ERROR] Download failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Download failed: {e}")
 
 def download_playlist(url):
     if not check_ytdlp():
@@ -47,9 +48,9 @@ def download_playlist(url):
     args = ["yt-dlp", "--yes-playlist", url]
     try:
         subprocess.run(args)
-        print("[SUCCESS] Playlist download complete.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Playlist download complete.")
     except Exception as e:
-        print(f"[ERROR] Download failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Download failed: {e}")
 
 def download_thumbnail(url):
     if not check_ytdlp():
@@ -58,29 +59,29 @@ def download_thumbnail(url):
     args = ["yt-dlp", "--write-thumbnail", "--skip-download", url]
     try:
         subprocess.run(args)
-        print("[SUCCESS] Thumbnail download complete.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Thumbnail download complete.")
     except Exception as e:
-        print(f"[ERROR] Download failed: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Download failed: {e}")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [7] DOWNLOADS")
-        print("=============================================================")
-        print("[1] YT-DLP Status")
-        print("[2] Download Video")
-        print("[3] Download Playlist")
-        print("[4] Download Audio")
-        print("[5] Download Thumbnail")
-        print("[6] Download 4K Video")
-        print("[7] Download 8K Video")
-        print("[8] Subtitles")
-        print("[9] Cookies")
-        print("[10] FFmpeg Status")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [7] DOWNLOADS{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} YT-DLP Status")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Download Video")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Download Playlist")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Download Audio")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Download Thumbnail")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Download 4K Video")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Download 8K Video")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Subtitles")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Cookies")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} FFmpeg Status")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -105,9 +106,9 @@ def show_menu():
             url = input("Enter URL: ").strip()
             if url: download_video(url, "8k")
         elif choice == '8':
-            print("[INFO] Subtitles extraction coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Subtitles extraction coming soon...")
         elif choice == '9':
-            print("[INFO] Cookies support coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Cookies support coming soon...")
         elif choice == '10':
             if shutil.which("ffmpeg"):
                 print("[✓] FFmpeg is installed.")
@@ -115,4 +116,4 @@ def show_menu():
             else:
                 print("[x] FFmpeg is NOT installed. Many yt-dlp features will be limited.")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import psutil
 import platform
 import subprocess
@@ -12,7 +13,7 @@ def get_size(bytes, suffix="B"):
         bytes /= factor
 
 def sys_cpu():
-    print("\n--- CPU Information ---")
+    print(f"\n{Colors.CYAN}--- CPU Information ---{Colors.RESET}")
     print(f"Physical cores: {psutil.cpu_count(logical=False)}")
     print(f"Total cores: {psutil.cpu_count(logical=True)}")
     cpufreq = psutil.cpu_freq()
@@ -23,7 +24,7 @@ def sys_cpu():
     print(f"CPU Usage: {psutil.cpu_percent()}%")
 
 def sys_ram():
-    print("\n--- RAM Information ---")
+    print(f"\n{Colors.CYAN}--- RAM Information ---{Colors.RESET}")
     svmem = psutil.virtual_memory()
     print(f"Total: {get_size(svmem.total)}")
     print(f"Available: {get_size(svmem.available)}")
@@ -31,17 +32,17 @@ def sys_ram():
     print(f"Percentage: {svmem.percent}%")
 
 def sys_gpu():
-    print("\n--- GPU Information ---")
+    print(f"\n{Colors.CYAN}--- GPU Information ---{Colors.RESET}")
     try:
         output = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], text=True)
         gpus = [line.strip() for line in output.split('\n') if line.strip() and "Name" not in line]
         for gpu in gpus:
             print(f"GPU: {gpu}")
     except Exception as e:
-        print(f"[ERROR] Could not fetch GPU info: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch GPU info: {e}")
 
 def sys_disk():
-    print("\n--- Disk Information ---")
+    print(f"\n{Colors.CYAN}--- Disk Information ---{Colors.RESET}")
     partitions = psutil.disk_partitions()
     for partition in partitions:
         print(f"Device: {partition.device}")
@@ -58,13 +59,13 @@ def sys_disk():
         print()
 
 def sys_battery():
-    print("\n--- Battery Information ---")
+    print(f"\n{Colors.CYAN}--- Battery Information ---{Colors.RESET}")
     if not hasattr(psutil, "sensors_battery"):
-        print("[INFO] Battery information not available.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Battery information not available.")
         return
     battery = psutil.sensors_battery()
     if battery is None:
-        print("[INFO] No battery detected.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery detected.")
     else:
         print(f"Charge: {battery.percent}%")
         print(f"Plugged In: {'Yes' if battery.power_plugged else 'No'}")
@@ -75,23 +76,23 @@ def sys_battery():
             print(f"Time Left: {time_left}")
 
 def sys_motherboard():
-    print("\n--- Motherboard Information ---")
+    print(f"\n{Colors.CYAN}--- Motherboard Information ---{Colors.RESET}")
     try:
         output = subprocess.check_output(["wmic", "baseboard", "get", "product,Manufacturer,version,serialnumber"], text=True)
         print(output.strip())
     except Exception as e:
-        print(f"[ERROR] Could not fetch Motherboard info: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch Motherboard info: {e}")
 
 def sys_bios():
-    print("\n--- BIOS Information ---")
+    print(f"\n{Colors.CYAN}--- BIOS Information ---{Colors.RESET}")
     try:
         output = subprocess.check_output(["wmic", "bios", "get", "name,version,smbiosbiosversion"], text=True)
         print(output.strip())
     except Exception as e:
-        print(f"[ERROR] Could not fetch BIOS info: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not fetch BIOS info: {e}")
 
 def sys_windows_version():
-    print("\n--- Windows Version ---")
+    print(f"\n{Colors.CYAN}--- Windows Version ---{Colors.RESET}")
     uname = platform.uname()
     print(f"System: {uname.system}")
     print(f"Node Name: {uname.node}")
@@ -101,7 +102,7 @@ def sys_windows_version():
     print(f"Processor: {uname.processor}")
 
 def sys_processes():
-    print("\n--- Top 10 Memory Consuming Processes ---")
+    print(f"\n{Colors.CYAN}--- Top 10 Memory Consuming Processes ---{Colors.RESET}")
     processes = []
     for proc in psutil.process_iter(['pid', 'name', 'memory_info']):
         try:
@@ -118,28 +119,28 @@ def sys_processes():
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [11] SYSTEM INFORMATION")
-        print("=============================================================")
-        print("[1] CPU")
-        print("[2] RAM")
-        print("[3] GPU")
-        print("[4] Disk")
-        print("[5] Battery")
-        print("[6] Motherboard")
-        print("[7] BIOS")
-        print("[8] Windows Version")
-        print("[9] Installed Programs")
-        print("[10] Startup Time")
-        print("[11] Processes")
-        print("[12] Running Services")
-        print("[13] Disk Usage")
-        print("[14] Temperature")
-        print("[15] Health")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [11] SYSTEM INFORMATION{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} CPU")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} RAM")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} GPU")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Disk")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Battery")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Motherboard")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} BIOS")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Windows Version")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Installed Programs")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Startup Time")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Processes")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Running Services")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Disk Usage")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} Temperature")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} Health")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -159,7 +160,7 @@ def show_menu():
         elif choice == '8':
             sys_windows_version()
         elif choice == '9':
-            print("[INFO] Installed Programs coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Installed Programs coming soon...")
         elif choice == '10':
             import datetime
             boot_time_timestamp = psutil.boot_time()
@@ -168,12 +169,12 @@ def show_menu():
         elif choice == '11':
             sys_processes()
         elif choice == '12':
-            print("[INFO] Running Services coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Running Services coming soon...")
         elif choice == '13':
             sys_disk()
         elif choice == '14':
-            print("[INFO] Hardware Temperature coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Hardware Temperature coming soon...")
         elif choice == '15':
-            print("[INFO] System Health Check coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} System Health Check coming soon...")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

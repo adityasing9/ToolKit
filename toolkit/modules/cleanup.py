@@ -1,3 +1,4 @@
+from toolkit.utils import Colors
 import os
 import shutil
 import subprocess
@@ -27,19 +28,19 @@ def clear_directory(path_str):
     """Safely attempts to clear the contents of a directory."""
     path = os.path.expandvars(path_str)
     if not os.path.exists(path):
-        print(f"[INFO] Directory {path} does not exist.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Directory {path} does not exist.")
         return
     
     print(f"\n[INFO] Calculating size of {path}...")
     size_before = get_size(path)
-    print(f"[INFO] Current Size: {format_size(size_before)}")
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} Current Size: {format_size(size_before)}")
     
     confirm = input(f"Are you sure you want to delete contents of {path}? (y/n): ").strip().lower()
     if confirm != 'y':
-        print("[INFO] Cleanup cancelled.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Cleanup cancelled.")
         return
 
-    print("[INFO] Cleaning up...")
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} Cleaning up...")
     deleted_size = 0
     for root, dirs, files in os.walk(path, topdown=False):
         for name in files:
@@ -57,7 +58,7 @@ def clear_directory(path_str):
             except Exception:
                 pass
 
-    print(f"[SUCCESS] Cleaned {format_size(deleted_size)} from {path}")
+    print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Cleaned {format_size(deleted_size)} from {path}")
 
 def clean_temp():
     clear_directory("%TEMP%")
@@ -73,31 +74,31 @@ def empty_recycle_bin():
     try:
         # Uses powershell to empty recycle bin without confirmation prompt natively
         subprocess.run(["powershell", "-NoProfile", "-Command", "Clear-RecycleBin -Force -ErrorAction SilentlyContinue"])
-        print("[SUCCESS] Recycle Bin emptied.")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Recycle Bin emptied.")
     except Exception as e:
-        print(f"[ERROR] Failed to empty Recycle Bin: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to empty Recycle Bin: {e}")
 
 def flush_dns():
     print("\n[INFO] Flushing DNS Cache...")
     try:
         subprocess.run(["ipconfig", "/flushdns"])
     except Exception as e:
-        print(f"[ERROR] Failed to flush DNS: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to flush DNS: {e}")
 
 def run_disk_cleanup():
     print("\n[INFO] Launching Windows Disk Cleanup Utility...")
     try:
         subprocess.Popen(["cleanmgr", "/sageset:1"])
-        print("[INFO] Please configure the cleanup options in the window that opens.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please configure the cleanup options in the window that opens.")
     except Exception as e:
-        print(f"[ERROR] Failed to launch Disk Cleanup: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to launch Disk Cleanup: {e}")
 
 def optimize_drives():
     print("\n[INFO] Launching Drive Optimizer (Defragmenter)...")
     try:
         subprocess.Popen(["dfrgui"])
     except Exception as e:
-        print(f"[ERROR] Failed to launch Drive Optimizer: {e}")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to launch Drive Optimizer: {e}")
 
 def winget_upgrade():
     print("\n[INFO] Checking for package upgrades via Winget...")
@@ -105,32 +106,32 @@ def winget_upgrade():
     if confirm == 'y':
         subprocess.run(["winget", "upgrade", "--all"])
     else:
-        print("[INFO] Cancelled.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} Cancelled.")
 
 def show_menu():
     while True:
-        print("\n=============================================================")
-        print("              [12] CLEANUP & MAINTENANCE")
-        print("=============================================================")
-        print("[1] Temp")
-        print("[2] Prefetch")
-        print("[3] Windows Temp")
-        print("[4] Recycle Bin")
-        print("[5] DNS Cache")
-        print("[6] Thumbnail Cache")
-        print("[7] Recent Files")
-        print("[8] PowerShell History")
-        print("[9] Browser Cache")
-        print("[10] Windows Logs")
-        print("[11] Disk Cleanup")
-        print("[12] Optimize Drives")
-        print("[13] Winget Upgrade")
-        print("[14] Winget Repair")
-        print("[15] App Repair")
-        print("[0] Back to Main Menu")
-        print("=============================================================")
+        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [12] CLEANUP & MAINTENANCE{Colors.RESET}")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Temp")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Prefetch")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Windows Temp")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Recycle Bin")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} DNS Cache")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Thumbnail Cache")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Recent Files")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} PowerShell History")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Browser Cache")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Windows Logs")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Disk Cleanup")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Optimize Drives")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Winget Upgrade")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} Winget Repair")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} App Repair")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
+        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
-        choice = input("Select > ").strip()
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '0':
             break
         elif choice == '1':
@@ -144,15 +145,15 @@ def show_menu():
         elif choice == '5':
             flush_dns()
         elif choice == '6':
-            print("[INFO] Thumbnail Cache cleanup coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Thumbnail Cache cleanup coming soon...")
         elif choice == '7':
             clear_directory("%APPDATA%\\Microsoft\\Windows\\Recent")
         elif choice == '8':
             clear_directory("%APPDATA%\\Microsoft\\Windows\\PowerShell\\PSReadLine")
         elif choice == '9':
-            print("[INFO] Browser Cache cleanup coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Browser Cache cleanup coming soon...")
         elif choice == '10':
-            print("[INFO] Windows Logs cleanup coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Windows Logs cleanup coming soon...")
         elif choice == '11':
             run_disk_cleanup()
         elif choice == '12':
@@ -160,8 +161,8 @@ def show_menu():
         elif choice == '13':
             winget_upgrade()
         elif choice == '14':
-            print("[INFO] Winget Repair coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Winget Repair coming soon...")
         elif choice == '15':
-            print("[INFO] App Repair coming soon...")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} App Repair coming soon...")
         else:
-            print("[ERROR] Invalid choice.")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
