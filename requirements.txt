@@ -1,0 +1,7 @@
+textual
+psutil
+yt-dlp
+requests
+qrcode
+pillow
+pyinstaller
