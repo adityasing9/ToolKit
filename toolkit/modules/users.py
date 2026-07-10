@@ -1,3 +1,121 @@
+import os
+import subprocess
+
+def is_admin():
+    try:
+        import ctypes
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+def run_ps_command(ps_cmd, require_admin=True):
+    if require_admin and not is_admin():
+        print("[ERROR] Administrator privileges required for this action.")
+        return None
+    try:
+        result = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"[ERROR] {result.stderr.strip()}")
+            return None
+        return result.stdout.strip()
+    except Exception as e:
+        print(f"[ERROR] Failed to run command: {e}")
+        return None
+
+def list_users():
+    print("\n--- List of Local Users ---")
+    output = run_ps_command("Get-LocalUser | Select-Object Name, Enabled, Description | Format-Table -AutoSize", require_admin=False)
+    if output:
+        print(output)
+
+def add_user():
+    print("\n--- Add New User ---")
+    username = input("Username: ").strip()
+    password = input("Password: ").strip()
+    desc = input("Description (optional): ").strip()
+    
+    if not username or not password:
+        print("[ERROR] Username and Password are required.")
+        return
+        
+    ps = f'$Password = Read-Host -AsSecureString "{password}"; New-LocalUser "{username}" -Password $Password -FullName "{username}" -Description "{desc}"'
+    # For automation we bypass Read-Host to pass plain text
+    ps_auto = f'$Password = ConvertTo-SecureString "{password}" -AsPlainText -Force; New-LocalUser "{username}" -Password $Password -FullName "{username}" -Description "{desc}"'
+    
+    print(f"[INFO] Creating user {username}...")
+    res = run_ps_command(ps_auto)
+    if res is not None:
+        print(f"[SUCCESS] User '{username}' created successfully.")
+
+def delete_user():
+    print("\n--- Delete User ---")
+    username = input("Username to delete: ").strip()
+    if not username: return
+    
+    confirm = input(f"Are you sure you want to delete '{username}'? (y/n): ").strip().lower()
+    if confirm == 'y':
+        res = run_ps_command(f'Remove-LocalUser -Name "{username}"')
+        if res is not None:
+            print(f"[SUCCESS] User '{username}' deleted.")
+
+def change_password():
+    print("\n--- Change User Password ---")
+    username = input("Username: ").strip()
+    new_password = input("New Password: ").strip()
+    
+    if not username or not new_password: return
+    ps_auto = f'$Password = ConvertTo-SecureString "{new_password}" -AsPlainText -Force; Set-LocalUser -Name "{username}" -Password $Password'
+    res = run_ps_command(ps_auto)
+    if res is not None:
+        print(f"[SUCCESS] Password for '{username}' updated.")
+
+def set_user_status(username, enable=True):
+    action = "Enable" if enable else "Disable"
+    ps_cmd = f'{action}-LocalUser -Name "{username}"'
+    res = run_ps_command(ps_cmd)
+    if res is not None:
+        print(f"[SUCCESS] User '{username}' has been {action.lower()}d.")
+
+def toggle_user(enable=True):
+    action = "Enable" if enable else "Disable"
+    print(f"\n--- {action} User ---")
+    username = input("Username: ").strip()
+    if username:
+        set_user_status(username, enable)
+
+def modify_admin(username, grant=True):
+    action = "Add" if grant else "Remove"
+    ps_cmd = f'{action}-LocalGroupMember -Group "Administrators" -Member "{username}"'
+    res = run_ps_command(ps_cmd)
+    if res is not None:
+        status = "granted" if grant else "removed from"
+        print(f"[SUCCESS] Administrator rights {status} '{username}'.")
+
+def toggle_admin(grant=True):
+    action_str = "Grant" if grant else "Remove"
+    print(f"\n--- {action_str} Administrator Rights ---")
+    username = input("Username: ").strip()
+    if username:
+        modify_admin(username, grant)
+
+def user_info():
+    print("\n--- Detailed Account Information ---")
+    username = input("Username: ").strip()
+    if username:
+        output = run_ps_command(f'Get-LocalUser -Name "{username}" | Format-List *', require_admin=False)
+        if output:
+            print(output)
+
+def export_users():
+    print("\n--- Export User List ---")
+    filename = input("Filename (default users.csv): ").strip()
+    if not filename: filename = "users.csv"
+    
+    ps_cmd = f'Get-LocalUser | Select-Object Name, Enabled, Description | Export-Csv -Path "{filename}" -NoTypeInformation'
+    res = run_ps_command(ps_cmd, require_admin=False)
+    if res is not None:
+        print(f"[SUCCESS] User list exported to {filename}.")
+
 def show_menu():
     while True:
         print("\n=============================================================")
@@ -7,16 +125,12 @@ def show_menu():
         print("[2] Add User")
         print("[3] Delete User")
         print("[4] Change Password")
-        print("[5] Lock User")
-        print("[6] Unlock User")
-        print("[7] Enable User")
-        print("[8] Disable User")
-        print("[9] Grant Administrator")
-        print("[10] Remove Administrator")
-        print("[11] Last Login")
-        print("[12] Password Expiry")
-        print("[13] Account Information")
-        print("[14] Export User List")
+        print("[5] Enable User")
+        print("[6] Disable User")
+        print("[7] Grant Administrator")
+        print("[8] Remove Administrator")
+        print("[9] Account Information")
+        print("[10] Export User List")
         print("[0] Back to Main Menu")
         print("=============================================================")
         
@@ -24,32 +138,24 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            print("[INFO] List Users coming soon...")
+            list_users()
         elif choice == '2':
-            print("[INFO] Add User coming soon...")
+            add_user()
         elif choice == '3':
-            print("[INFO] Delete User coming soon...")
+            delete_user()
         elif choice == '4':
-            print("[INFO] Change Password coming soon...")
+            change_password()
         elif choice == '5':
-            print("[INFO] Lock User coming soon...")
+            toggle_user(enable=True)
         elif choice == '6':
-            print("[INFO] Unlock User coming soon...")
+            toggle_user(enable=False)
         elif choice == '7':
-            print("[INFO] Enable User coming soon...")
+            toggle_admin(grant=True)
         elif choice == '8':
-            print("[INFO] Disable User coming soon...")
+            toggle_admin(grant=False)
         elif choice == '9':
-            print("[INFO] Grant Administrator coming soon...")
+            user_info()
         elif choice == '10':
-            print("[INFO] Remove Administrator coming soon...")
-        elif choice == '11':
-            print("[INFO] Last Login coming soon...")
-        elif choice == '12':
-            print("[INFO] Password Expiry coming soon...")
-        elif choice == '13':
-            print("[INFO] Account Information coming soon...")
-        elif choice == '14':
-            print("[INFO] Export User List coming soon...")
+            export_users()
         else:
             print("[ERROR] Invalid choice.")
