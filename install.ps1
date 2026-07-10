@@ -7,7 +7,8 @@ function Show-Menu {
     Write-Host "==============================================" -ForegroundColor Cyan
     Write-Host "1) Install / Update & Run Toolkit"
     Write-Host "2) Run Toolkit (If already installed)"
-    Write-Host "3) Exit"
+    Write-Host "3) Run Portable (No Installation / Temp Dir)"
+    Write-Host "4) Exit"
     Write-Host "==============================================" -ForegroundColor Cyan
 }
 
@@ -83,10 +84,31 @@ function Run-Toolkit {
     & ".\venv\Scripts\python.exe" main.py
 }
 
+function Run-Portable {
+    Check-Prerequisites
+    $TargetDir = "$env:TEMP\ToolKit_Portable"
+    
+    if (Test-Path "$TargetDir") {
+        Remove-Item -Recurse -Force "$TargetDir"
+    }
+
+    Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
+    git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
+    Set-Location $TargetDir
+    
+    Write-Host "[INFO] Installing Temporary Dependencies..." -ForegroundColor Green
+    # In portable mode, we just use the global python to avoid the slow venv creation, 
+    # but we suppress output.
+    python -m pip install -r requirements.txt --quiet
+    
+    Write-Host "[INFO] Launching Portable Toolkit..." -ForegroundColor Cyan
+    python main.py
+}
+
 # Main Loop
 while ($true) {
     Show-Menu
-    $choice = Read-Host "Select an option (1-3)"
+    $choice = Read-Host "Select an option (1-4)"
 
     switch ($choice) {
         '1' {
@@ -98,6 +120,10 @@ while ($true) {
             break
         }
         '3' {
+            Run-Portable
+            break
+        }
+        '4' {
             Write-Host "Exiting..." -ForegroundColor Cyan
             exit 0
         }
