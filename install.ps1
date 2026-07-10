@@ -88,13 +88,15 @@ function Run-Portable {
     Check-Prerequisites
     $TargetDir = "$env:TEMP\ToolKit_Portable"
     
-    if (Test-Path "$TargetDir") {
-        Remove-Item -Recurse -Force "$TargetDir"
+    if (Test-Path "$TargetDir\.git") {
+        Write-Host "[INFO] Portable Toolkit found in Temp. Updating..." -ForegroundColor Green
+        Set-Location $TargetDir
+        git pull --quiet
+    } else {
+        Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
+        git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
+        Set-Location $TargetDir
     }
-
-    Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
-    git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
-    Set-Location $TargetDir
     
     Write-Host "[INFO] Installing Temporary Dependencies (this may take a minute)..." -ForegroundColor Green
     # We use --user to ensure it doesn't require Admin rights for global Python installs.
