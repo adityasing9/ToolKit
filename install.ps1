@@ -8,7 +8,8 @@ function Show-Menu {
     Write-Host "1) Install / Update & Run Toolkit"
     Write-Host "2) Run Toolkit (If already installed)"
     Write-Host "3) Run Portable (No Installation / Temp Dir)"
-    Write-Host "4) Exit"
+    Write-Host "4) Uninstall & Remove Toolkit Completely"
+    Write-Host "5) Exit"
     Write-Host "==============================================" -ForegroundColor Cyan
 }
 
@@ -107,10 +108,42 @@ function Run-Portable {
     python main.py
 }
 
+function Uninstall-Toolkit {
+    Write-Host "[WARNING] This will completely delete the Toolkit from your machine." -ForegroundColor Yellow
+    $confirm = Read-Host "Are you sure? (y/n)"
+    if ($confirm -ne 'y') {
+        Write-Host "Uninstallation cancelled." -ForegroundColor Green
+        return
+    }
+
+    $DesktopDir = "$env:USERPROFILE\Desktop\ToolKit"
+    $TempDir = "$env:TEMP\ToolKit_Portable"
+    $deleted = $false
+
+    if (Test-Path $DesktopDir) {
+        Write-Host "[INFO] Deleting permanent installation at $DesktopDir..." -ForegroundColor Cyan
+        Remove-Item -Recurse -Force $DesktopDir -ErrorAction SilentlyContinue
+        $deleted = $true
+    }
+    
+    if (Test-Path $TempDir) {
+        Write-Host "[INFO] Deleting portable cache at $TempDir..." -ForegroundColor Cyan
+        Remove-Item -Recurse -Force $TempDir -ErrorAction SilentlyContinue
+        $deleted = $true
+    }
+
+    if ($deleted) {
+        Write-Host "[SUCCESS] Toolkit has been completely removed from your system." -ForegroundColor Green
+    } else {
+        Write-Host "[INFO] No Toolkit installation found on this system." -ForegroundColor Yellow
+    }
+    pause
+}
+
 # Main Loop
 while ($true) {
     Show-Menu
-    $choice = Read-Host "Select an option (1-4)"
+    $choice = Read-Host "Select an option (1-5)"
 
     switch ($choice) {
         '1' {
@@ -126,6 +159,10 @@ while ($true) {
             break
         }
         '4' {
+            Uninstall-Toolkit
+            break
+        }
+        '5' {
             Write-Host "Exiting..." -ForegroundColor Cyan
             exit 0
         }
