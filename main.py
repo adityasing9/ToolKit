@@ -36,6 +36,7 @@ def print_menu():
     print(f"{Colors.GREEN}[19]{Colors.RESET} Cheat Sheets & Docs")
     print(f"{Colors.GREEN}[20]{Colors.RESET} Process Manager")
     print(f"{Colors.GREEN}[21]{Colors.RESET} Network Monitor")
+    print(f"{Colors.GREEN}[22]{Colors.RESET} Driver Manager")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -118,6 +119,9 @@ def main():
         elif module_name in ['21', 'networkmonitor', 'netmon', 'traffic', 'bandwidth', 'latency', 'dns', 'vpn']:
             from toolkit.modules import network_monitor
             network_monitor.show_menu()
+        elif module_name in ['22', 'driver', 'drivers', 'pnputil', 'dism-driver', 'backup-drivers']:
+            from toolkit.modules import driver_manager
+            driver_manager.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -202,6 +206,9 @@ def main():
         elif choice == '21':
             from toolkit.modules import network_monitor
             network_monitor.show_menu()
+        elif choice == '22':
+            from toolkit.modules import driver_manager
+            driver_manager.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 

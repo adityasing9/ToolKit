@@ -284,6 +284,13 @@ Below is the complete tree layout of all nested settings and options available i
   ├── System DNS Configuration (resolves configured DNS servers on active adaptors)
   ├── VPN Connection Detector (automatically scans active interfaces for VPN tags)
   └── Latency Graph Monitor (live pings to 1.1.1.1 matched to an ASCII sparkline graph)
+
+- [22] Driver Manager [NEW]
+  ├── Export Drivers (extracts system third-party drivers to backup directory via DISM)
+  ├── Backup Drivers (creates structured registry-friendly drivers copy via PnpUtil)
+  ├── Restore Drivers (recursively adds and installs drivers from local backup folder)
+  ├── Missing Drivers Scanner (queries WMI and PnP interfaces for hardware errors)
+  └── Active OEM Drivers (lists active third-party device drivers and firmware versions)
 ```
 
 ---
@@ -330,6 +337,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[19] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
 | **[20] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
 | **[21] Network Monitor** | `tool networkmonitor`, `tool netmon`, `tool traffic`, `tool bandwidth`, `tool latency`, `tool dns`, `tool vpn` |
+| **[22] Driver Manager** | `tool driver`, `tool drivers`, `tool pnputil`, `tool dism-driver`, `tool backup-drivers` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
