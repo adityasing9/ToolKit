@@ -91,11 +91,12 @@ def sys_battery():
             if res.returncode == 0 and os.path.exists(temp_xml):
                 tree = ET.parse(temp_xml)
                 root = tree.getroot()
-                battery_node = root.find(".//Battery")
+                # Use {*} wildcard to bypass XML namespace constraints in Python ElementTree
+                battery_node = root.find(".//{*}Battery")
                 if battery_node is not None:
-                    design_cap = battery_node.find("DesignCapacity")
-                    full_cap = battery_node.find("FullChargeCapacity")
-                    cycles = battery_node.find("CycleCount")
+                    design_cap = battery_node.find("{*}DesignCapacity")
+                    full_cap = battery_node.find("{*}FullChargeCapacity")
+                    cycles = battery_node.find("{*}CycleCount")
                     
                     if design_cap is not None and full_cap is not None:
                         d = int(design_cap.text)
