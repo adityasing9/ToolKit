@@ -102,7 +102,7 @@ def sys_battery():
                         d = int(design_cap.text)
                         f = int(full_cap.text)
                         if d > 0:
-                            health = round((f / d) * 100, 2)
+                            health = min(100.0, round((f / d) * 100, 2))
                             print(f"Design Capacity:      {d:,} mWh")
                             print(f"Full Charge Capacity: {f:,} mWh")
                             print(f"Battery Health:       {health}%")
