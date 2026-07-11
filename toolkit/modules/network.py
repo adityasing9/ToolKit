@@ -123,7 +123,11 @@ def run_speed_test():
     url = "https://speed.cloudflare.com/__down?bytes=10000000"
     start_time = time.time()
     try:
-        with urllib.request.urlopen(url, timeout=30) as r:
+        req = urllib.request.Request(
+            url,
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        )
+        with urllib.request.urlopen(req, timeout=30) as r:
             _ = r.read()
         duration = time.time() - start_time
         speed_mbps = (10 * 8) / duration
