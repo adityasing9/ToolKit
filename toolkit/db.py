@@ -70,6 +70,37 @@ def init_db():
         )
     ''')
 
+    # Create settings table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS settings (
+            key TEXT PRIMARY KEY,
+            value TEXT
+        )
+    ''')
+
+def get_setting(key, default=None):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return row['value']
+    except Exception:
+        pass
+    return default
+
+def set_setting(key, value):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", (key, value))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass
+
     # Seed initial data for commands if empty
     cursor.execute("SELECT COUNT(*) FROM commands")
     if cursor.fetchone()[0] == 0:

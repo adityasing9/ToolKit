@@ -129,6 +129,99 @@ def calculate_file_hash():
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not read file: {e}")
 
+def shred_file(path):
+    if not os.path.isfile(path):
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} File does not exist: {path}")
+        return
+    try:
+        size = os.path.getsize(path)
+        print(f"\n{Colors.BLUE}[INFO]{Colors.RESET} Shredding {path} ({format_size(size)})...")
+        # 3 passes of random data
+        with open(path, "ba+", buffering=0) as f:
+            for pass_num in range(3):
+                print(f"   Pass {pass_num+1}/3 (Overwriting with random bytes)...")
+                f.seek(0)
+                remaining = size
+                while remaining > 0:
+                    chunk = min(remaining, 1024 * 1024)
+                    f.write(os.urandom(chunk))
+                    remaining -= chunk
+        
+        # Truncate file before deletion
+        with open(path, "w", encoding="utf-8") as f:
+            f.write("")
+            
+        os.remove(path)
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} File permanently shredded.")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Shredding failed: {e}")
+
+def find_duplicates():
+    folder = input("Enter folder path to search: ").strip()
+    if not os.path.isdir(folder):
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid folder path.")
+        return
+        
+    print(f"\n{Colors.BLUE}[INFO]{Colors.RESET} Scanning files for duplicates...")
+    by_size = {}
+    for dirpath, _, filenames in os.walk(folder):
+        for f in filenames:
+            fp = os.path.join(dirpath, f)
+            try:
+                size = os.path.getsize(fp)
+                by_size.setdefault(size, []).append(fp)
+            except:
+                pass
+                
+    potential_dupes = {sz: paths for sz, paths in by_size.items() if len(paths) > 1}
+    
+    if not potential_dupes:
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No duplicates found.")
+        return
+        
+    print(f"{Colors.BLUE}[INFO]{Colors.RESET} Calculating file hashes for potential duplicates...")
+    by_hash = {}
+    for size, paths in potential_dupes.items():
+        for fp in paths:
+            try:
+                hasher = hashlib.md5()
+                with open(fp, "rb") as f:
+                    for chunk in iter(lambda: f.read(65536), b""):
+                        hasher.update(chunk)
+                file_hash = hasher.hexdigest()
+                by_hash.setdefault((size, file_hash), []).append(fp)
+            except:
+                pass
+                
+    duplicates = {k: paths for k, paths in by_hash.items() if len(paths) > 1}
+    
+    if not duplicates:
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No duplicates found.")
+        return
+        
+    print(f"\n{Colors.GREEN}[SUCCESS]{Colors.RESET} Found duplicate sets:")
+    all_dupe_files = []
+    
+    idx = 1
+    for (size, file_hash), paths in duplicates.items():
+        print(f"\nSet #{idx} (Size: {format_size(size)}, MD5: {file_hash})")
+        print(f"  [Original] {paths[0]}")
+        for p in paths[1:]:
+            print(f"  [Duplicate] {p}")
+            all_dupe_files.append(p)
+        idx += 1
+            
+    confirm = input(f"\nWould you like to delete all {len(all_dupe_files)} duplicates? (y/n): ").strip().lower()
+    if confirm == 'y':
+        deleted_count = 0
+        for p in all_dupe_files:
+            try:
+                os.remove(p)
+                deleted_count += 1
+            except Exception as e:
+                print(f"Failed to delete {p}: {e}")
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Deleted {deleted_count} duplicate files.")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -179,7 +272,7 @@ def show_menu():
         elif choice == '9':
             find_large_files()
         elif choice == '10':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Duplicate Finder coming soon...")
+            find_duplicates()
         elif choice == '11':
             calculate_folder_size()
         elif choice == '12':
@@ -191,6 +284,10 @@ def show_menu():
         elif choice == '15':
             calculate_file_hash()
         elif choice == '16':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Secure Delete (Shredding) coming soon...")
+            path = input("Enter file path to secure delete (SHRED): ").strip()
+            if path:
+                confirm = input(f"[WARNING] Are you sure you want to permanently shred {path}? (y/n): ").strip().lower()
+                if confirm == 'y':
+                    shred_file(path)
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

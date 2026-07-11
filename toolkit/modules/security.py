@@ -102,6 +102,102 @@ def open_windows_security():
     except:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not launch Windows Security.")
 
+def run_startup_scan():
+    print(f"\n{Colors.CYAN}--- Startup Malware Scan ---{Colors.RESET}")
+    print("[INFO] Querying Registry run keys and Startup folders...")
+    
+    suspicious_entries = []
+    all_entries = []
+    
+    # 1. Read Registry Run Keys
+    import winreg
+    reg_paths = [
+        (winreg.HKEY_CURRENT_USER, r"Software\Microsoft\Windows\CurrentVersion\Run", "HKCU\\Run"),
+        (winreg.HKEY_LOCAL_MACHINE, r"Software\Microsoft\Windows\CurrentVersion\Run", "HKLM\\Run")
+    ]
+    
+    for hkey, subkey, label in reg_paths:
+        try:
+            key = winreg.OpenKey(hkey, subkey)
+            idx = 0
+            while True:
+                try:
+                    name, val, _ = winreg.EnumValue(key, idx)
+                    all_entries.append((label, name, val))
+                    idx += 1
+                except OSError:
+                    break
+            winreg.CloseKey(key)
+        except Exception:
+            pass
+
+    # 2. Read Startup Folders
+    startup_paths = []
+    if 'APPDATA' in os.environ:
+        startup_paths.append((os.path.join(os.environ['APPDATA'], r"Microsoft\Windows\Start Menu\Programs\Startup"), "User Startup Folder"))
+    if 'ProgramData' in os.environ:
+        startup_paths.append((os.path.join(os.environ['ProgramData'], r"Microsoft\Windows\Start Menu\Programs\StartUp"), "Common Startup Folder"))
+        
+    for path, label in startup_paths:
+        if os.path.exists(path):
+            try:
+                for f in os.listdir(path):
+                    full_path = os.path.join(path, f)
+                    if os.path.isfile(full_path):
+                        all_entries.append((label, f, full_path))
+            except Exception:
+                pass
+
+    if not all_entries:
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No startup entries found to scan.")
+        return
+
+    print(f"\nScanning {len(all_entries)} entries against security heuristics...")
+    
+    suspicious_keywords = ["temp", "tmp", "appdata\\local\\temp", "cmd.exe", "powershell.exe", "wscript.exe", "mshta.exe"]
+    suspicious_exts = [".vbs", ".js", ".bat", ".cmd", ".scr", ".pif"]
+
+    for source, name, command in all_entries:
+        reasons = []
+        cmd_lower = command.lower()
+        
+        # Heuristic 1: Run from Temp folders
+        if "temp" in cmd_lower or "tmp" in cmd_lower:
+            reasons.append("Launches from a Temporary directory")
+            
+        # Heuristic 2: Suspicious extensions
+        for ext in suspicious_exts:
+            if ext in cmd_lower:
+                reasons.append(f"Launches a script file directly ({ext})")
+                
+        # Heuristic 3: LOLBins / Script engines
+        if "wscript.exe" in cmd_lower or "cscript.exe" in cmd_lower:
+            reasons.append("Uses Windows Script Host engine")
+        if "mshta.exe" in cmd_lower:
+            reasons.append("Uses HTA engine to run web applications")
+            
+        # Heuristic 4: Obfuscated or random name lengths in user directories
+        if "appdata" in cmd_lower and len(name) > 15 and name.isalnum():
+            # Long alphanumeric name without spaces
+            reasons.append("Suspiciously long randomized alphanumeric registry entry name")
+            
+        if reasons:
+            suspicious_entries.append((source, name, command, reasons))
+
+    # Print results
+    if not suspicious_entries:
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Scan complete! No suspicious startup entries detected.")
+    else:
+        print(f"\n{Colors.RED}[WARNING] Found {len(suspicious_entries)} potentially suspicious startup entries:{Colors.RESET}")
+        for source, name, cmd, reasons in suspicious_entries:
+            print(f"\n[{source}] Name: {Colors.BOLD}{name}{Colors.RESET}")
+            print(f"  Command: {cmd}")
+            print("  Reasons:")
+            for r in reasons:
+                print(f"    - {Colors.RED}{r}{Colors.RESET}")
+                
+    input("\nPress Enter to return...")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -143,7 +239,7 @@ def show_menu():
         elif choice == '8':
             kill_process()
         elif choice == '9':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Startup Malware Scan coming soon...")
+            run_startup_scan()
         elif choice == '10':
             open_windows_security()
         else:
