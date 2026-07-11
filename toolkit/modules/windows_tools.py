@@ -14,9 +14,73 @@ def run_admin_cmd(cmd_list):
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not execute command: {e}")
 
+def get_windows_product_key():
+    try:
+        import winreg
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Microsoft\Windows NT\CurrentVersion\SoftwareProtectionPlatform")
+        val, _ = winreg.QueryValueEx(key, "BackupProductKeyDefault")
+        return val
+    except Exception:
+        return "N/A"
+
 def check_activation():
     print("\n[INFO] Checking Windows Activation Status...")
     subprocess.run(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/xpr"])
+
+def manage_activation():
+    while True:
+        print(f"\n{Colors.CYAN}--- Windows Activation & Product Key Manager ---{Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} View Activation Expiry Status")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} View Detailed License Information (slmgr /dlv)")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} View Installed Product Key")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Backup & Store Product Key to File")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Uninstall Installed Product Key (slmgr /upk)")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Clear Product Key from Registry (slmgr /cpky)")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Complete Key Deletion (Uninstall & Clear Registry)")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back")
+        
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            check_activation()
+        elif choice == '2':
+            print("\n[INFO] Querying detailed license info...")
+            subprocess.run(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/dlv"])
+        elif choice == '3':
+            key = get_windows_product_key()
+            print(f"\nInstalled Product Key: {Colors.YELLOW}{key}{Colors.RESET}")
+        elif choice == '4':
+            key = get_windows_product_key()
+            if key != "N/A":
+                import datetime
+                filename = "product_key_backup.txt"
+                filepath = os.path.join(os.getcwd(), filename)
+                try:
+                    with open(filepath, "w") as f:
+                        f.write(f"Windows Product Key Backup\n")
+                        f.write(f"Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
+                        f.write(f"Key:  {key}\n")
+                    print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Product key backup saved to: {filepath}")
+                except Exception as e:
+                    print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to write file: {e}")
+            else:
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not retrieve product key to back up.")
+        elif choice == '5':
+            confirm = input(f"{Colors.RED}[WARNING]{Colors.RESET} This will uninstall the current product key. Continue? (y/n): ").strip().lower()
+            if confirm == 'y':
+                run_admin_cmd(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/upk"])
+        elif choice == '6':
+            confirm = input(f"{Colors.RED}[WARNING]{Colors.RESET} This will clear the product key from registry keys. Continue? (y/n): ").strip().lower()
+            if confirm == 'y':
+                run_admin_cmd(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/cpky"])
+        elif choice == '7':
+            confirm = input(f"{Colors.RED}[WARNING]{Colors.RESET} This will completely uninstall the key and wipe it from the registry. Continue? (y/n): ").strip().lower()
+            if confirm == 'y':
+                print("[INFO] Uninstalling product key...")
+                run_admin_cmd(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/upk"])
+                print("[INFO] Clearing from registry...")
+                run_admin_cmd(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/cpky"])
 
 def open_driver_manager():
     print("\n[INFO] Opening Device Manager...")
@@ -160,7 +224,7 @@ def show_menu():
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.BOLD}{Colors.YELLOW}              [16] WINDOWS TOOLKIT{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.GREEN}[1]{Colors.RESET} Activation Status")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Windows Activation & Key Manager")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Drivers Manager")
         print(f"{Colors.GREEN}[3]{Colors.RESET} Windows Update")
         print(f"{Colors.GREEN}[4]{Colors.RESET} Services")
@@ -181,7 +245,7 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            check_activation()
+            manage_activation()
         elif choice == '2':
             open_driver_manager()
         elif choice == '3':

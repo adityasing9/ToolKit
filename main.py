@@ -91,7 +91,7 @@ def main():
         elif module_name in ['15', 'user', 'users', 'admin', 'accounts']:
             from toolkit.modules import users
             users.show_menu()
-        elif module_name in ['16', 'windows', 'toolkit', 'sfc', 'dism', 'restorepoint']:
+        elif module_name in ['16', 'windows', 'toolkit', 'sfc', 'dism', 'restorepoint', 'activate', 'activation']:
             from toolkit.modules import windows_tools
             windows_tools.show_menu()
         elif module_name in ['17', 'search', 'find', 'query', 'ask']:

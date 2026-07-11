@@ -233,7 +233,7 @@ Below is the complete tree layout of all nested settings and options available i
   └── List Local System Users
 
 - [16] Windows Toolkit
-  ├── Windows Activation Status check (cscript console slmgr)
+  ├── Windows Activation & Key Manager (dlv/xpr status, key extraction, file backup, upk/cpky uninstallation/wipe) [NEW]
   ├── Device Manager UAC Launcher
   ├── Services & Startup Managers
   ├── Windows Repair (SFC + DISM RestoreHealth)

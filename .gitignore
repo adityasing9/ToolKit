@@ -42,3 +42,7 @@ toolkit.sqlite
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Key backups
+product_key_backup.txt
+*key*.txt
