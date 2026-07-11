@@ -65,15 +65,36 @@ def sys_battery():
         return
     battery = psutil.sensors_battery()
     if battery is None:
-        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery detected.")
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery detected (or desktop system).")
     else:
         print(f"Charge: {battery.percent}%")
         print(f"Plugged In: {'Yes' if battery.power_plugged else 'No'}")
         if not battery.power_plugged:
-            # seconds to hours and minutes
             import datetime
-            time_left = str(datetime.timedelta(seconds=battery.secsleft))
-            print(f"Time Left: {time_left}")
+            if battery.secsleft == -1:
+                print("Time Left: Unlimited (Plugged In)")
+            elif battery.secsleft == -2:
+                print("Time Left: Calculating...")
+            else:
+                time_left = str(datetime.timedelta(seconds=battery.secsleft))
+                print(f"Time Left: {time_left}")
+        else:
+            print("Time Left: Unlimited (Plugged In)")
+            
+        print(f"\n{Colors.GREEN}[1]{Colors.RESET} Generate Detailed HTML Battery Report (Cycles, Capacity, degradation)")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Skip")
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
+        if choice == '1':
+            print("\n[INFO] Generating battery report...")
+            report_path = os.path.join(os.getcwd(), "battery-report.html")
+            try:
+                # powercfg /batteryreport can run in standard user mode on Windows 10/11
+                subprocess.run(["powercfg", "/batteryreport", "/output", report_path], check=True, capture_output=True)
+                print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Battery report generated at: {report_path}")
+                print("Opening report in your browser...")
+                os.startfile(report_path)
+            except Exception as e:
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to generate report: {e}")
 
 def sys_motherboard():
     print(f"\n{Colors.CYAN}--- Motherboard Information ---{Colors.RESET}")
