@@ -289,7 +289,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[13] Storage & Notes** | `tool storage`, `tool notes`, `tool links`, `tool snippets`, `tool db` |
 | **[14] System Information** | `tool sysinfo`, `tool info`, `tool specs`, `tool temp`, `tool temperature`, `tool cpu`, `tool ram`, `tool gpu`, `tool battery` |
 | **[15] User Management** | `tool user`, `tool users`, `tool admin`, `tool accounts` |
-| **[16] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint` |
+| **[16] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint`, `tool activate`, `tool activation` |
 | **[17] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
 
 ### Direct Module Routing (Fallback)
