@@ -233,7 +233,14 @@ Below is the complete tree layout of all nested settings and options available i
   └── List Local System Users
 
 - [16] Windows Toolkit
-  ├── Windows Activation & Key Manager (dlv/xpr status, key extraction, file backup, upk/cpky uninstallation/wipe) [NEW]
+  ├── Windows Activation & Key Manager [NEW]
+  │   ├── View Activation Expiry Status
+  │   ├── View Detailed License Information (slmgr /dlv)
+  │   ├── View Installed Product Key
+  │   ├── Backup & Store Product Key to File
+  │   ├── Uninstall Installed Product Key (slmgr /upk)
+  │   ├── Clear Product Key from Registry (slmgr /cpky)
+  │   └── Complete Key Deletion (Uninstall + Clear Registry)
   ├── Device Manager UAC Launcher
   ├── Services & Startup Managers
   ├── Windows Repair (SFC + DISM RestoreHealth)
