@@ -312,6 +312,14 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Vendor OUI Resolution (maps MAC addresses back to hardware manufacturers/vendors)
   ├── Latency Ping Tests (validates active device response delays in milliseconds)
   └── Device Categorization (groups nodes by type: Phone, TV, Laptop/PC, Printer, NAS, Router)
+
+- [26] Remote Device Manager [NEW]
+  ├── Encrypted Sockets (uses AES-Fernet secure E2E encryption for all remote packets)
+  ├── Setup Wizard (provisions Device ID & HMAC pairing codes for authorized connections)
+  ├── Interactive CMD/PowerShell (handles bidirectional remote console terminal streams)
+  ├── File Transfer Manager (supports folder navigation, file downloads and uploads)
+  ├── Process & Service Controllers (lists, controls, starts, stops, or terminates items)
+  └── Remote Power Options (triggers workstation sleep, lock, restarts, or shutdowns)
 ```
 
 ---
@@ -362,6 +370,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[23] Gaming Optimizer** | `tool gameopt`, `tool fps`, `tool optimize-game`, `tool game`, `tool gaming` |
 | **[24] Windows Analytics** | `tool analytics`, `tool telemetry`, `tool boothistory`, `tool battery`, `tool history`, `tool usage` |
 | **[25] Local Network Dashboard** | `tool networkdashboard`, `tool netdash`, `tool subnet`, `tool discover`, `tool devices`, `tool arp` |
+| **[26] Remote Device Manager** | `tool remote`, `tool agent`, `tool pair`, `tool rterminal`, `tool rconnect`, `tool remotemanager` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:

@@ -40,6 +40,7 @@ def print_menu():
     print(f"{Colors.GREEN}[23]{Colors.RESET} Gaming Optimizer")
     print(f"{Colors.GREEN}[24]{Colors.RESET} Windows Analytics")
     print(f"{Colors.GREEN}[25]{Colors.RESET} Local Network Dashboard")
+    print(f"{Colors.GREEN}[26]{Colors.RESET} Remote Device Manager")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -134,6 +135,9 @@ def main():
         elif module_name in ['25', 'networkdashboard', 'netdash', 'subnet', 'discover', 'devices', 'arp']:
             from toolkit.modules import network_dashboard
             network_dashboard.show_menu()
+        elif module_name in ['26', 'remote', 'agent', 'pair', 'rterminal', 'rconnect', 'remotemanager']:
+            from toolkit.modules import remote_manager
+            remote_manager.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -230,6 +234,9 @@ def main():
         elif choice == '25':
             from toolkit.modules import network_dashboard
             network_dashboard.show_menu()
+        elif choice == '26':
+            from toolkit.modules import remote_manager
+            remote_manager.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 
