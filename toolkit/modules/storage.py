@@ -29,7 +29,7 @@ def manage_links():
             print(f"\n{'ID':<4} | {'Title':<20} | {'URL':<40} | Tags")
             print("-" * 80)
             for r in rows:
-                print(f"{r['id']:<4} | {r['title'][:20]:<20} | {r['url'][:40]:<40} | {r['tags']}")
+                print(f"{r['id']:<4} | {r['title']:<20} | {r['url']:<40} | {r['tags']}")
     elif choice == '3':
         link_id = input("Enter ID to delete: ").strip()
         cursor.execute("DELETE FROM links WHERE id = ?", (link_id,))
@@ -63,7 +63,7 @@ def manage_github():
             print(f"\n{'ID':<4} | {'Name':<20} | {'URL':<40}")
             print("-" * 70)
             for r in rows:
-                print(f"{r['id']:<4} | {r['name'][:20]:<20} | {r['url'][:40]:<40}")
+                print(f"{r['id']:<4} | {r['name']:<20} | {r['url']:<40}")
     elif choice == '3':
         repo_id = input("Enter ID to clone: ").strip()
         cursor.execute("SELECT url FROM github_repos WHERE id = ?", (repo_id,))
@@ -106,7 +106,7 @@ def manage_snippets():
             print(f"\n{'ID':<4} | {'Title':<30} | Language")
             print("-" * 55)
             for r in rows:
-                print(f"{r['id']:<4} | {r['title'][:30]:<30} | {r['language']}")
+                print(f"{r['id']:<4} | {r['title']:<30} | {r['language']}")
             snip_id = input("\nEnter ID to view code (or press enter to cancel): ").strip()
             if snip_id:
                 cursor.execute("SELECT code FROM snippets WHERE id = ?", (snip_id,))
@@ -152,7 +152,7 @@ def manage_notes():
             print(f"\n{'ID':<4} | {'Title':<40} | Date")
             print("-" * 70)
             for r in rows:
-                print(f"{r['id']:<4} | {r['title'][:40]:<40} | {r['created_at']}")
+                print(f"{r['id']:<4} | {r['title']:<40} | {r['created_at']}")
             note_id = input("\nEnter ID to view content (or press enter to cancel): ").strip()
             if note_id:
                 cursor.execute("SELECT content FROM notes WHERE id = ?", (note_id,))
