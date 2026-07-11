@@ -245,27 +245,40 @@ Below is the complete tree layout of all nested settings and options available i
 
 You can bypass the interactive menu entirely and trigger any toolkit feature globally from **any directory** on your computer using the **`tool`** command.
 
+> [!NOTE]
+> If you are running commands directly inside the repository folder *before* restarting your terminal (or without global setup), PowerShell requires the **`.\`** prefix:
+> ```powershell
+> .\tool <command>
+> ```
+> Once the global PATH setup is applied and you open a new terminal, you can type **`tool <command>`** from anywhere.
+
 ### Global Setup
 1. Run **Option 1 (Install / Update & Run Toolkit)** from your CLI Manager (`install.ps1`). This automatically registers the ToolKit directory to your Windows User `PATH` environment variable.
 2. Open a **new** terminal window (to load the updated environment path changes).
 
-### Global Examples
-* **Launch the Command Center Dashboard**:
-  ```powershell
-  tool dash
-  ```
-* **Search bookmarks, notes, snippets, or commands**:
-  ```powershell
-  tool search
-  ```
-* **Run a network speed test**:
-  ```powershell
-  tool speedtest
-  ```
-* **Check live CPU/GPU temperatures**:
-  ```powershell
-  tool temp
-  ```
+### Complete Command Alias Directory
+You can pass any of the following parameters to the **`tool`** command to trigger a specific module directly:
+
+| Command Module | Supported Aliases |
+| :--- | :--- |
+| **Command Center Dashboard** | `tool dash`, `tool status`, `tool dashboard` |
+| **[1] AI Assistant** | `tool ai`, `tool assistant`, `tool gpt`, `tool gemini`, `tool chat`, `tool bot` |
+| **[2] Cleanup & Maintenance** | `tool clean`, `tool cleanup`, `tool flush`, `tool clear`, `tool purge` |
+| **[3] Cloud Workspace** | `tool cloud`, `tool workspace`, `tool supabase`, `tool sync`, `tool backup`, `tool restore` |
+| **[4] Developer Tools** | `tool dev`, `tool developer`, `tool git`, `tool ssh`, `tool env`, `tool sdk` |
+| **[5] Downloads** | `tool download`, `tool downloads`, `tool youtube`, `tool yt`, `tool ytdl`, `tool video`, `tool mp3` |
+| **[6] File & Folder** | `tool file`, `tool files`, `tool folder`, `tool folders`, `tool shred`, `tool zip`, `tool hash`, `tool timestamp` |
+| **[7] Networking** | `tool network`, `tool networking`, `tool ip`, `tool ping`, `tool wifi`, `tool speed`, `tool speedtest`, `tool dns`, `tool whois` |
+| **[8] Productivity** | `tool productivity`, `tool timer`, `tool stopwatch`, `tool password`, `tool json`, `tool base64` |
+| **[9] QR / Barcode** | `tool qr`, `tool barcode`, `tool wifiqr` |
+| **[10] Run Commands** | `tool commands`, `tool cmd`, `tool run`, `tool encyclopedia`, `tool catalog` |
+| **[11] Security** | `tool security`, `tool firewall`, `tool ports`, `tool hosts`, `tool bitlocker` |
+| **[12] Settings** | `tool settings`, `tool theme`, `tool config` |
+| **[13] Storage & Notes** | `tool storage`, `tool notes`, `tool links`, `tool snippets`, `tool db` |
+| **[14] System Information** | `tool sysinfo`, `tool info`, `tool specs`, `tool temp`, `tool temperature`, `tool cpu`, `tool ram`, `tool gpu`, `tool battery` |
+| **[15] User Management** | `tool user`, `tool users`, `tool admin`, `tool accounts` |
+| **[16] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint` |
+| **[17] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
@@ -273,8 +286,6 @@ If you are manually running scripts from within the repository root, you can byp
 python main.py dashboard      # Launches the side-by-side System Dashboard
 python main.py search         # Launches the Universal Search Engine
 python main.py sysinfo        # Launches the System Information menu
-python main.py downloads      # Launches the Downloads menu
-python main.py cleanup        # Launches the Cleanup menu
 ```
 
 ---
