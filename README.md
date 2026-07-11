@@ -45,15 +45,15 @@ When you launch the Toolkit, you will be greeted by the natively ANSI-colored ma
               ⚡ TERMINAL TOOLKIT v1.0
 =============================================================
 
-[1] AI Assistant             [10] Run Commands            [19] Cheat Sheets & Docs
-[2] Cleanup & Maintenance    [11] Security                [20] Process Manager
-[3] Cloud Workspace          [12] Settings                [21] Network Monitor
-[4] Developer Tools          [13] Storage & Notes         [22] Driver Manager
-[5] Downloads                [14] System Information      [23] Gaming Optimizer
-[6] File & Folder            [15] User Management         [24] Windows Analytics
-[7] Networking               [16] Windows Toolkit         [25] Local Network Dashboard
-[8] Productivity             [17] Universal Search        [26] Remote Device Manager
-[9] QR / Barcode             [18] Media Tools             [0] Exit
+[1] AI Assistant             [10] Local Network Dashboard [19] Security
+[2] Cheat Sheets & Docs      [11] Media Tools             [20] Settings
+[3] Cleanup & Maintenance    [12] Network Monitor         [21] Storage & Notes
+[4] Cloud Workspace          [13] Networking              [22] System Information
+[5] Developer Tools          [14] Process Manager         [23] Universal Search
+[6] Downloads                [15] Productivity            [24] User Management
+[7] Driver Manager           [16] QR / Barcode            [25] Windows Analytics
+[8] File & Folder            [17] Remote Device Manager   [26] Windows Toolkit
+[9] Gaming Optimizer         [18] Run Commands            [0] Exit
 
 Select >
 ```
