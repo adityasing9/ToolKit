@@ -100,7 +100,7 @@ def save_png_prompt():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [10] QR / BARCODE{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [9] QR / BARCODE{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Generate QR")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Generate Barcode")

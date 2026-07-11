@@ -66,7 +66,7 @@ def download_thumbnail(url):
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [7] DOWNLOADS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [5] DOWNLOADS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} YT-DLP Status")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Download Video")

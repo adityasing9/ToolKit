@@ -118,7 +118,7 @@ def read_clipboard():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [9] PRODUCTIVITY{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [8] PRODUCTIVITY{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} To-do")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Reminder")

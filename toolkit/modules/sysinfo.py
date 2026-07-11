@@ -120,7 +120,7 @@ def sys_processes():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [11] SYSTEM INFORMATION{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [14] SYSTEM INFORMATION{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} CPU")
         print(f"{Colors.GREEN}[2]{Colors.RESET} RAM")

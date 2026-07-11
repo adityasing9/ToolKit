@@ -201,7 +201,7 @@ def run_startup_scan():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [4] SECURITY{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [11] SECURITY{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Block Website")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Unblock Website")

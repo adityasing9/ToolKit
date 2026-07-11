@@ -106,7 +106,7 @@ def handle_ocr():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [15] AI ASSISTANT{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [1] AI ASSISTANT{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Ask AI (General)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Explain Error")

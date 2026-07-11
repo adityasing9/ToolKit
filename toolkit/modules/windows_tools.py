@@ -108,7 +108,7 @@ def open_env_vars():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [2] WINDOWS TOOLKIT{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [16] WINDOWS TOOLKIT{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Activation Status")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Drivers Manager")

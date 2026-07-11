@@ -80,7 +80,7 @@ def configure_keys():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [16] SETTINGS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [12] SETTINGS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Theme (Current)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Theme: Light")

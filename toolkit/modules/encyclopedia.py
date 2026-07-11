@@ -128,7 +128,7 @@ def delete_command():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [13] RUN COMMANDS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [10] RUN COMMANDS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} List Commands")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Search Command")

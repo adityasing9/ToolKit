@@ -41,7 +41,7 @@ def check_installation(tool_name, cmd_args):
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [8] DEVELOPER TOOLS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [4] DEVELOPER TOOLS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Git")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Clone Repo")

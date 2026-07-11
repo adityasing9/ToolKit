@@ -111,7 +111,7 @@ def winget_upgrade():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [12] CLEANUP & MAINTENANCE{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [2] CLEANUP & MAINTENANCE{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Temp")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Prefetch")

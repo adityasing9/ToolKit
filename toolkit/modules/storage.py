@@ -184,7 +184,7 @@ def export_db():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [1] STORAGE & NOTES{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [13] STORAGE & NOTES{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Links")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Github")

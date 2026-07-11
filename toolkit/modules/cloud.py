@@ -123,7 +123,7 @@ def list_backups():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [14] CLOUD WORKSPACE{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [3] CLOUD WORKSPACE{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Cloud Backup (Upload Database)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Cloud Restore (Download Database)")

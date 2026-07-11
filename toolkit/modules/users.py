@@ -120,7 +120,7 @@ def export_users():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [3] USER MANAGEMENT{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [15] USER MANAGEMENT{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} List Users")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Add User")
