@@ -16,7 +16,7 @@ def run_admin_cmd(cmd_list):
 
 def check_activation():
     print("\n[INFO] Checking Windows Activation Status...")
-    subprocess.run(["slmgr", "/xpr"])
+    subprocess.run(["cscript", "//NoLogo", r"C:\Windows\System32\slmgr.vbs", "/xpr"])
 
 def open_driver_manager():
     print("\n[INFO] Opening Device Manager...")
