@@ -19,49 +19,8 @@ def apply_theme(color_hex):
             # Set console text attribute for all future prints
             ctypes.windll.kernel32.SetConsoleTextAttribute(hStdOut, attribute)
             
-            # Retrieve console buffer dimensions
-            class COORD(ctypes.Structure):
-                _fields_ = [("X", ctypes.c_short), ("Y", ctypes.c_short)]
-                
-            class SMALL_RECT(ctypes.Structure):
-                _fields_ = [("Left", ctypes.c_short), ("Top", ctypes.c_short),
-                            ("Right", ctypes.c_short), ("Bottom", ctypes.c_short)]
-                            
-            class CONSOLE_SCREEN_BUFFER_INFO(ctypes.Structure):
-                _fields_ = [("dwSize", COORD),
-                            ("dwCursorPosition", COORD),
-                            ("wAttributes", ctypes.c_ushort),
-                            ("srWindow", SMALL_RECT),
-                            ("dwMaximumWindowSize", COORD)]
-                            
-            csbi = CONSOLE_SCREEN_BUFFER_INFO()
-            ctypes.windll.kernel32.GetConsoleScreenBufferInfo(hStdOut, ctypes.byref(csbi))
-            
-            # Calculate total buffer size
-            console_size = csbi.dwSize.X * csbi.dwSize.Y
-            
-            # Fill console attribute buffer
-            coord = COORD(0, 0)
-            written = ctypes.c_ulong(0)
-            ctypes.windll.kernel32.FillConsoleOutputAttribute(
-                hStdOut,
-                attribute,
-                console_size,
-                coord,
-                ctypes.byref(written)
-            )
-            
-            # Clear console screen character buffer to new colors
-            ctypes.windll.kernel32.FillConsoleOutputCharacterW(
-                hStdOut,
-                32,  # ASCII code for space ' '
-                console_size,
-                coord,
-                ctypes.byref(written)
-            )
-            
-            # Set cursor to home position
-            ctypes.windll.kernel32.SetConsoleCursorPosition(hStdOut, coord)
+            # Repaint the screen buffer to the active attribute using cls
+            os.system("cls")
         else:
             print(f"[INFO] Themes are only supported on Windows consoles.")
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Theme applied.")
