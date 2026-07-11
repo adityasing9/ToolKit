@@ -158,17 +158,17 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Compress / Extract ZIP files
   ├── File Hash Auditor (MD5, SHA1, SHA256)
   ├── Secure Delete (3-pass random byte Shredder)
-  └── Change File Timestamps (Creation, Modification, Last Access)
+  └── Change File Timestamps (Creation, Modification, Last Access) [NEW]
 
 - [7] Networking
   ├── Public & Local IP lookups
   ├── MAC Address auditor
   ├── DNS Configuration & Flush DNS
   ├── Ping & Traceroute execution
-  ├── DNS & WHOIS Domain lookup (RDAP)
+  ├── DNS & WHOIS Domain lookup (RDAP) [NEW]
   ├── Saved WiFi Passwords extraction
   ├── Connected Devices Scanner (ARP table)
-  └── Network Speed Test (Cloudflare measurement)
+  └── Network Speed Test (Cloudflare throughput test) [NEW]
 
 - [8] Productivity
   ├── Stopwatch & Countdown Timer
@@ -193,8 +193,9 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Port Scanner (TCP port scan)
   ├── Kill Process (via PID)
   ├── Startup Malware Scan (Heuristics Registry run keys)
-  ├── Firewall Rules Creator (Block Port / Block App)
-  └── Active Connections Mapping (Port/PID/Process name audit)
+  ├── Firewall Rules Creator (Block Port / Block App) [NEW]
+  ├── Active Connections Mapping (Port/PID/Process name audit) [NEW]
+  └── BitLocker Status (Console-based PowerShell/WMIC checker) [NEW]
 
 - [12] Settings
   ├── Swap Color Themes (Matrix, Cyberpunk, Light, Dark)
@@ -212,11 +213,13 @@ Below is the complete tree layout of all nested settings and options available i
 - [14] System Information
   ├── CPU, RAM, and GPU diagnostics
   ├── Disk Space & Partitioning
-  ├── Battery Health
+  ├── Battery Health (mWh design vs full capacity, cycles, backup estimators) [NEW]
   ├── Motherboard & BIOS Info
   ├── Top 10 Memory Consuming Processes
-  ├── Active Windows Services
-  └── WMI Health Diagnostics (SMART drive health)
+  ├── Active Windows Services listing [NEW]
+  ├── WMI Health Diagnostics (SMART drive health) [NEW]
+  ├── CPU/GPU Temperature sensor checker [NEW]
+  └── System Dashboard (Double-pane boxed summary layout) [NEW]
 
 - [15] User Management
   ├── Add / Delete Local User Accounts
@@ -236,11 +239,12 @@ Below is the complete tree layout of all nested settings and options available i
 ---
 
 ## 🚀 Direct Module Routing
-You can bypass the interactive menu and jump straight into a module by passing its name as an argument to the python script:
+You can bypass the interactive menu and jump straight into a module or launch the console dashboard by passing arguments to the python script:
 ```powershell
-python main.py sysinfo
-python main.py downloads
-python main.py cleanup
+python main.py dashboard      # Launches the side-by-side System Dashboard
+python main.py sysinfo        # Launches the System Information menu
+python main.py downloads      # Launches the Downloads menu
+python main.py cleanup        # Launches the Cleanup menu
 ```
 
 ---
