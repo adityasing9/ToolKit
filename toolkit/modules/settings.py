@@ -62,10 +62,6 @@ def apply_theme(color_hex):
             
             # Set cursor to home position
             ctypes.windll.kernel32.SetConsoleCursorPosition(hStdOut, coord)
-            
-            # Fallback os.system color & cls
-            os.system(f"color {color_hex}")
-            os.system("cls")
         else:
             print(f"[INFO] Themes are only supported on Windows consoles.")
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Theme applied.")
