@@ -20,7 +20,7 @@ def check_activation():
 
 def open_driver_manager():
     print("\n[INFO] Opening Device Manager...")
-    subprocess.Popen(["devmgmt.msc"])
+    subprocess.Popen(["mmc.exe", "devmgmt.msc"])
 
 def check_windows_update():
     print("\n[INFO] Opening Windows Update...")
@@ -28,7 +28,7 @@ def check_windows_update():
 
 def open_services():
     print("\n[INFO] Opening Services Manager...")
-    subprocess.Popen(["services.msc"])
+    subprocess.Popen(["mmc.exe", "services.msc"])
 
 def open_startup_apps():
     print("\n[INFO] Opening Startup Apps Manager...")
