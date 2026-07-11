@@ -8,6 +8,8 @@ def apply_theme(color_code):
     try:
         # Changes standard windows cmd color globally
         os.system(f"color {color_code}")
+        if os.name == "nt":
+            os.system("cls")
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Theme applied.")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not apply theme: {e}")
