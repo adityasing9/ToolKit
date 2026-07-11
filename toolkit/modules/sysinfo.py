@@ -177,11 +177,11 @@ def sys_bios():
 def sys_windows_version():
     print(f"\n{Colors.CYAN}--- Windows Version ---{Colors.RESET}")
     uname = platform.uname()
-    print(f"System: {uname.system}")
+    print(f"System:    {get_os_caption()}")
     print(f"Node Name: {uname.node}")
-    print(f"Release: {uname.release}")
-    print(f"Version: {uname.version}")
-    print(f"Machine: {uname.machine}")
+    print(f"Release:   {uname.release}")
+    print(f"Version:   {uname.version}")
+    print(f"Machine:   {uname.machine}")
     print(f"Processor: {uname.processor}")
 
 def sys_processes():
@@ -252,6 +252,27 @@ def list_running_services():
 import socket
 import tempfile
 import re
+
+def get_os_caption():
+    try:
+        output = subprocess.check_output(["wmic", "os", "get", "Caption"], text=True, errors="ignore")
+        lines = [line.strip() for line in output.split('\n') if line.strip()]
+        if len(lines) > 1:
+            caption = lines[1]
+            if caption.startswith("Microsoft "):
+                caption = caption[10:]
+            return caption
+    except Exception:
+        pass
+    
+    try:
+        # Build number 22000+ is Windows 11
+        build = int(platform.version().split('.')[-1])
+        if build >= 22000:
+            return "Windows 11"
+    except Exception:
+        pass
+    return f"{platform.system()} {platform.release()}"
 
 def show_dashboard():
     # 1. OS & Uptime
@@ -404,7 +425,8 @@ def show_dashboard():
     print(f"{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  SYSTEM & OPERATING SYSTEM           {Colors.RESET}{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  HARDWARE UTILIZATION & TELEMETRY    {Colors.RESET}{Colors.CYAN}│{Colors.RESET}")
     print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
     
-    print_row(f"OS:      {uname.system} {uname.release}", f"CPU:     {cores} Logical Cores")
+    os_name = get_os_caption()
+    print_row(f"OS:      {os_name}", f"CPU:     {cores} Logical Cores")
     
     cpu_bar_len = 8
     num_blocks = int(cpu_usage / (100 / cpu_bar_len))
