@@ -45,22 +45,22 @@ When you launch the Toolkit, you will be greeted by the natively ANSI-colored ma
               ⚡ TERMINAL TOOLKIT v1.0
 =============================================================
 
-[1] AI Assistant             [9] QR / Barcode
-[2] Cleanup & Maintenance    [10] Run Commands
-[3] Cloud Workspace          [11] Security
-[4] Developer Tools          [12] Settings
-[5] Downloads                [13] Storage & Notes
-[6] File & Folder            [14] System Information
-[7] Networking               [15] User Management
-[8] Productivity             [16] Windows Toolkit
-[0] Exit
+[1] AI Assistant             [10] Run Commands            [19] Cheat Sheets & Docs
+[2] Cleanup & Maintenance    [11] Security                [20] Process Manager
+[3] Cloud Workspace          [12] Settings                [21] Network Monitor
+[4] Developer Tools          [13] Storage & Notes         [22] Driver Manager
+[5] Downloads                [14] System Information      [23] Gaming Optimizer
+[6] File & Folder            [15] User Management         [24] Windows Analytics
+[7] Networking               [16] Windows Toolkit         [25] Local Network Dashboard
+[8] Productivity             [17] Universal Search        [26] Remote Device Manager
+[9] QR / Barcode             [18] Media Tools             [0] Exit
 
 Select >
 ```
 
 ---
 
-## 🛠️ Features (16 Core Modules)
+## 🛠️ Features (26 Core Modules)
 
 1. **AI Assistant**: Automated terminal AI agent integrations (Coming Soon).
 2. **Cleanup & Maintenance**: One-click cache flushing for Temp, Prefetch, Recycle Bin, DNS, and Winget.
@@ -78,6 +78,16 @@ Select >
 14. **System Information**: Real-time `psutil` diagnostics covering CPU, RAM, Disk, Battery, and the Top 10 Memory Consuming Processes.
 15. **User Management**: Instant PowerShell wrappers to add/delete users and toggle Administrator rights.
 16. **Windows Toolkit**: One-click DISM/SFC repairs, `chkdsk`, and Restore Point creation.
+17. **Universal Search**: Everything++ system-wide scanner matching files, active processes, services, environment variables, git history, and docker targets.
+18. **Media Tools**: Image optimizer, pixel resizer, PDF merge/split, offline WinRT OCR extraction, and FFmpeg audio/video converters.
+19. **Cheat Sheets & Docs**: Built-in responsive ASCII-formatted documentation tables for CMD, Linux, Git, SQL, Regex, and Markdown.
+20. **Process Manager**: CPU/RAM processes list, forced process termination, parent-child process tree mapping, startup entries, and live monitors.
+21. **Network Monitor**: Live upload/download bandwidth speedometers, process socket connection mapping, VPN interface status, and historical latency graphs.
+22. **Driver Manager**: WMI diagnostics for missing devices, driver export/backup/restore operations, and outdated driver listings.
+23. **Gaming Optimizer**: Power plan selection, overlay service terminator, RAM standby flusher, TCP parameters, and registry gaming optimizations.
+24. **Windows Analytics**: Local usage analytics log (CPU, RAM, disk, network), battery health degradation diagnostics, boot duration metrics, and vertical ASCII telemetry charts.
+25. **Local Network Dashboard**: Concurrent multithreaded ping sweeps mapping local active IPs, physical MAC addresses, manufacturer OUIs, and device types (Phone, TV, PC, NAS, Printer, Router).
+26. **Remote Device Manager**: Secure, AES-Fernet encrypted remote administration server (Agent) and controller (Client) supporting shells, file transfers, process killers, and power control.
 
 ---
 
@@ -112,7 +122,18 @@ ToolKit/
         ├── storage.py         # [13] Storage & Notes (Saved Links, Github Repos, Notes, Code Snippets)
         ├── sysinfo.py         # [14] System Information (CPU, RAM, GPU, Processes, WMI Diagnostics)
         ├── users.py           # [15] User Management (Admin toggle, User creation PowerShell wrapper)
-        └── windows_tools.py   # [16] Windows Toolkit (SFC/DISM repair, chkdsk, UAC Device Manager launcher)
+        ├── windows_tools.py   # [16] Windows Toolkit (SFC/DISM repair, chkdsk, UAC Device Manager launcher)
+        ├── dashboard.py       # [17] System Dashboard / Search Engine (Everything++ search scan)
+        ├── media_tools.py     # [18] Media Tools (Image optimization, PDF, OCR, video conversion)
+        ├── docs_cheatsheets.py # [19] Cheat Sheets & Docs (Terminal documentation reference tables)
+        ├── process_manager.py # [20] Process Manager (Process list, tree, live monitor, CPU/RAM detection)
+        ├── network_monitor.py # [21] Network Monitor (Live upload/download speedometer, VPN detection)
+        ├── driver_manager.py  # [22] Driver Manager (Backup, export, restore, missing PNP devices)
+        ├── gaming_optimizer.py # [23] Gaming Optimizer (High Performance, RAM flusher, overlays killer)
+        ├── windows_analytics.py # [24] Windows Analytics (Historical usage logger, battery, boot logs)
+        ├── network_dashboard.py # [25] Local Network Dashboard (Ping sweep subnet active device scanner)
+        ├── remote_agent.py    # [26] Remote Device Manager (Background socket server Agent service)
+        └── remote_manager.py  # [26] Remote Device Manager (Secure client Controller CLI menu)
 ```
 
 ---
