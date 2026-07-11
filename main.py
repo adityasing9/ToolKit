@@ -42,59 +42,59 @@ def main():
     # Handle direct CLI arguments
     if args.module:
         module_name = args.module.lower()
-        if module_name in ['1', 'ai', 'assistant']:
+        if module_name in ['1', 'ai', 'assistant', 'gpt', 'gemini', 'chat', 'bot']:
             from toolkit.modules import ai
             ai.show_menu()
-        elif module_name in ['2', 'clean', 'cleanup']:
+        elif module_name in ['2', 'clean', 'cleanup', 'flush', 'clear', 'purge']:
             from toolkit.modules import cleanup
             cleanup.show_menu()
-        elif module_name in ['3', 'cloud', 'workspace']:
+        elif module_name in ['3', 'cloud', 'workspace', 'supabase', 'sync', 'backup', 'restore']:
             from toolkit.modules import cloud
             cloud.show_menu()
-        elif module_name in ['4', 'dev', 'developer']:
+        elif module_name in ['4', 'dev', 'developer', 'git', 'ssh', 'env', 'sdk']:
             from toolkit.modules import developer
             developer.show_menu()
-        elif module_name in ['5', 'download', 'downloads']:
+        elif module_name in ['5', 'download', 'downloads', 'youtube', 'yt', 'ytdl', 'video', 'mp3']:
             from toolkit.modules import downloads
             downloads.show_menu()
-        elif module_name in ['6', 'file', 'files']:
+        elif module_name in ['6', 'file', 'files', 'folder', 'folders', 'shred', 'zip', 'hash', 'timestamp']:
             from toolkit.modules import files
             files.show_menu()
-        elif module_name in ['7', 'network', 'networking']:
+        elif module_name in ['7', 'network', 'networking', 'ip', 'ping', 'wifi', 'speed', 'speedtest', 'dns', 'whois']:
             from toolkit.modules import network
             network.show_menu()
-        elif module_name in ['8', 'productivity']:
+        elif module_name in ['8', 'productivity', 'timer', 'stopwatch', 'password', 'json', 'base64']:
             from toolkit.modules import productivity
             productivity.show_menu()
-        elif module_name in ['9', 'qr', 'barcode']:
+        elif module_name in ['9', 'qr', 'barcode', 'wifiqr']:
             from toolkit.modules import qr
             qr.show_menu()
-        elif module_name in ['10', 'commands', 'encyclopedia']:
+        elif module_name in ['10', 'commands', 'cmd', 'run', 'encyclopedia', 'catalog']:
             from toolkit.modules import encyclopedia
             encyclopedia.show_menu()
-        elif module_name in ['11', 'security']:
+        elif module_name in ['11', 'security', 'firewall', 'ports', 'hosts', 'bitlocker']:
             from toolkit.modules import security
             security.show_menu()
-        elif module_name in ['12', 'settings', 'theme']:
+        elif module_name in ['12', 'settings', 'theme', 'config']:
             from toolkit.modules import settings
             settings.show_menu()
-        elif module_name in ['13', 'storage', 'notes']:
+        elif module_name in ['13', 'storage', 'notes', 'links', 'snippets', 'db']:
             from toolkit.modules import storage
             storage.show_menu()
-        elif module_name in ['14', 'sysinfo', 'info', 'dashboard']:
-            if module_name == 'dashboard':
+        elif module_name in ['14', 'sysinfo', 'info', 'specs', 'temp', 'temperature', 'cpu', 'ram', 'gpu', 'battery', 'dashboard', 'dash', 'status']:
+            if module_name in ['dashboard', 'dash', 'status']:
                 from toolkit.modules import dashboard
                 dashboard.show_dashboard()
             else:
                 from toolkit.modules import sysinfo
                 sysinfo.show_menu()
-        elif module_name in ['15', 'user', 'users']:
+        elif module_name in ['15', 'user', 'users', 'admin', 'accounts']:
             from toolkit.modules import users
             users.show_menu()
-        elif module_name in ['16', 'windows', 'toolkit']:
+        elif module_name in ['16', 'windows', 'toolkit', 'sfc', 'dism', 'restorepoint']:
             from toolkit.modules import windows_tools
             windows_tools.show_menu()
-        elif module_name in ['17', 'search', 'find', 'query']:
+        elif module_name in ['17', 'search', 'find', 'query', 'ask']:
             from toolkit.modules import dashboard
             print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
             print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 UNIVERSAL SEARCH ENGINE{Colors.RESET}")
