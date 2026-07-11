@@ -222,6 +222,40 @@ def find_duplicates():
                 print(f"Failed to delete {p}: {e}")
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Deleted {deleted_count} duplicate files.")
 
+def change_file_timestamps():
+    print(f"\n{Colors.CYAN}--- Change File Timestamps ---{Colors.RESET}")
+    path = input("Enter file path: ").strip().replace('"', '')
+    if not os.path.exists(path):
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} File does not exist.")
+        return
+        
+    print("\nFormat: YYYY-MM-DD HH:MM:SS (e.g. 2026-07-11 17:00:00)")
+    created = input("Enter New Creation Date/Time (press Enter to skip): ").strip()
+    modified = input("Enter New Modification Date/Time (press Enter to skip): ").strip()
+    accessed = input("Enter New Last Access Date/Time (press Enter to skip): ").strip()
+    
+    commands = []
+    if created:
+        commands.append(f'$(Get-Item "{path}").CreationTime = "{created}"')
+    if modified:
+        commands.append(f'$(Get-Item "{path}").LastWriteTime = "{modified}"')
+    if accessed:
+        commands.append(f'$(Get-Item "{path}").LastAccessTime = "{accessed}"')
+        
+    if not commands:
+        print("[INFO] No changes specified.")
+        return
+        
+    ps_cmd = "; ".join(commands)
+    try:
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0:
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} File timestamps updated successfully.")
+        else:
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update timestamps: {res.stderr}")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Command execution failed: {e}")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -243,6 +277,7 @@ def show_menu():
         print(f"{Colors.GREEN}[14]{Colors.RESET} Extract (ZIP)")
         print(f"{Colors.GREEN}[15]{Colors.RESET} File Hash")
         print(f"{Colors.GREEN}[16]{Colors.RESET} Secure Delete")
+        print(f"{Colors.GREEN}[17]{Colors.RESET} Change File Timestamps")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -289,5 +324,7 @@ def show_menu():
                 confirm = input(f"[WARNING] Are you sure you want to permanently shred {path}? (y/n): ").strip().lower()
                 if confirm == 'y':
                     shred_file(path)
+        elif choice == '17':
+            change_file_timestamps()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
