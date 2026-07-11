@@ -26,6 +26,11 @@ It functions as a complete operating system utility, allowing you to manage Wind
 Run the following command in PowerShell to instantly download, install, and configure the Toolkit on your machine:
 
 ```powershell
+iwr -useb https://raw.githubusercontent.com/adityasing9/ToolKit/main/install.ps1 | iex
+```
+
+*Optional shortened shortcut link:*
+```powershell
 irm https://tinyurl.com/ktlla | iex
 ```
 
