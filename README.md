@@ -268,6 +268,14 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Regex Examples (digit, word, email, ip matches)
   ├── Markdown Guide (headers, bold/italic, lists, tables, code)
   └── Keyboard Shortcuts (system, browser, VS Code shortcuts)
+
+- [20] Process Manager [NEW]
+  ├── Active Processes List (sortable by RAM or CPU usage)
+  ├── Process Control (kill or restart process instances)
+  ├── Process Tree Viewer (parent-child relationship map)
+  ├── Startup Applications (HKCU & HKLM Run registry key listings)
+  ├── High Utilization Scanners (CPU/RAM threshold alerts)
+  └── Live Task Monitor (refreshing console statistics dashboard)
 ```
 
 ---
@@ -312,6 +320,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[17] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
 | **[18] Media Tools** | `tool media`, `tool pdf`, `tool ocr`, `tool convert`, `tool resize` |
 | **[19] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
+| **[20] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
