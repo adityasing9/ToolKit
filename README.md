@@ -76,6 +76,165 @@ Select >
 
 ---
 
+## 📁 Project Directory Structure
+
+Here is the repository directory layout showing how the codebase is structured:
+
+```text
+ToolKit/
+├── main.py                # Main CLI execution entry point
+├── install.ps1            # Windows Powershell Installer & CLI Manager
+├── requirements.txt       # Python project dependencies
+├── README.md              # Project documentation
+└── toolkit/
+    ├── __init__.py
+    ├── db.py              # SQLite Database schema & initialization
+    ├── utils.py           # Universal ANSI color definitions & console helpers
+    └── modules/           # Module folder containing 16 sub-utilities
+        ├── __init__.py
+        ├── ai.py              # [1] AI Assistant (Gemini REST client, Vision OCR)
+        ├── cleanup.py         # [2] Cleanup & Maintenance (Cache, Winget, Prefetch flusher)
+        ├── cloud.py           # [3] Cloud Workspace (Supabase sync, Backup/Restore)
+        ├── developer.py       # [4] Developer Tools (Git helper, SSH key reader, SDK checks)
+        ├── downloads.py       # [5] Downloads (yt-dlp integration for 4K video/MP3 audio)
+        ├── files.py           # [6] File & Folder (Hide, Zip, Duplicate finder, Shredder, Timestamps)
+        ├── network.py         # [7] Networking (Public/Local IP, DNS/WHOIS lookup, Speed Test)
+        ├── productivity.py    # [8] Productivity (Timer/Stopwatch, JSON formatter, Base64 crypt)
+        ├── qr.py              # [9] QR / Barcode (ASCII QR renderer, Wifi/URL QR creator)
+        ├── encyclopedia.py    # [10] Run Commands (40+ Windows commands search & execution database)
+        ├── security.py        # [11] Security (Hosts blocker, Port scanner, Firewall creator, BitLocker)
+        ├── settings.py        # [12] Settings (Matrix/Cyberpunk themes, CLI updater, credentials)
+        ├── storage.py         # [13] Storage & Notes (Saved Links, Github Repos, Notes, Code Snippets)
+        ├── sysinfo.py         # [14] System Information (CPU, RAM, GPU, Processes, WMI Diagnostics)
+        ├── users.py           # [15] User Management (Admin toggle, User creation PowerShell wrapper)
+        └── windows_tools.py   # [16] Windows Toolkit (SFC/DISM repair, chkdsk, UAC Device Manager launcher)
+```
+
+---
+
+## 🗺️ Complete Menu & Sub-Menu Map
+
+Below is the complete tree layout of all nested settings and options available inside the toolkit:
+
+```text
+- [1] AI Assistant
+  ├── Ask AI (General Programming Chat)
+  ├── Explain Error (Stacktrace debugger)
+  ├── Explain Command (Shell command guide)
+  ├── Generate Regex
+  ├── Generate SQL
+  ├── Generate Bash / PowerShell / Python code
+  ├── Summarize Logs & Fix Error Helper
+  └── OCR (Multimodal Image-to-Text extraction)
+
+- [2] Cleanup & Maintenance
+  ├── Temp & Prefetch Cache Flush
+  ├── Recycle Bin Empty
+  ├── DNS Cache Flush
+  ├── Winget Cache Flush
+  └── Full System Flush
+
+- [3] Cloud Workspace
+  ├── Cloud Backup (Upload SQLite database to Supabase)
+  ├── Cloud Restore (Download SQLite database from Supabase)
+  └── List Cloud Backups
+
+- [4] Developer Tools
+  ├── Git Status auditor
+  ├── Git Commit & Push shortcut
+  ├── SSH Public Key Viewer
+  └── SDK Environment Auditor (Node, Java, Rust, Go, Docker, etc.)
+
+- [5] Downloads
+  ├── Download Video (4K/8K via yt-dlp)
+  ├── Download Audio (MP3 high fidelity)
+  └── Download YouTube Playlist
+
+- [6] File & Folder
+  ├── Hide / Unhide Files & Folders
+  ├── Find Large Files (>100MB tree)
+  ├── Duplicate File Finder (MD5 based)
+  ├── Folder Size Calculator
+  ├── Compress / Extract ZIP files
+  ├── File Hash Auditor (MD5, SHA1, SHA256)
+  ├── Secure Delete (3-pass random byte Shredder)
+  └── Change File Timestamps (Creation, Modification, Last Access)
+
+- [7] Networking
+  ├── Public & Local IP lookups
+  ├── MAC Address auditor
+  ├── DNS Configuration & Flush DNS
+  ├── Ping & Traceroute execution
+  ├── DNS & WHOIS Domain lookup (RDAP)
+  ├── Saved WiFi Passwords extraction
+  ├── Connected Devices Scanner (ARP table)
+  └── Network Speed Test (Cloudflare measurement)
+
+- [8] Productivity
+  ├── Stopwatch & Countdown Timer
+  ├── Password Generator (Secure length & entropy)
+  ├── JSON Formatter
+  └── Base64 Encoder/Decoder
+
+- [9] QR / Barcode
+  ├── Text / URL QR Code
+  ├── Email QR Code
+  ├── WiFi Setup QR Code
+  └── ASCII Terminal Renderer & PNG export
+
+- [10] Run Commands
+  ├── Search Command Database
+  ├── Execute Command directly
+  └── List Command Catalog (40+ built-in cmd shortcuts)
+
+- [11] Security
+  ├── Block / Unblock Website domains (via hosts)
+  ├── Hosts File Editor (requires Admin)
+  ├── Port Scanner (TCP port scan)
+  ├── Kill Process (via PID)
+  ├── Startup Malware Scan (Heuristics Registry run keys)
+  ├── Firewall Rules Creator (Block Port / Block App)
+  └── Active Connections Mapping (Port/PID/Process name audit)
+
+- [12] Settings
+  ├── Swap Color Themes (Matrix, Cyberpunk, Light, Dark)
+  ├── Update Toolkit (GitHub pull)
+  ├── Reset settings
+  └── Configure API / Cloud Keys (Gemini, Supabase credentials)
+
+- [13] Storage & Notes
+  ├── Links Manager (URL cards display)
+  ├── Github Saved Repos
+  ├── Code Snippet Bookkeeper
+  ├── Quick Notes
+  └── Export Database Backup
+
+- [14] System Information
+  ├── CPU, RAM, and GPU diagnostics
+  ├── Disk Space & Partitioning
+  ├── Battery Health
+  ├── Motherboard & BIOS Info
+  ├── Top 10 Memory Consuming Processes
+  ├── Active Windows Services
+  └── WMI Health Diagnostics (SMART drive health)
+
+- [15] User Management
+  ├── Add / Delete Local User Accounts
+  ├── Promote User to Administrator
+  ├── Demote User to Standard
+  └── List Local System Users
+
+- [16] Windows Toolkit
+  ├── Windows Activation Status check (cscript console slmgr)
+  ├── Device Manager UAC Launcher
+  ├── Services & Startup Managers
+  ├── Windows Repair (SFC + DISM RestoreHealth)
+  ├── Environment Variables Editor
+  └── Create System Restore Point
+```
+
+---
+
 ## 🚀 Direct Module Routing
 You can bypass the interactive menu and jump straight into a module by passing its name as an argument to the python script:
 ```powershell
