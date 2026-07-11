@@ -62,32 +62,32 @@ Select >
 
 ## 🛠️ Features (26 Core Modules)
 
-1. **AI Assistant**: Automated terminal AI agent integrations (Coming Soon).
-2. **Cleanup & Maintenance**: One-click cache flushing for Temp, Prefetch, Recycle Bin, DNS, and Winget.
-3. **Cloud Workspace**: Cloud synchronization integrations (Coming Soon).
-4. **Developer Tools**: Native `git` wrappers, SSH key viewers, and installation checkers for Node, Docker, Java, Go, Rust, etc.
-5. **Downloads**: Full `yt-dlp` integration for 4K/8K Video, MP3 Audio, and YouTube Playlist extraction.
-6. **File & Folder**: Hide/Unhide files, Large File Finders, ZIP manipulation, and File Hashing.
-7. **Networking**: Public/Local IP lookups, saved WiFi password extraction, and ping/tracert wrappers.
-8. **Productivity**: Live Stopwatches/Timers, Password Generators, JSON Formatters, and Base64 encoders.
-9. **QR / Barcode**: In-terminal ASCII QR code generation for WiFi setups, Emails, and URLs, with PNG exporting.
-10. **Run Commands**: A dynamic SQLite database pre-loaded with **40+ critical Windows commands** that you can search and execute instantly.
-11. **Security**: Multi-threaded TCP Port Scanner, process killer, and local Hosts file blocker.
-12. **Settings**: Instant terminal Theme swapping (Matrix, Cyberpunk, etc.) and auto-updaters.
-13. **Storage & Notes**: Database-backed Links, GitHub Repos, Code Snippets, and Notes.
-14. **System Information**: Real-time `psutil` diagnostics covering CPU, RAM, Disk, Battery, and the Top 10 Memory Consuming Processes.
-15. **User Management**: Instant PowerShell wrappers to add/delete users and toggle Administrator rights.
-16. **Windows Toolkit**: One-click DISM/SFC repairs, `chkdsk`, and Restore Point creation.
-17. **Universal Search**: Everything++ system-wide scanner matching files, active processes, services, environment variables, git history, and docker targets.
-18. **Media Tools**: Image optimizer, pixel resizer, PDF merge/split, offline WinRT OCR extraction, and FFmpeg audio/video converters.
-19. **Cheat Sheets & Docs**: Built-in responsive ASCII-formatted documentation tables for CMD, Linux, Git, SQL, Regex, and Markdown.
-20. **Process Manager**: CPU/RAM processes list, forced process termination, parent-child process tree mapping, startup entries, and live monitors.
-21. **Network Monitor**: Live upload/download bandwidth speedometers, process socket connection mapping, VPN interface status, and historical latency graphs.
-22. **Driver Manager**: WMI diagnostics for missing devices, driver export/backup/restore operations, and outdated driver listings.
-23. **Gaming Optimizer**: Power plan selection, overlay service terminator, RAM standby flusher, TCP parameters, and registry gaming optimizations.
-24. **Windows Analytics**: Local usage analytics log (CPU, RAM, disk, network), battery health degradation diagnostics, boot duration metrics, and vertical ASCII telemetry charts.
-25. **Local Network Dashboard**: Concurrent multithreaded ping sweeps mapping local active IPs, physical MAC addresses, manufacturer OUIs, and device types (Phone, TV, PC, NAS, Printer, Router).
-26. **Remote Device Manager**: Secure, AES-Fernet encrypted remote administration server (Agent) and controller (Client) supporting shells, file transfers, process killers, and power control.
+1. **AI Assistant**: Automated terminal AI agent integrations.
+2. **Cheat Sheets & Docs**: Built-in responsive ASCII-formatted documentation tables for CMD, Linux, Git, SQL, Regex, and Markdown.
+3. **Cleanup & Maintenance**: One-click cache flushing for Temp, Prefetch, Recycle Bin, DNS, and Winget.
+4. **Cloud Workspace**: Cloud synchronization integrations (Coming Soon).
+5. **Developer Tools**: Native `git` wrappers, SSH key viewers, and installation checkers for Node, Docker, Java, Go, Rust, etc.
+6. **Downloads**: Full `yt-dlp` integration for 4K/8K Video, MP3 Audio, and YouTube Playlist extraction.
+7. **Driver Manager**: WMI diagnostics for missing devices, driver export/backup/restore operations, and outdated driver listings.
+8. **File & Folder**: Hide/Unhide files, Large File Finders, ZIP manipulation, and File Hashing.
+9. **Gaming Optimizer**: Power plan selection, overlay service terminator, RAM standby flusher, TCP parameters, and registry gaming optimizations.
+10. **Local Network Dashboard**: Concurrent multithreaded ping sweeps mapping local active IPs, physical MAC addresses, manufacturer OUIs, and device types (Phone, TV, PC, NAS, Printer, Router).
+11. **Media Tools**: Image optimizer, pixel resizer, PDF merge/split, offline WinRT OCR extraction, and FFmpeg audio/video converters.
+12. **Network Monitor**: Live upload/download bandwidth speedometers, process socket connection mapping, VPN interface status, and historical latency graphs.
+13. **Networking**: Public/Local IP lookups, saved WiFi password extraction, and ping/tracert wrappers.
+14. **Process Manager**: CPU/RAM processes list, forced process termination, parent-child process tree mapping, startup entries, and live monitors.
+15. **Productivity**: Live Stopwatches/Timers, Password Generators, JSON Formatters, and Base64 encoders.
+16. **QR / Barcode**: In-terminal ASCII QR code generation for WiFi setups, Emails, and URLs, with PNG exporting.
+17. **Remote Device Manager**: Secure, AES-Fernet encrypted remote administration server (Agent) and controller (Client) supporting shells, file transfers, process killers, and power control.
+18. **Run Commands**: A dynamic SQLite database pre-loaded with **40+ critical Windows commands** that you can search and execute instantly.
+19. **Security**: Multi-threaded TCP Port Scanner, process killer, and local Hosts file blocker.
+20. **Settings**: Configures API credentials (Gemini, Supabase), resets local configurations, and manages automated toolkit updates.
+21. **Storage & Notes**: Database-backed Links, GitHub Repos, Code Snippets, and Notes.
+22. **System Information**: Real-time `psutil` diagnostics covering CPU, RAM, Disk, Battery, and the Top 10 Memory Consuming Processes.
+23. **Universal Search**: Everything++ system-wide scanner matching files, active processes, services, environment variables, git history, and docker targets.
+24. **User Management**: Instant PowerShell wrappers to add/delete users and toggle Administrator rights.
+25. **Windows Analytics**: Local usage analytics log (CPU, RAM, disk, network), battery health degradation diagnostics, boot duration metrics, and vertical ASCII telemetry charts.
+26. **Windows Toolkit**: One-click DISM/SFC repairs, `chkdsk`, and Restore Point creation.
 
 ---
 
