@@ -291,6 +291,20 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Restore Drivers (recursively adds and installs drivers from local backup folder)
   ├── Missing Drivers Scanner (queries WMI and PnP interfaces for hardware errors)
   └── Active OEM Drivers (lists active third-party device drivers and firmware versions)
+
+- [23] Gaming Optimizer [NEW]
+  ├── Background Apps (restricts background app allowances and halts telemetry tracking)
+  ├── Power Optimization (allocates and selects Windows Ultimate Performance schemes)
+  ├── Standby RAM Cache (releases memory allocations in system standby queues)
+  ├── Active Overlays (closes active Steam, Discord, and Geforce screen overlays)
+  ├── Network Latency Tuning (modifies TcpAckFrequency and TCPNoDelay settings)
+  └── GameDVR Options (deactivates performance-costing Windows GameDVR features)
+
+- [24] Windows Analytics [NEW]
+  ├── Boot Time Records (scans Event Log diagnostics for system boot times)
+  ├── Battery Health (queries laptop battery designs vs actual charge capacities)
+  ├── Historical Database (stores CPU, RAM, disk, and bandwidth usage statistics)
+  └── Terminal Graphs (plots historical telemetry on weekly/monthly vertical ASCII bar charts)
 ```
 
 ---
@@ -338,6 +352,8 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[20] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
 | **[21] Network Monitor** | `tool networkmonitor`, `tool netmon`, `tool traffic`, `tool bandwidth`, `tool latency`, `tool dns`, `tool vpn` |
 | **[22] Driver Manager** | `tool driver`, `tool drivers`, `tool pnputil`, `tool dism-driver`, `tool backup-drivers` |
+| **[23] Gaming Optimizer** | `tool gameopt`, `tool fps`, `tool optimize-game`, `tool game`, `tool gaming` |
+| **[24] Windows Analytics** | `tool analytics`, `tool telemetry`, `tool boothistory`, `tool battery`, `tool history`, `tool usage` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:

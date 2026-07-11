@@ -37,6 +37,8 @@ def print_menu():
     print(f"{Colors.GREEN}[20]{Colors.RESET} Process Manager")
     print(f"{Colors.GREEN}[21]{Colors.RESET} Network Monitor")
     print(f"{Colors.GREEN}[22]{Colors.RESET} Driver Manager")
+    print(f"{Colors.GREEN}[23]{Colors.RESET} Gaming Optimizer")
+    print(f"{Colors.GREEN}[24]{Colors.RESET} Windows Analytics")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -122,6 +124,12 @@ def main():
         elif module_name in ['22', 'driver', 'drivers', 'pnputil', 'dism-driver', 'backup-drivers']:
             from toolkit.modules import driver_manager
             driver_manager.show_menu()
+        elif module_name in ['23', 'gameopt', 'fps', 'optimize-game', 'game', 'gaming']:
+            from toolkit.modules import gaming_optimizer
+            gaming_optimizer.show_menu()
+        elif module_name in ['24', 'analytics', 'telemetry', 'boothistory', 'battery', 'history', 'usage']:
+            from toolkit.modules import windows_analytics
+            windows_analytics.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -209,6 +217,12 @@ def main():
         elif choice == '22':
             from toolkit.modules import driver_manager
             driver_manager.show_menu()
+        elif choice == '23':
+            from toolkit.modules import gaming_optimizer
+            gaming_optimizer.show_menu()
+        elif choice == '24':
+            from toolkit.modules import windows_analytics
+            windows_analytics.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 
