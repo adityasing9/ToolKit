@@ -80,9 +80,12 @@ def main():
         elif module_name in ['13', 'storage', 'notes']:
             from toolkit.modules import storage
             storage.show_menu()
-        elif module_name in ['14', 'sysinfo', 'info']:
+        elif module_name in ['14', 'sysinfo', 'info', 'dashboard']:
             from toolkit.modules import sysinfo
-            sysinfo.show_menu()
+            if module_name == 'dashboard':
+                sysinfo.show_dashboard()
+            else:
+                sysinfo.show_menu()
         elif module_name in ['15', 'user', 'users']:
             from toolkit.modules import users
             users.show_menu()

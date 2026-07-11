@@ -249,7 +249,88 @@ def list_running_services():
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to fetch services: {e}")
 
+import socket
+import tempfile
 import re
+
+def show_dashboard():
+    print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}                      SYSTEM DASHBOARD{Colors.RESET}")
+    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+    
+    uname = platform.uname()
+    print(f"{Colors.GREEN}[OS]{Colors.RESET}       {uname.system} {uname.release} | Host: {uname.node}")
+    
+    cpu_usage = psutil.cpu_percent()
+    cpufreq = psutil.cpu_freq()
+    freq_str = f" @ {cpufreq.current/1000:.2f} GHz" if cpufreq else ""
+    cores = psutil.cpu_count(logical=True)
+    cpu_bar = "█" * int(cpu_usage / 10) + "░" * (10 - int(cpu_usage / 10))
+    print(f"{Colors.GREEN}[CPU]{Colors.RESET}      {cores} Cores | Usage: [{cpu_bar}] {cpu_usage}%{freq_str}")
+    
+    svmem = psutil.virtual_memory()
+    ram_bar = "█" * int(svmem.percent / 10) + "░" * (10 - int(svmem.percent / 10))
+    print(f"{Colors.GREEN}[RAM]{Colors.RESET}      Used: {get_size(svmem.used)} / {get_size(svmem.total)} | [{ram_bar}] {svmem.percent}%")
+    
+    try:
+        c_usage = psutil.disk_usage("C:\\")
+        disk_bar = "█" * int(c_usage.percent / 10) + "░" * (10 - int(c_usage.percent / 10))
+        print(f"{Colors.GREEN}[DISK C:]{Colors.RESET}  Used: {get_size(c_usage.used)} / {get_size(c_usage.total)} | [{disk_bar}] {c_usage.percent}%")
+    except Exception:
+        print(f"{Colors.GREEN}[DISK]{Colors.RESET}     N/A")
+        
+    if hasattr(psutil, "sensors_battery"):
+        battery = psutil.sensors_battery()
+        if battery:
+            status = "Charging" if battery.power_plugged else "Discharging"
+            time_str = "Calculating..."
+            if not battery.power_plugged:
+                if battery.secsleft not in (-1, -2, 4294967295) and battery.secsleft < 86400 * 10:
+                    import datetime
+                    td = datetime.timedelta(seconds=battery.secsleft)
+                    hours, remainder = divmod(td.seconds, 3600)
+                    minutes, _ = divmod(remainder, 60)
+                    time_str = f"{hours}h {minutes}m"
+            else:
+                time_str = "Plugged In"
+                
+            health_str = "N/A"
+            temp_xml = os.path.join(tempfile.gettempdir(), "bat_temp_dash.xml")
+            try:
+                import xml.etree.ElementTree as ET
+                res = subprocess.run(["powercfg", "/batteryreport", "/xml", "/output", temp_xml], capture_output=True)
+                if res.returncode == 0 and os.path.exists(temp_xml):
+                    tree = ET.parse(temp_xml)
+                    root = tree.getroot()
+                    b_node = root.find(".//{*}Battery")
+                    if b_node is not None:
+                        d = int(b_node.find("{*}DesignCapacity").text)
+                        f = int(b_node.find("{*}FullChargeCapacity").text)
+                        if d > 0:
+                            health = min(100.0, round((f / d) * 100, 2))
+                            health_str = f"{health}%"
+                    os.remove(temp_xml)
+            except Exception:
+                if os.path.exists(temp_xml):
+                    try: os.remove(temp_xml)
+                    except: pass
+            
+            print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  Charge: {battery.percent}% ({status}) | Time Left: {time_str} | Health: {health_str}")
+        else:
+            print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  No battery detected (Desktop system)")
+    else:
+        print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  N/A")
+        
+    local_ip = "N/A"
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        local_ip = s.getsockname()[0]
+        s.close()
+    except Exception:
+        pass
+    print(f"{Colors.GREEN}[NETWORK]{Colors.RESET}  Local IP: {local_ip}")
+    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
 
 def show_menu():
     while True:
@@ -271,6 +352,7 @@ def show_menu():
         print(f"{Colors.GREEN}[13]{Colors.RESET} Disk Usage")
         print(f"{Colors.GREEN}[14]{Colors.RESET} Temperature")
         print(f"{Colors.GREEN}[15]{Colors.RESET} Health (WMI)")
+        print(f"{Colors.GREEN}[16]{Colors.RESET} System Dashboard")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -310,5 +392,7 @@ def show_menu():
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} Hardware Temperature coming soon...")
         elif choice == '15':
             sys_health_wmi()
+        elif choice == '16':
+            show_dashboard()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
