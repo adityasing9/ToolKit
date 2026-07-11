@@ -153,30 +153,46 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Summarize Logs & Fix Error Helper
   └── OCR (Multimodal Image-to-Text extraction)
 
-- [2] Cleanup & Maintenance
+- [2] Cheat Sheets & Docs [NEW]
+  ├── Windows Commands (sfc, dism, flushdns, gpupdate, chkdsk)
+  ├── Linux Commands (ls, chmod, chown, df, free, grep, top)
+  ├── Git Cheat Sheet (init, add, commit, push, merge, stash, log)
+  ├── SQL Cheat Sheet (select, insert, join, create, group by, indexes)
+  ├── Regex Examples (digit, word, email, ip matches)
+  ├── Markdown Guide (headers, bold/italic, lists, tables, code)
+  └── Keyboard Shortcuts (system, browser, VS Code shortcuts)
+
+- [3] Cleanup & Maintenance
   ├── Temp & Prefetch Cache Flush
   ├── Recycle Bin Empty
   ├── DNS Cache Flush
   ├── Winget Cache Flush
   └── Full System Flush
 
-- [3] Cloud Workspace
+- [4] Cloud Workspace
   ├── Cloud Backup (Upload SQLite database to Supabase)
   ├── Cloud Restore (Download SQLite database from Supabase)
   └── List Cloud Backups
 
-- [4] Developer Tools
+- [5] Developer Tools
   ├── Git Status auditor
   ├── Git Commit & Push shortcut
   ├── SSH Public Key Viewer
   └── SDK Environment Auditor (Node, Java, Rust, Go, Docker, etc.)
 
-- [5] Downloads
+- [6] Downloads
   ├── Download Video (4K/8K via yt-dlp)
   ├── Download Audio (MP3 high fidelity)
   └── Download YouTube Playlist
 
-- [6] File & Folder
+- [7] Driver Manager [NEW]
+  ├── Export Drivers (extracts system third-party drivers to backup directory via DISM)
+  ├── Backup Drivers (creates structured registry-friendly drivers copy via PnpUtil)
+  ├── Restore Drivers (recursively adds and installs drivers from local backup folder)
+  ├── Missing Drivers Scanner (queries WMI and PnP interfaces for hardware errors)
+  └── Active OEM Drivers (lists active third-party device drivers and firmware versions)
+
+- [8] File & Folder
   ├── Hide / Unhide Files & Folders
   ├── Find Large Files (>100MB tree)
   ├── Duplicate File Finder (MD5 based)
@@ -186,7 +202,40 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Secure Delete (3-pass random byte Shredder)
   └── Change File Timestamps (Creation, Modification, Last Access) [NEW]
 
-- [7] Networking
+- [9] Gaming Optimizer [NEW]
+  ├── Background Apps (restricts background app allowances and halts telemetry tracking)
+  ├── Power Optimization (allocates and selects Windows Ultimate Performance schemes)
+  ├── Standby RAM Cache (releases memory allocations in system standby queues)
+  ├── Active Overlays (closes active Steam, Discord, and Geforce screen overlays)
+  ├── Network Latency Tuning (modifies TcpAckFrequency and TCPNoDelay settings)
+  └── GameDVR Options (deactivates performance-costing Windows GameDVR features)
+
+- [10] Local Network Dashboard [NEW]
+  ├── Subnet Scanner (automatically discovers active IP hosts on the local subnet range)
+  ├── ARP Cache Parsing (extracts MAC addresses for discovered network targets)
+  ├── Vendor OUI Resolution (maps MAC addresses back to hardware manufacturers/vendors)
+  ├── Latency Ping Tests (validates active device response delays in milliseconds)
+  └── Device Categorization (groups nodes by type: Phone, TV, Laptop/PC, Printer, NAS, Router)
+
+- [11] Media Tools [NEW]
+  ├── Image Optimizer (compress PNG, JPG, JPEG, WEBP)
+  ├── Resize Image (custom height/width with aspect ratio scaling)
+  ├── PDF Merge (merge multiple PDF files)
+  ├── PDF Split (extract page ranges or split entire PDF)
+  ├── Offline OCR (native Windows OcrEngine text extraction)
+  ├── Audio Converter (mp3, wav, aac, flac, m4a, ogg via FFmpeg)
+  ├── Video Converter (mp4, mkv, avi, webm, gif via FFmpeg)
+  └── Metadata & EXIF Viewer (Pillow and pypdf specs scanner)
+
+- [12] Network Monitor [NEW]
+  ├── Bandwidth Tracking (real-time upload and download byte counters)
+  ├── Top Connections Map (lists socket descriptors mapping back to active processes)
+  ├── Blocked Hosts Scanner (parses blocked targets inside the Windows hosts file)
+  ├── System DNS Configuration (resolves configured DNS servers on active adaptors)
+  ├── VPN Connection Detector (automatically scans active interfaces for VPN tags)
+  └── Latency Graph Monitor (live pings to 1.1.1.1 matched to an ASCII sparkline graph)
+
+- [13] Networking
   ├── Public & Local IP lookups
   ├── MAC Address auditor
   ├── DNS Configuration & Flush DNS
@@ -196,24 +245,40 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Connected Devices Scanner (ARP table)
   └── Network Speed Test (Cloudflare throughput test) [NEW]
 
-- [8] Productivity
+- [14] Process Manager [NEW]
+  ├── Active Processes List (sortable by RAM or CPU usage)
+  ├── Process Control (kill or restart process instances)
+  ├── Process Tree Viewer (parent-child relationship map)
+  ├── Startup Applications (HKCU & HKLM Run registry key listings)
+  ├── High Utilization Scanners (CPU/RAM threshold alerts)
+  └── Live Task Monitor (refreshing console statistics dashboard)
+
+- [15] Productivity
   ├── Stopwatch & Countdown Timer
   ├── Password Generator (Secure length & entropy)
   ├── JSON Formatter
   └── Base64 Encoder/Decoder
 
-- [9] QR / Barcode
+- [16] QR / Barcode
   ├── Text / URL QR Code
   ├── Email QR Code
   ├── WiFi Setup QR Code
   └── ASCII Terminal Renderer & PNG export
 
-- [10] Run Commands
+- [17] Remote Device Manager [NEW]
+  ├── Encrypted Sockets (uses AES-Fernet secure E2E encryption for all remote packets)
+  ├── Setup Wizard (provisions Device ID & HMAC pairing codes for authorized connections)
+  ├── Interactive CMD/PowerShell (handles bidirectional remote console terminal streams)
+  ├── File Transfer Manager (supports folder navigation, file downloads and uploads)
+  ├── Process & Service Controllers (lists, controls, starts, stops, or terminates items)
+  └── Remote Power Options (triggers workstation sleep, lock, restarts, or shutdowns)
+
+- [18] Run Commands
   ├── Search Command Database
   ├── Execute Command directly
   └── List Command Catalog (40+ built-in cmd shortcuts)
 
-- [11] Security
+- [19] Security
   ├── Block / Unblock Website domains (via hosts)
   ├── Hosts File Editor (requires Admin)
   ├── Port Scanner (TCP port scan)
@@ -223,20 +288,20 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Active Connections Mapping (Port/PID/Process name audit) [NEW]
   └── BitLocker Status (Console-based PowerShell/WMIC checker) [NEW]
 
-- [12] Settings
+- [20] Settings
   ├── Swap Color Themes (Matrix, Cyberpunk, Light, Dark)
   ├── Update Toolkit (GitHub pull)
   ├── Reset settings
   └── Configure API / Cloud Keys (Gemini, Supabase credentials)
 
-- [13] Storage & Notes
+- [21] Storage & Notes
   ├── Links Manager (URL cards display)
   ├── Github Saved Repos
   ├── Code Snippet Bookkeeper
   ├── Quick Notes
   └── Export Database Backup
 
-- [14] System Information
+- [22] System Information
   ├── CPU, RAM, and GPU diagnostics
   ├── Disk Space & Partitioning
   ├── Battery Health (mWh design vs full capacity, cycles, backup estimators) [NEW]
@@ -247,13 +312,22 @@ Below is the complete tree layout of all nested settings and options available i
   ├── CPU/GPU Temperature sensor checker [NEW]
   └── System Dashboard (Double-pane boxed summary layout) [NEW]
 
-- [15] User Management
+- [23] Universal Search [NEW]
+  └── Keyword Search (scans notes, snippets, commands, links, and repositories)
+
+- [24] User Management
   ├── Add / Delete Local User Accounts
   ├── Promote User to Administrator
   ├── Demote User to Standard
   └── List Local System Users
 
-- [16] Windows Toolkit
+- [25] Windows Analytics [NEW]
+  ├── Boot Time Records (scans Event Log diagnostics for system boot times)
+  ├── Battery Health (queries laptop battery designs vs actual charge capacities)
+  ├── Historical Database (stores CPU, RAM, disk, and bandwidth usage statistics)
+  └── Terminal Graphs (plots historical telemetry on weekly/monthly vertical ASCII bar charts)
+
+- [26] Windows Toolkit
   ├── Windows Activation & Key Manager [NEW]
   │   ├── View Activation Expiry Status
   │   ├── View Detailed License Information (slmgr /dlv)
@@ -267,80 +341,6 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Windows Repair (SFC + DISM RestoreHealth)
   ├── Environment Variables Editor
   └── Create System Restore Point
-
-- [17] Universal Search [NEW]
-  └── Keyword Search (scans notes, snippets, commands, links, and repositories)
-
-- [18] Media Tools [NEW]
-  ├── Image Optimizer (compress PNG, JPG, JPEG, WEBP)
-  ├── Resize Image (custom height/width with aspect ratio scaling)
-  ├── PDF Merge (merge multiple PDF files)
-  ├── PDF Split (extract page ranges or split entire PDF)
-  ├── Offline OCR (native Windows OcrEngine text extraction)
-  ├── Audio Converter (mp3, wav, aac, flac, m4a, ogg via FFmpeg)
-  ├── Video Converter (mp4, mkv, avi, webm, gif via FFmpeg)
-  └── Metadata & EXIF Viewer (Pillow and pypdf specs scanner)
-
-- [19] Cheat Sheets & Docs [NEW]
-  ├── Windows Commands (sfc, dism, flushdns, gpupdate, chkdsk)
-  ├── Linux Commands (ls, chmod, chown, df, free, grep, top)
-  ├── Git Cheat Sheet (init, add, commit, push, merge, stash, log)
-  ├── SQL Cheat Sheet (select, insert, join, create, group by, indexes)
-  ├── Regex Examples (digit, word, email, ip matches)
-  ├── Markdown Guide (headers, bold/italic, lists, tables, code)
-  └── Keyboard Shortcuts (system, browser, VS Code shortcuts)
-
-- [20] Process Manager [NEW]
-  ├── Active Processes List (sortable by RAM or CPU usage)
-  ├── Process Control (kill or restart process instances)
-  ├── Process Tree Viewer (parent-child relationship map)
-  ├── Startup Applications (HKCU & HKLM Run registry key listings)
-  ├── High Utilization Scanners (CPU/RAM threshold alerts)
-  └── Live Task Monitor (refreshing console statistics dashboard)
-
-- [21] Network Monitor [NEW]
-  ├── Bandwidth Tracking (real-time upload and download byte counters)
-  ├── Top Connections Map (lists socket descriptors mapping back to active processes)
-  ├── Blocked Hosts Scanner (parses blocked targets inside the Windows hosts file)
-  ├── System DNS Configuration (resolves configured DNS servers on active adaptors)
-  ├── VPN Connection Detector (automatically scans active interfaces for VPN tags)
-  └── Latency Graph Monitor (live pings to 1.1.1.1 matched to an ASCII sparkline graph)
-
-- [22] Driver Manager [NEW]
-  ├── Export Drivers (extracts system third-party drivers to backup directory via DISM)
-  ├── Backup Drivers (creates structured registry-friendly drivers copy via PnpUtil)
-  ├── Restore Drivers (recursively adds and installs drivers from local backup folder)
-  ├── Missing Drivers Scanner (queries WMI and PnP interfaces for hardware errors)
-  └── Active OEM Drivers (lists active third-party device drivers and firmware versions)
-
-- [23] Gaming Optimizer [NEW]
-  ├── Background Apps (restricts background app allowances and halts telemetry tracking)
-  ├── Power Optimization (allocates and selects Windows Ultimate Performance schemes)
-  ├── Standby RAM Cache (releases memory allocations in system standby queues)
-  ├── Active Overlays (closes active Steam, Discord, and Geforce screen overlays)
-  ├── Network Latency Tuning (modifies TcpAckFrequency and TCPNoDelay settings)
-  └── GameDVR Options (deactivates performance-costing Windows GameDVR features)
-
-- [24] Windows Analytics [NEW]
-  ├── Boot Time Records (scans Event Log diagnostics for system boot times)
-  ├── Battery Health (queries laptop battery designs vs actual charge capacities)
-  ├── Historical Database (stores CPU, RAM, disk, and bandwidth usage statistics)
-  └── Terminal Graphs (plots historical telemetry on weekly/monthly vertical ASCII bar charts)
-
-- [25] Local Network Dashboard [NEW]
-  ├── Subnet Scanner (automatically discovers active IP hosts on the local subnet range)
-  ├── ARP Cache Parsing (extracts MAC addresses for discovered network targets)
-  ├── Vendor OUI Resolution (maps MAC addresses back to hardware manufacturers/vendors)
-  ├── Latency Ping Tests (validates active device response delays in milliseconds)
-  └── Device Categorization (groups nodes by type: Phone, TV, Laptop/PC, Printer, NAS, Router)
-
-- [26] Remote Device Manager [NEW]
-  ├── Encrypted Sockets (uses AES-Fernet secure E2E encryption for all remote packets)
-  ├── Setup Wizard (provisions Device ID & HMAC pairing codes for authorized connections)
-  ├── Interactive CMD/PowerShell (handles bidirectional remote console terminal streams)
-  ├── File Transfer Manager (supports folder navigation, file downloads and uploads)
-  ├── Process & Service Controllers (lists, controls, starts, stops, or terminates items)
-  └── Remote Power Options (triggers workstation sleep, lock, restarts, or shutdowns)
 ```
 
 ---
@@ -367,31 +367,31 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | :--- | :--- |
 | **Command Center Dashboard** | `tool dash`, `tool status`, `tool dashboard` |
 | **[1] AI Assistant** | `tool ai`, `tool assistant`, `tool gpt`, `tool gemini`, `tool chat`, `tool bot` |
-| **[2] Cleanup & Maintenance** | `tool clean`, `tool cleanup`, `tool flush`, `tool clear`, `tool purge` |
-| **[3] Cloud Workspace** | `tool cloud`, `tool workspace`, `tool supabase`, `tool sync`, `tool backup`, `tool restore` |
-| **[4] Developer Tools** | `tool dev`, `tool developer`, `tool git`, `tool ssh`, `tool env`, `tool sdk` |
-| **[5] Downloads** | `tool download`, `tool downloads`, `tool youtube`, `tool yt`, `tool ytdl`, `tool video`, `tool mp3` |
-| **[6] File & Folder** | `tool file`, `tool files`, `tool folder`, `tool folders`, `tool shred`, `tool zip`, `tool hash`, `tool timestamp` |
-| **[7] Networking** | `tool network`, `tool networking`, `tool ip`, `tool ping`, `tool wifi`, `tool speed`, `tool speedtest`, `tool dns`, `tool whois` |
-| **[8] Productivity** | `tool productivity`, `tool timer`, `tool stopwatch`, `tool password`, `tool json`, `tool base64` |
-| **[9] QR / Barcode** | `tool qr`, `tool barcode`, `tool wifiqr` |
-| **[10] Run Commands** | `tool commands`, `tool cmd`, `tool run`, `tool encyclopedia`, `tool catalog` |
-| **[11] Security** | `tool security`, `tool firewall`, `tool ports`, `tool hosts`, `tool bitlocker` |
-| **[12] Settings** | `tool settings`, `tool theme`, `tool config` |
-| **[13] Storage & Notes** | `tool storage`, `tool notes`, `tool links`, `tool snippets`, `tool db` |
-| **[14] System Information** | `tool sysinfo`, `tool info`, `tool specs`, `tool temp`, `tool temperature`, `tool cpu`, `tool ram`, `tool gpu`, `tool battery` |
-| **[15] User Management** | `tool user`, `tool users`, `tool admin`, `tool accounts` |
-| **[16] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint`, `tool activate`, `tool activation` |
-| **[17] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
-| **[18] Media Tools** | `tool media`, `tool pdf`, `tool ocr`, `tool convert`, `tool resize` |
-| **[19] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
-| **[20] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
-| **[21] Network Monitor** | `tool networkmonitor`, `tool netmon`, `tool traffic`, `tool bandwidth`, `tool latency`, `tool dns`, `tool vpn` |
-| **[22] Driver Manager** | `tool driver`, `tool drivers`, `tool pnputil`, `tool dism-driver`, `tool backup-drivers` |
-| **[23] Gaming Optimizer** | `tool gameopt`, `tool fps`, `tool optimize-game`, `tool game`, `tool gaming` |
-| **[24] Windows Analytics** | `tool analytics`, `tool telemetry`, `tool boothistory`, `tool battery`, `tool history`, `tool usage` |
-| **[25] Local Network Dashboard** | `tool networkdashboard`, `tool netdash`, `tool subnet`, `tool discover`, `tool devices`, `tool arp` |
-| **[26] Remote Device Manager** | `tool remote`, `tool agent`, `tool pair`, `tool rterminal`, `tool rconnect`, `tool remotemanager` |
+| **[2] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
+| **[3] Cleanup & Maintenance** | `tool clean`, `tool cleanup`, `tool flush`, `tool clear`, `tool purge` |
+| **[4] Cloud Workspace** | `tool cloud`, `tool workspace`, `tool supabase`, `tool sync`, `tool backup`, `tool restore` |
+| **[5] Developer Tools** | `tool dev`, `tool developer`, `tool git`, `tool ssh`, `tool env`, `tool sdk` |
+| **[6] Downloads** | `tool download`, `tool downloads`, `tool youtube`, `tool yt`, `tool ytdl`, `tool video`, `tool mp3` |
+| **[7] Driver Manager** | `tool driver`, `tool drivers`, `tool pnputil`, `tool dism-driver`, `tool backup-drivers` |
+| **[8] File & Folder** | `tool file`, `tool files`, `tool folder`, `tool folders`, `tool shred`, `tool zip`, `tool hash`, `tool timestamp` |
+| **[9] Gaming Optimizer** | `tool gameopt`, `tool fps`, `tool optimize-game`, `tool game`, `tool gaming` |
+| **[10] Local Network Dashboard** | `tool networkdashboard`, `tool netdash`, `tool subnet`, `tool discover`, `tool devices`, `tool arp` |
+| **[11] Media Tools** | `tool media`, `tool pdf`, `tool ocr`, `tool convert`, `tool resize` |
+| **[12] Network Monitor** | `tool networkmonitor`, `tool netmon`, `tool traffic`, `tool bandwidth`, `tool latency`, `tool dns`, `tool vpn` |
+| **[13] Networking** | `tool network`, `tool networking`, `tool ip`, `tool ping`, `tool wifi`, `tool speed`, `tool speedtest`, `tool whois` |
+| **[14] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
+| **[15] Productivity** | `tool productivity`, `tool timer`, `tool stopwatch`, `tool password`, `tool json`, `tool base64` |
+| **[16] QR / Barcode** | `tool qr`, `tool barcode`, `tool wifiqr` |
+| **[17] Remote Device Manager** | `tool remote`, `tool agent`, `tool pair`, `tool rterminal`, `tool rconnect`, `tool remotemanager` |
+| **[18] Run Commands** | `tool commands`, `tool cmd`, `tool run`, `tool encyclopedia`, `tool catalog` |
+| **[19] Security** | `tool security`, `tool firewall`, `tool ports`, `tool hosts`, `tool bitlocker` |
+| **[20] Settings** | `tool settings`, `tool theme`, `tool config` |
+| **[21] Storage & Notes** | `tool storage`, `tool notes`, `tool links`, `tool snippets`, `tool db` |
+| **[22] System Information** | `tool sysinfo`, `tool info`, `tool specs`, `tool temp`, `tool temperature`, `tool cpu`, `tool ram`, `tool gpu`, `tool battery` |
+| **[23] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
+| **[24] User Management** | `tool user`, `tool users`, `tool admin`, `tool accounts` |
+| **[25] Windows Analytics** | `tool analytics`, `tool telemetry`, `tool boothistory`, `tool battery`, `tool history`, `tool usage` |
+| **[26] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint`, `tool activate`, `tool activation` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
