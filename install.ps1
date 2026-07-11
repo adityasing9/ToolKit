@@ -47,21 +47,9 @@ function Add-ToPath {
 function Install-Toolkit {
     Check-Prerequisites
     
-    Write-Host ""
-    Write-Host "Which Toolkit edition would you like to install?" -ForegroundColor Yellow
-    Write-Host "1) Windows Toolkit (This repository)"
-    Write-Host "2) Linux Toolkit (Separate repository)"
-    $EditionChoice = Read-Host "Select [1 or 2]"
-    
-    if ($EditionChoice -eq "2") {
-        $RepoUrl = "https://github.com/adityasing9/ToolKit-Linux.git"
-        $TargetDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
-        $EditionName = "Linux Toolkit"
-    } else {
-        $RepoUrl = "https://github.com/adityasing9/ToolKit.git"
-        $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
-        $EditionName = "Windows Toolkit"
-    }
+    $RepoUrl = "https://github.com/adityasing9/ToolKit.git"
+    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
+    $EditionName = "Windows Toolkit"
 
     if (Test-Path "$TargetDir\.git") {
         Write-Host "[INFO] $EditionName already exists at $TargetDir. Pulling latest changes..." -ForegroundColor Green
@@ -95,20 +83,7 @@ function Install-Toolkit {
 }
 
 function Run-Toolkit {
-    $WinDir = "$env:USERPROFILE\Desktop\ToolKit"
-    $LinDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
-    
-    if ((Test-Path $WinDir) -and (Test-Path $LinDir)) {
-        Write-Host "Both Windows & Linux Toolkit repositories are installed." -ForegroundColor Yellow
-        Write-Host "1) Run Windows Toolkit"
-        Write-Host "2) Run Linux Toolkit"
-        $RunChoice = Read-Host "Select [1 or 2]"
-        $TargetDir = if ($RunChoice -eq "2") { $LinDir } else { $WinDir }
-    } elseif (Test-Path $LinDir) {
-        $TargetDir = $LinDir
-    } else {
-        $TargetDir = $WinDir
-    }
+    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
     
     if (-Not (Test-Path $TargetDir)) {
         Write-Host "[ERROR] Toolkit is not installed at $TargetDir!" -ForegroundColor Red
@@ -161,19 +136,12 @@ function Uninstall-Toolkit {
     }
 
     $DesktopDir = "$env:USERPROFILE\Desktop\ToolKit"
-    $LinuxDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
     $TempDir = "$env:TEMP\ToolKit_Portable"
     $deleted = $false
 
     if (Test-Path $DesktopDir) {
         Write-Host "[INFO] Deleting permanent Windows installation at $DesktopDir..." -ForegroundColor Cyan
         Remove-Item -Recurse -Force $DesktopDir -ErrorAction SilentlyContinue
-        $deleted = $true
-    }
-    
-    if (Test-Path $LinuxDir) {
-        Write-Host "[INFO] Deleting permanent Linux installation at $LinuxDir..." -ForegroundColor Cyan
-        Remove-Item -Recurse -Force $LinuxDir -ErrorAction SilentlyContinue
         $deleted = $true
     }
     
