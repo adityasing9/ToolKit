@@ -506,6 +506,38 @@ def list_installed_programs():
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to fetch installed programs: {e}")
 
+def sys_temperature():
+    print(f"\n{Colors.CYAN}--- Hardware Temperature ---{Colors.RESET}")
+    
+    cpu_temps = []
+    try:
+        # Query Thermal Zone Information performance counter (Kelvin scale)
+        ps_cmd = "Get-Counter -Counter '\\Thermal Zone Information(*)\\Temperature' -ErrorAction Stop | Select-Object -ExpandProperty CounterSamples | ForEach-Object { @{Path=$_.Path; Temp=$_.CookedValue} } | ConvertTo-Json -Compress"
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0 and res.stdout.strip():
+            import json
+            data = json.loads(res.stdout.strip())
+            if isinstance(data, dict):
+                data = [data]
+            for idx, zone in enumerate(data):
+                k_temp = zone.get("Temp")
+                if k_temp:
+                    c_temp = round(k_temp - 273.15, 1)
+                    print(f"CPU Thermal Zone #{idx+1}: {c_temp}°C ({round((c_temp*9/5)+32, 1)}°F)")
+                    cpu_temps.append(c_temp)
+        else:
+            print("CPU Temperature:     Cannot query thermal zone sensors natively.")
+    except Exception:
+        print("CPU Temperature:     Cannot query thermal zone sensors natively.")
+        
+    try:
+        gpu_temp = subprocess.check_output(["nvidia-smi", "--query-gpu=temperature.gpu", "--format=csv,noheader"], text=True, errors="ignore").strip()
+        if gpu_temp.isdigit():
+            c_temp = int(gpu_temp)
+            print(f"GPU Temperature (Nvidia): {c_temp}°C ({round((c_temp*9/5)+32, 1)}°F)")
+    except Exception:
+        pass
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -563,7 +595,7 @@ def show_menu():
         elif choice == '13':
             sys_disk()
         elif choice == '14':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Hardware Temperature coming soon...")
+            sys_temperature()
         elif choice == '15':
             sys_health_wmi()
         elif choice == '16':
