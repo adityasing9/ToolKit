@@ -255,7 +255,13 @@ def change_file_timestamps():
         if res.returncode == 0:
             print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Timestamps updated successfully.")
         else:
-            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update timestamps: {res.stderr.strip()}")
+            err_msg = res.stderr.strip()
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update timestamps: {err_msg}")
+            if "being used by another process" in err_msg.lower():
+                print(f"\n{Colors.YELLOW}[REMEDY]{Colors.RESET} Windows has locked this folder because a process is holding a handle to it.")
+                print("1. Please close any File Explorer windows open to this folder.")
+                print("2. Ensure no command prompts or terminals are currently navigated (cd'd) inside this folder.")
+                print("3. Close any text editors or programs that might have files open inside this folder.")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Command execution failed: {e}")
 
