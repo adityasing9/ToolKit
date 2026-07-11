@@ -26,10 +26,12 @@ def manage_links():
         if not rows:
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} No links found.")
         else:
-            print(f"\n{'ID':<4} | {'Title':<20} | {'URL':<40} | Tags")
-            print("-" * 80)
+            print(f"\n{Colors.CYAN}--- Saved Links ---{Colors.RESET}")
             for r in rows:
-                print(f"{r['id']:<4} | {r['title']:<20} | {r['url']:<40} | {r['tags']}")
+                print(f"[{Colors.GREEN}ID: {r['id']}{Colors.RESET}] {Colors.BOLD}{r['title']}{Colors.RESET}")
+                print(f"      {Colors.BLUE}URL:{Colors.RESET}  {r['url']}")
+                print(f"      {Colors.BLUE}Tags:{Colors.RESET} {r['tags']}")
+                print(f"{Colors.CYAN}-{Colors.RESET}" * 40)
     elif choice == '3':
         link_id = input("Enter ID to delete: ").strip()
         cursor.execute("DELETE FROM links WHERE id = ?", (link_id,))
@@ -60,10 +62,12 @@ def manage_github():
         if not rows:
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} No repos found.")
         else:
-            print(f"\n{'ID':<4} | {'Name':<20} | {'URL':<40}")
-            print("-" * 70)
+            print(f"\n{Colors.CYAN}--- Saved Repositories ---{Colors.RESET}")
             for r in rows:
-                print(f"{r['id']:<4} | {r['name']:<20} | {r['url']:<40}")
+                print(f"[{Colors.GREEN}ID: {r['id']}{Colors.RESET}] {Colors.BOLD}{r['name']}{Colors.RESET}")
+                print(f"      {Colors.BLUE}URL:{Colors.RESET}  {r['url']}")
+                print(f"      {Colors.BLUE}Desc:{Colors.RESET} {r['description']}")
+                print(f"{Colors.CYAN}-{Colors.RESET}" * 40)
     elif choice == '3':
         repo_id = input("Enter ID to clone: ").strip()
         cursor.execute("SELECT url FROM github_repos WHERE id = ?", (repo_id,))
@@ -103,10 +107,9 @@ def manage_snippets():
         if not rows:
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} No snippets found.")
         else:
-            print(f"\n{'ID':<4} | {'Title':<30} | Language")
-            print("-" * 55)
+            print(f"\n{Colors.CYAN}--- Saved Snippets ---{Colors.RESET}")
             for r in rows:
-                print(f"{r['id']:<4} | {r['title']:<30} | {r['language']}")
+                print(f"[{Colors.GREEN}ID: {r['id']}{Colors.RESET}] {Colors.BOLD}{r['title']}{Colors.RESET} ({r['language']})")
             snip_id = input("\nEnter ID to view code (or press enter to cancel): ").strip()
             if snip_id:
                 cursor.execute("SELECT code FROM snippets WHERE id = ?", (snip_id,))
@@ -149,10 +152,9 @@ def manage_notes():
         if not rows:
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} No notes found.")
         else:
-            print(f"\n{'ID':<4} | {'Title':<40} | Date")
-            print("-" * 70)
+            print(f"\n{Colors.CYAN}--- Saved Notes ---{Colors.RESET}")
             for r in rows:
-                print(f"{r['id']:<4} | {r['title']:<40} | {r['created_at']}")
+                print(f"[{Colors.GREEN}ID: {r['id']}{Colors.RESET}] {Colors.BOLD}{r['title']}{Colors.RESET} (Created: {r['created_at']})")
             note_id = input("\nEnter ID to view content (or press enter to cancel): ").strip()
             if note_id:
                 cursor.execute("SELECT content FROM notes WHERE id = ?", (note_id,))
