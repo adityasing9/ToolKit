@@ -20,23 +20,38 @@ def check_activation():
 
 def open_driver_manager():
     print("\n[INFO] Opening Device Manager...")
-    subprocess.Popen(["mmc.exe", "devmgmt.msc"])
+    try:
+        subprocess.Popen(["mmc.exe", "devmgmt.msc"])
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Device Manager: {e}")
 
 def check_windows_update():
     print("\n[INFO] Opening Windows Update...")
-    subprocess.Popen(["control", "update"])
+    try:
+        subprocess.Popen(["control", "update"])
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Windows Update: {e}")
 
 def open_services():
     print("\n[INFO] Opening Services Manager...")
-    subprocess.Popen(["mmc.exe", "services.msc"])
+    try:
+        subprocess.Popen(["mmc.exe", "services.msc"])
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Services Manager: {e}")
 
 def open_startup_apps():
     print("\n[INFO] Opening Startup Apps Manager...")
-    subprocess.Popen(["taskmgr", "/0", "/startup"])
+    try:
+        subprocess.Popen(["taskmgr", "/0", "/startup"])
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Startup Apps: {e}")
 
 def open_installed_apps():
     print("\n[INFO] Opening Add/Remove Programs...")
-    subprocess.Popen(["appwiz.cpl"])
+    try:
+        subprocess.Popen(["control", "appwiz.cpl"])
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Add/Remove Programs: {e}")
 
 def repair_windows():
     print(f"\n{Colors.CYAN}--- Repair Windows ---{Colors.RESET}")
