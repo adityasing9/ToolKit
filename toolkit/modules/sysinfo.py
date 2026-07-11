@@ -67,28 +67,58 @@ def sys_battery():
     if battery is None:
         print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery detected (or desktop system).")
     else:
-        print(f"Charge: {battery.percent}%")
-        print(f"Plugged In: {'Yes' if battery.power_plugged else 'No'}")
+        print(f"Charge Level: {battery.percent}%")
+        print(f"Plugged In:   {'Yes' if battery.power_plugged else 'No'}")
         if not battery.power_plugged:
             import datetime
             if battery.secsleft == -1:
-                print("Time Left: Unlimited (Plugged In)")
+                print("Time Left:    Unlimited (Plugged In)")
             elif battery.secsleft == -2:
-                print("Time Left: Calculating...")
+                print("Time Left:    Calculating...")
             else:
                 time_left = str(datetime.timedelta(seconds=battery.secsleft))
-                print(f"Time Left: {time_left}")
+                print(f"Time Left:    {time_left}")
         else:
-            print("Time Left: Unlimited (Plugged In)")
+            print("Time Left:    Unlimited (Plugged In)")
             
-        print(f"\n{Colors.GREEN}[1]{Colors.RESET} Generate Detailed HTML Battery Report (Cycles, Capacity, degradation)")
+        # Natively parse and show Battery Health and Cycles
+        temp_xml = "bat_temp.xml"
+        try:
+            import xml.etree.ElementTree as ET
+            # Run powercfg XML output silently
+            subprocess.run(["powercfg", "/batteryreport", "/xml", "/output", temp_xml], capture_output=True, check=True)
+            if os.path.exists(temp_xml):
+                tree = ET.parse(temp_xml)
+                root = tree.getroot()
+                battery_node = root.find(".//Battery")
+                if battery_node is not None:
+                    design_cap = battery_node.find("DesignCapacity")
+                    full_cap = battery_node.find("FullChargeCapacity")
+                    cycles = battery_node.find("CycleCount")
+                    
+                    if design_cap is not None and full_cap is not None:
+                        d = int(design_cap.text)
+                        f = int(full_cap.text)
+                        if d > 0:
+                            health = min(100.0, round((f / d) * 100, 2))
+                            print(f"Battery Health: {health}% (Full Capacity vs. Design)")
+                    if cycles is not None and cycles.text != "0":
+                        print(f"Cycle Count:    {cycles.text} cycles")
+                os.remove(temp_xml)
+        except Exception:
+            if os.path.exists(temp_xml):
+                try:
+                    os.remove(temp_xml)
+                except:
+                    pass
+
+        print(f"\n{Colors.GREEN}[1]{Colors.RESET} Generate Full HTML Battery Report")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Skip")
         choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
         if choice == '1':
             print("\n[INFO] Generating battery report...")
             report_path = os.path.join(os.getcwd(), "battery-report.html")
             try:
-                # powercfg /batteryreport can run in standard user mode on Windows 10/11
                 subprocess.run(["powercfg", "/batteryreport", "/output", report_path], check=True, capture_output=True)
                 print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Battery report generated at: {report_path}")
                 print("Opening report in your browser...")
