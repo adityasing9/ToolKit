@@ -32,6 +32,8 @@ def print_menu():
     print(f"{Colors.GREEN}[15]{Colors.RESET} User Management")
     print(f"{Colors.GREEN}[16]{Colors.RESET} Windows Toolkit")
     print(f"{Colors.GREEN}[17]{Colors.RESET} Universal Search")
+    print(f"{Colors.GREEN}[18]{Colors.RESET} Media Tools")
+    print(f"{Colors.GREEN}[19]{Colors.RESET} Cheat Sheets & Docs")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -102,6 +104,12 @@ def main():
             query = input(f"{Colors.MAGENTA}Search Anything... > {Colors.RESET}").strip()
             if query:
                 dashboard.search_everything(query)
+        elif module_name in ['18', 'media', 'image', 'pdf', 'ocr', 'audio', 'video', 'convert', 'resize', 'optimize']:
+            from toolkit.modules import media_tools
+            media_tools.show_menu()
+        elif module_name in ['19', 'docs', 'cheat', 'cheatsheet', 'git', 'sql', 'regex', 'markdown']:
+            from toolkit.modules import docs_cheatsheets
+            docs_cheatsheets.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -174,6 +182,12 @@ def main():
             query = input(f"{Colors.MAGENTA}Search Anything... > {Colors.RESET}").strip()
             if query:
                 dashboard.search_everything(query)
+        elif choice == '18':
+            from toolkit.modules import media_tools
+            media_tools.show_menu()
+        elif choice == '19':
+            from toolkit.modules import docs_cheatsheets
+            docs_cheatsheets.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 

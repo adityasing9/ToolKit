@@ -249,6 +249,25 @@ Below is the complete tree layout of all nested settings and options available i
 
 - [17] Universal Search [NEW]
   └── Keyword Search (scans notes, snippets, commands, links, and repositories)
+
+- [18] Media Tools [NEW]
+  ├── Image Optimizer (compress PNG, JPG, JPEG, WEBP)
+  ├── Resize Image (custom height/width with aspect ratio scaling)
+  ├── PDF Merge (merge multiple PDF files)
+  ├── PDF Split (extract page ranges or split entire PDF)
+  ├── Offline OCR (native Windows OcrEngine text extraction)
+  ├── Audio Converter (mp3, wav, aac, flac, m4a, ogg via FFmpeg)
+  ├── Video Converter (mp4, mkv, avi, webm, gif via FFmpeg)
+  └── Metadata & EXIF Viewer (Pillow and pypdf specs scanner)
+
+- [19] Cheat Sheets & Docs [NEW]
+  ├── Windows Commands (sfc, dism, flushdns, gpupdate, chkdsk)
+  ├── Linux Commands (ls, chmod, chown, df, free, grep, top)
+  ├── Git Cheat Sheet (init, add, commit, push, merge, stash, log)
+  ├── SQL Cheat Sheet (select, insert, join, create, group by, indexes)
+  ├── Regex Examples (digit, word, email, ip matches)
+  ├── Markdown Guide (headers, bold/italic, lists, tables, code)
+  └── Keyboard Shortcuts (system, browser, VS Code shortcuts)
 ```
 
 ---
@@ -291,6 +310,8 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[15] User Management** | `tool user`, `tool users`, `tool admin`, `tool accounts` |
 | **[16] Windows Toolkit** | `tool windows`, `tool toolkit`, `tool sfc`, `tool dism`, `tool restorepoint`, `tool activate`, `tool activation` |
 | **[17] Universal Search** | `tool search`, `tool find`, `tool query`, `tool ask` |
+| **[18] Media Tools** | `tool media`, `tool pdf`, `tool ocr`, `tool convert`, `tool resize` |
+| **[19] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:

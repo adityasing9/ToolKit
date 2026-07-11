@@ -3,4 +3,5 @@ yt-dlp
 requests
 qrcode
 pillow
+pypdf
 pyinstaller
