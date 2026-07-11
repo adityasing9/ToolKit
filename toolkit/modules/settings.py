@@ -54,7 +54,7 @@ def apply_theme(color_hex):
             # Clear console screen character buffer to new colors
             ctypes.windll.kernel32.FillConsoleOutputCharacterW(
                 hStdOut,
-                ' ',
+                32,  # ASCII code for space ' '
                 console_size,
                 coord,
                 ctypes.byref(written)
