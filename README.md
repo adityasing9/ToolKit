@@ -305,6 +305,13 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Battery Health (queries laptop battery designs vs actual charge capacities)
   ├── Historical Database (stores CPU, RAM, disk, and bandwidth usage statistics)
   └── Terminal Graphs (plots historical telemetry on weekly/monthly vertical ASCII bar charts)
+
+- [25] Local Network Dashboard [NEW]
+  ├── Subnet Scanner (automatically discovers active IP hosts on the local subnet range)
+  ├── ARP Cache Parsing (extracts MAC addresses for discovered network targets)
+  ├── Vendor OUI Resolution (maps MAC addresses back to hardware manufacturers/vendors)
+  ├── Latency Ping Tests (validates active device response delays in milliseconds)
+  └── Device Categorization (groups nodes by type: Phone, TV, Laptop/PC, Printer, NAS, Router)
 ```
 
 ---
@@ -354,6 +361,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[22] Driver Manager** | `tool driver`, `tool drivers`, `tool pnputil`, `tool dism-driver`, `tool backup-drivers` |
 | **[23] Gaming Optimizer** | `tool gameopt`, `tool fps`, `tool optimize-game`, `tool game`, `tool gaming` |
 | **[24] Windows Analytics** | `tool analytics`, `tool telemetry`, `tool boothistory`, `tool battery`, `tool history`, `tool usage` |
+| **[25] Local Network Dashboard** | `tool networkdashboard`, `tool netdash`, `tool subnet`, `tool discover`, `tool devices`, `tool arp` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
