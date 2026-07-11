@@ -258,9 +258,23 @@ def show_dashboard():
     print(f"{Colors.BOLD}{Colors.YELLOW}                      SYSTEM DASHBOARD{Colors.RESET}")
     print(f"{Colors.CYAN}============================================================={Colors.RESET}")
     
+    # 1. OS & Uptime
     uname = platform.uname()
-    print(f"{Colors.GREEN}[OS]{Colors.RESET}       {uname.system} {uname.release} | Host: {uname.node}")
+    import time
+    import datetime
+    try:
+        boot_time = psutil.boot_time()
+        uptime_secs = time.time() - boot_time
+        uptime_td = datetime.timedelta(seconds=uptime_secs)
+        days = uptime_td.days
+        hours, remainder = divmod(uptime_td.seconds, 3600)
+        minutes, _ = divmod(remainder, 60)
+        uptime_str = f"{days}d {hours}h {minutes}m" if days > 0 else f"{hours}h {minutes}m"
+    except Exception:
+        uptime_str = "Unknown"
+    print(f"{Colors.GREEN}[OS]{Colors.RESET}       {uname.system} {uname.release} | Host: {uname.node} | Uptime: {uptime_str}")
     
+    # 2. CPU
     cpu_usage = psutil.cpu_percent()
     cpufreq = psutil.cpu_freq()
     freq_str = f" @ {cpufreq.current/1000:.2f} GHz" if cpufreq else ""
@@ -268,10 +282,23 @@ def show_dashboard():
     cpu_bar = "█" * int(cpu_usage / 10) + "░" * (10 - int(cpu_usage / 10))
     print(f"{Colors.GREEN}[CPU]{Colors.RESET}      {cores} Cores | Usage: [{cpu_bar}] {cpu_usage}%{freq_str}")
     
+    # 3. GPU
+    gpus_str = "N/A"
+    try:
+        gpu_out = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], text=True, errors="ignore")
+        gpus = [g.strip() for g in gpu_out.split('\n')[1:] if g.strip()]
+        if gpus:
+            gpus_str = ", ".join(gpus)
+    except Exception:
+        pass
+    print(f"{Colors.GREEN}[GPU]{Colors.RESET}      {gpus_str}")
+    
+    # 4. RAM
     svmem = psutil.virtual_memory()
     ram_bar = "█" * int(svmem.percent / 10) + "░" * (10 - int(svmem.percent / 10))
     print(f"{Colors.GREEN}[RAM]{Colors.RESET}      Used: {get_size(svmem.used)} / {get_size(svmem.total)} | [{ram_bar}] {svmem.percent}%")
     
+    # 5. Disk (C:)
     try:
         c_usage = psutil.disk_usage("C:\\")
         disk_bar = "█" * int(c_usage.percent / 10) + "░" * (10 - int(c_usage.percent / 10))
@@ -279,6 +306,7 @@ def show_dashboard():
     except Exception:
         print(f"{Colors.GREEN}[DISK]{Colors.RESET}     N/A")
         
+    # 6. Battery
     if hasattr(psutil, "sensors_battery"):
         battery = psutil.sensors_battery()
         if battery:
@@ -286,7 +314,6 @@ def show_dashboard():
             time_str = "Calculating..."
             if not battery.power_plugged:
                 if battery.secsleft not in (-1, -2, 4294967295) and battery.secsleft < 86400 * 10:
-                    import datetime
                     td = datetime.timedelta(seconds=battery.secsleft)
                     hours, remainder = divmod(td.seconds, 3600)
                     minutes, _ = divmod(remainder, 60)
@@ -321,6 +348,7 @@ def show_dashboard():
     else:
         print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  N/A")
         
+    # 7. Network (Local & Public IP)
     local_ip = "N/A"
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -329,7 +357,37 @@ def show_dashboard():
         s.close()
     except Exception:
         pass
-    print(f"{Colors.GREEN}[NETWORK]{Colors.RESET}  Local IP: {local_ip}")
+        
+    public_ip = "Fetching..."
+    try:
+        import urllib.request
+        import json
+        req = urllib.request.Request("https://api.ipify.org?format=json", headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=1.5) as resp:
+            public_ip = json.loads(resp.read().decode())["ip"]
+    except Exception:
+        public_ip = "Offline / Blocked"
+    print(f"{Colors.GREEN}[NETWORK]{Colors.RESET}  Local IP: {local_ip} | Public IP: {public_ip}")
+    
+    # 8. Updates (Winget)
+    winget_count = "Checking..."
+    try:
+        res = subprocess.run(["winget", "upgrade"], capture_output=True, text=True, timeout=8)
+        lines = [l.strip() for l in res.stdout.split('\n') if l.strip()]
+        upgradable = 0
+        counting = False
+        for line in lines:
+            if "Name" in line and "Id" in line:
+                counting = True
+                continue
+            if counting:
+                if "------" in line: continue
+                if line.startswith("Col"): break
+                upgradable += 1
+        winget_count = str(upgradable)
+    except Exception:
+        winget_count = "Timeout"
+    print(f"{Colors.GREEN}[UPDATES]{Colors.RESET}  Winget Packages Outdated: {winget_count}")
     print(f"{Colors.CYAN}============================================================={Colors.RESET}")
 
 def show_menu():
