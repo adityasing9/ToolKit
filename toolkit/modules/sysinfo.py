@@ -71,9 +71,12 @@ def sys_battery():
         print(f"Plugged In:   {'Yes' if battery.power_plugged else 'No'}")
         if not battery.power_plugged:
             import datetime
-            if battery.secsleft == -1:
-                print("Time Left:    Unlimited (Plugged In)")
+            # 4294967295 (0xFFFFFFFF) is returned by Windows when the time left is unknown or calculating
+            if battery.secsleft in (-1, 4294967295):
+                print("Time Left:    Calculating...")
             elif battery.secsleft == -2:
+                print("Time Left:    Calculating...")
+            elif battery.secsleft > 86400 * 10: # More than 10 days
                 print("Time Left:    Calculating...")
             else:
                 time_left = str(datetime.timedelta(seconds=battery.secsleft))
@@ -86,12 +89,10 @@ def sys_battery():
         temp_xml = os.path.join(tempfile.gettempdir(), "bat_temp.xml")
         try:
             import xml.etree.ElementTree as ET
-            # Run powercfg XML output silently, writing to system Temp folder
             res = subprocess.run(["powercfg", "/batteryreport", "/xml", "/output", temp_xml], capture_output=True, text=True)
             if res.returncode == 0 and os.path.exists(temp_xml):
                 tree = ET.parse(temp_xml)
                 root = tree.getroot()
-                # Use {*} wildcard to bypass XML namespace constraints in Python ElementTree
                 battery_node = root.find(".//{*}Battery")
                 if battery_node is not None:
                     design_cap = battery_node.find("{*}DesignCapacity")
@@ -106,15 +107,37 @@ def sys_battery():
                             print(f"Design Capacity:      {d:,} mWh")
                             print(f"Full Charge Capacity: {f:,} mWh")
                             print(f"Battery Health:       {health}%")
+                            
+                            # Calculate dynamic backup hours based on actual available energy (Wh)
+                            wh_avail = (battery.percent / 100.0) * (f / 1000.0)
+                            light_hrs = wh_avail / 6.0
+                            normal_hrs = wh_avail / 10.0
+                            heavy_hrs = wh_avail / 30.0
+                            
+                            # Format to hours & minutes
+                            def fmt_time(hrs):
+                                h = int(hrs)
+                                m = int(round((hrs - h) * 60))
+                                return f"{h}h {m:02d}m"
+                                
+                            print(f"\n{Colors.CYAN}Estimated Backup Times (at {battery.percent}% charge):{Colors.RESET}")
+                            print(f"  Light Usage (Office/Reading): ~ {fmt_time(light_hrs)}")
+                            print(f"  Normal Usage (Web/Streaming): ~ {fmt_time(normal_hrs)}")
+                            print(f"  Heavy Usage (Gaming/Compile): ~ {fmt_time(heavy_hrs)}")
+                        else:
+                            print("Battery Health:       Cannot calculate (Design Capacity is 0)")
+                    else:
+                        print("Battery Health:       Cannot calculate (mWh metrics missing in WMI report)")
+                        
                     if cycles is not None and cycles.text != "0":
                         print(f"Cycle Count:    {cycles.text} cycles")
                 else:
-                    print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery details found in system report.")
+                    print("Battery Health:       Cannot calculate (No physical battery node found in ACPI report)")
                 os.remove(temp_xml)
             else:
-                print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not retrieve battery health: {res.stderr.strip()}")
+                print(f"Battery Health:       Cannot calculate (powercfg report failed: {res.stderr.strip()})")
         except Exception as e:
-            print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not retrieve battery health: {e}")
+            print(f"Battery Health:       Cannot calculate (WMI query error: {e})")
             if os.path.exists(temp_xml):
                 try:
                     os.remove(temp_xml)
