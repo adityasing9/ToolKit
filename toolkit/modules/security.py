@@ -281,6 +281,25 @@ def process_port_mapping():
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to audit network connections: {e}")
 
+def check_bitlocker_status():
+    print(f"\n{Colors.CYAN}--- BitLocker Encryption Status ---{Colors.RESET}")
+    # PowerShell is the most reliable way to check BitLocker status
+    ps_cmd = "Get-BitLockerVolume | Select-Object MountPoint, VolumeStatus, EncryptionPercentage, ProtectionStatus | Format-Table -AutoSize"
+    try:
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0 and res.stdout.strip():
+            print(res.stdout)
+        else:
+            # Fallback to WMIC path win32_encryptablevolume which is available in Windows Pro
+            output = subprocess.check_output(["wmic", "path", "win32_encryptablevolume", "get", "driveletter,protectionstatus"], text=True, errors="ignore")
+            lines = [l.strip() for l in output.strip().split("\n") if l.strip()]
+            if len(lines) > 1:
+                print(output.strip())
+            else:
+                print(f"{Colors.BLUE}[INFO]{Colors.RESET} BitLocker is not supported on this Windows edition (e.g., Windows Home) or requires Administrator privileges.")
+    except Exception:
+        print(f"{Colors.BLUE}[INFO]{Colors.RESET} BitLocker is not supported on this Windows edition (e.g., Windows Home) or requires Administrator privileges.")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -313,7 +332,7 @@ def show_menu():
         elif choice == '4':
             open_windows_security()
         elif choice == '5':
-            subprocess.Popen(["control", "/name", "Microsoft.BitLockerDriveEncryption"])
+            check_bitlocker_status()
         elif choice == '6':
             if is_admin():
                 subprocess.Popen(["notepad", HOSTS_FILE])
