@@ -31,6 +31,19 @@ function Check-Prerequisites {
     }
 }
 
+function Add-ToPath {
+    param ($Folder)
+    try {
+        $UserPath = [System.Environment]::GetEnvironmentVariable("Path", "User")
+        if ($UserPath -notlike "*$Folder*") {
+            [System.Environment]::SetEnvironmentVariable("Path", "$UserPath;$Folder", "User")
+            Write-Host "[INFO] Added global environment alias! Restart terminal to use 'tool <cmd>' from anywhere." -ForegroundColor Green
+        }
+    } catch {
+        Write-Host "[WARNING] Could not configure environment PATH automatically." -ForegroundColor Yellow
+    }
+}
+
 function Install-Toolkit {
     Check-Prerequisites
     $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
@@ -61,6 +74,7 @@ function Install-Toolkit {
         exit 1
     }
 
+    Add-ToPath $TargetDir
     Write-Host "[INFO] Setup complete! Launching Toolkit..." -ForegroundColor Cyan
     & ".\venv\Scripts\python.exe" main.py
 }
@@ -81,6 +95,7 @@ function Run-Toolkit {
         return
     }
     
+    Add-ToPath $TargetDir
     Write-Host "[INFO] Launching Toolkit..." -ForegroundColor Cyan
     & ".\venv\Scripts\python.exe" main.py
 }
