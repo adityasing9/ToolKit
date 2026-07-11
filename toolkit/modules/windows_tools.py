@@ -21,35 +21,40 @@ def check_activation():
 def open_driver_manager():
     print("\n[INFO] Opening Device Manager...")
     try:
-        subprocess.Popen(["mmc.exe", "devmgmt.msc"])
+        os.startfile("devmgmt.msc")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Device Manager: {e}")
 
 def check_windows_update():
     print("\n[INFO] Opening Windows Update...")
     try:
-        subprocess.Popen(["control", "update"])
+        os.startfile("ms-settings:windowsupdate")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Windows Update: {e}")
 
 def open_services():
     print("\n[INFO] Opening Services Manager...")
     try:
-        subprocess.Popen(["mmc.exe", "services.msc"])
+        os.startfile("services.msc")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Services Manager: {e}")
 
 def open_startup_apps():
     print("\n[INFO] Opening Startup Apps Manager...")
     try:
-        subprocess.Popen(["taskmgr", "/0", "/startup"])
+        # Open modern startup settings page
+        os.startfile("ms-settings:startupapps")
     except Exception as e:
-        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Startup Apps: {e}")
+        # Fallback to Task Manager startup tab
+        try:
+            subprocess.Popen(["taskmgr", "/0", "/startup"])
+        except Exception as ex:
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Startup Apps: {ex}")
 
 def open_installed_apps():
     print("\n[INFO] Opening Add/Remove Programs...")
     try:
-        subprocess.Popen(["control", "appwiz.cpl"])
+        os.startfile("appwiz.cpl")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Add/Remove Programs: {e}")
 
