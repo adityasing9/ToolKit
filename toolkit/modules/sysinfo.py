@@ -254,10 +254,6 @@ import tempfile
 import re
 
 def show_dashboard():
-    print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-    print(f"{Colors.BOLD}{Colors.YELLOW}                      SYSTEM DASHBOARD{Colors.RESET}")
-    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-    
     # 1. OS & Uptime
     uname = platform.uname()
     import time
@@ -272,15 +268,12 @@ def show_dashboard():
         uptime_str = f"{days}d {hours}h {minutes}m" if days > 0 else f"{hours}h {minutes}m"
     except Exception:
         uptime_str = "Unknown"
-    print(f"{Colors.GREEN}[OS]{Colors.RESET}       {uname.system} {uname.release} | Host: {uname.node} | Uptime: {uptime_str}")
-    
+        
     # 2. CPU
     cpu_usage = psutil.cpu_percent()
     cpufreq = psutil.cpu_freq()
     freq_str = f" @ {cpufreq.current/1000:.2f} GHz" if cpufreq else ""
     cores = psutil.cpu_count(logical=True)
-    cpu_bar = "█" * int(cpu_usage / 10) + "░" * (10 - int(cpu_usage / 10))
-    print(f"{Colors.GREEN}[CPU]{Colors.RESET}      {cores} Cores | Usage: [{cpu_bar}] {cpu_usage}%{freq_str}")
     
     # 3. GPU
     gpus_str = "N/A"
@@ -291,25 +284,35 @@ def show_dashboard():
             gpus_str = ", ".join(gpus)
     except Exception:
         pass
-    print(f"{Colors.GREEN}[GPU]{Colors.RESET}      {gpus_str}")
-    
+        
     # 4. RAM
     svmem = psutil.virtual_memory()
-    ram_bar = "█" * int(svmem.percent / 10) + "░" * (10 - int(svmem.percent / 10))
-    print(f"{Colors.GREEN}[RAM]{Colors.RESET}      Used: {get_size(svmem.used)} / {get_size(svmem.total)} | [{ram_bar}] {svmem.percent}%")
     
-    # 5. Disk (C:)
+    # 5. Disk
+    disk_desc = "N/A"
+    disk_sub = ""
     try:
         c_usage = psutil.disk_usage("C:\\")
-        disk_bar = "█" * int(c_usage.percent / 10) + "░" * (10 - int(c_usage.percent / 10))
-        print(f"{Colors.GREEN}[DISK C:]{Colors.RESET}  Used: {get_size(c_usage.used)} / {get_size(c_usage.total)} | [{disk_bar}] {c_usage.percent}%")
+        disk_desc = f"Disk C:  {get_size(c_usage.used)} / {get_size(c_usage.total)}"
+        disk_bar_len = 8
+        disk_blocks = int(c_usage.percent / (100 / disk_bar_len))
+        disk_bar = "█" * disk_blocks + "░" * (disk_bar_len - disk_blocks)
+        disk_sub = f"         [{disk_bar}] {c_usage.percent}%"
     except Exception:
-        print(f"{Colors.GREEN}[DISK]{Colors.RESET}     N/A")
+        pass
         
     # 6. Battery
+    battery_percent = "N/A"
+    status = "N/A"
+    time_str = "N/A"
+    health_str = "N/A"
+    has_battery = False
+    
     if hasattr(psutil, "sensors_battery"):
         battery = psutil.sensors_battery()
         if battery:
+            has_battery = True
+            battery_percent = str(battery.percent)
             status = "Charging" if battery.power_plugged else "Discharging"
             time_str = "Calculating..."
             if not battery.power_plugged:
@@ -321,7 +324,6 @@ def show_dashboard():
             else:
                 time_str = "Plugged In"
                 
-            health_str = "N/A"
             temp_xml = os.path.join(tempfile.gettempdir(), "bat_temp_dash.xml")
             try:
                 import xml.etree.ElementTree as ET
@@ -341,14 +343,8 @@ def show_dashboard():
                 if os.path.exists(temp_xml):
                     try: os.remove(temp_xml)
                     except: pass
-            
-            print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  Charge: {battery.percent}% ({status}) | Time Left: {time_str} | Health: {health_str}")
-        else:
-            print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  No battery detected (Desktop system)")
-    else:
-        print(f"{Colors.GREEN}[BATTERY]{Colors.RESET}  N/A")
-        
-    # 7. Network (Local & Public IP)
+                    
+    # 7. Network
     local_ip = "N/A"
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -367,9 +363,18 @@ def show_dashboard():
             public_ip = json.loads(resp.read().decode())["ip"]
     except Exception:
         public_ip = "Offline / Blocked"
-    print(f"{Colors.GREEN}[NETWORK]{Colors.RESET}  Local IP: {local_ip} | Public IP: {public_ip}")
-    
-    # 8. Updates (Winget)
+        
+    # MAC
+    mac_val = "N/A"
+    try:
+        mac_out = subprocess.check_output(["getmac"], text=True, errors="ignore").strip().split('\n')
+        macs = [line.split()[0] for line in mac_out if line.strip() and not line.startswith("=")]
+        if macs:
+            mac_val = macs[1] if len(macs) > 1 else macs[0]
+    except Exception:
+        pass
+        
+    # 8. Updates
     winget_count = "Checking..."
     try:
         res = subprocess.run(["winget", "upgrade"], capture_output=True, text=True, timeout=8)
@@ -387,8 +392,56 @@ def show_dashboard():
         winget_count = str(upgradable)
     except Exception:
         winget_count = "Timeout"
-    print(f"{Colors.GREEN}[UPDATES]{Colors.RESET}  Winget Packages Outdated: {winget_count}")
-    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+        
+    # 9. Format Dashboard Grid
+    # Helper to print columns safely
+    def print_row(left_str, right_str):
+        l_padded = f"{left_str:<36}"[:36]
+        r_padded = f"{right_str:<36}"[:36]
+        print(f"{Colors.CYAN}│{Colors.RESET} {l_padded} {Colors.CYAN}│{Colors.RESET} {r_padded} {Colors.CYAN}│{Colors.RESET}")
+
+    print(f"\n{Colors.CYAN}┌──────────────────────────────────────┬──────────────────────────────────────┐{Colors.RESET}")
+    print(f"{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  SYSTEM & OPERATING SYSTEM           {Colors.RESET}{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  HARDWARE UTILIZATION & TELEMETRY    {Colors.RESET}{Colors.CYAN}│{Colors.RESET}")
+    print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
+    
+    print_row(f"OS:      {uname.system} {uname.release}", f"CPU:     {cores} Logical Cores")
+    
+    cpu_bar_len = 8
+    num_blocks = int(cpu_usage / (100 / cpu_bar_len))
+    cpu_bar = "█" * num_blocks + "░" * (cpu_bar_len - num_blocks)
+    print_row(f"Host:    {uname.node}", f"Load:    [{cpu_bar}] {cpu_usage}%{freq_str}")
+    
+    gpu_short = gpus_str if len(gpus_str) < 29 else gpus_str[:26] + "..."
+    print_row(f"Uptime:  {uptime_str}", f"GPU:     {gpu_short}")
+    
+    print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
+    print(f"{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  NETWORK CONNECTIONS                 {Colors.RESET}{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  MEMORY & STORAGE UTILIZATION        {Colors.RESET}{Colors.CYAN}│{Colors.RESET}")
+    print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
+    
+    ram_bar_len = 8
+    ram_blocks = int(svmem.percent / (100 / ram_bar_len))
+    ram_bar = "█" * ram_blocks + "░" * (ram_bar_len - ram_blocks)
+    print_row(f"LAN IP:  {local_ip}", f"RAM:     {get_size(svmem.used)} / {get_size(svmem.total)}")
+    print_row(f"WAN IP:  {public_ip}", f"         [{ram_bar}] {svmem.percent}%")
+    print_row(f"MAC:     {mac_val}", disk_desc)
+    print_row("", disk_sub)
+    
+    print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
+    print(f"{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  POWER & BATTERY HEALTH              {Colors.RESET}{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  MAINTENANCE & UPDATES               {Colors.RESET}{Colors.CYAN}│{Colors.RESET}")
+    print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
+    
+    if has_battery:
+        print_row(f"Charge:  {battery_percent}% ({status})", f"Updates: {winget_count} winget packages")
+        maint_status = "Action Required" if (winget_count not in ("0", "Checking...", "Timeout")) else "System Up to Date"
+        print_row(f"Health:  {health_str}", f"Status:  {maint_status}")
+        print_row(f"Time:    {time_str}", "")
+    else:
+        print_row("No battery detected (Desktop system)", f"Updates: {winget_count} winget packages")
+        maint_status = "Action Required" if (winget_count not in ("0", "Checking...", "Timeout")) else "System Up to Date"
+        print_row("", f"Status:  {maint_status}")
+        print_row("", "")
+        
+    print(f"{Colors.CYAN}└──────────────────────────────────────┴──────────────────────────────────────┘{Colors.RESET}")
 
 def list_installed_programs():
     print(f"\n{Colors.CYAN}--- Installed Applications Registry Search ---{Colors.RESET}")
