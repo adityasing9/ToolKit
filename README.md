@@ -241,8 +241,34 @@ Below is the complete tree layout of all nested settings and options available i
 
 ---
 
-## 🚀 Direct Module Routing
-You can bypass the interactive menu and jump straight into a module, launch the console dashboard, or perform a search by passing arguments to the python script:
+## 🚀 Global 'tool' Shortcut & Direct Routing
+
+You can bypass the interactive menu entirely and trigger any toolkit feature globally from **any directory** on your computer using the **`tool`** command.
+
+### Global Setup
+1. Run **Option 1 (Install / Update & Run Toolkit)** from your CLI Manager (`install.ps1`). This automatically registers the ToolKit directory to your Windows User `PATH` environment variable.
+2. Open a **new** terminal window (to load the updated environment path changes).
+
+### Global Examples
+* **Launch the Command Center Dashboard**:
+  ```powershell
+  tool dash
+  ```
+* **Search bookmarks, notes, snippets, or commands**:
+  ```powershell
+  tool search
+  ```
+* **Run a network speed test**:
+  ```powershell
+  tool speedtest
+  ```
+* **Check live CPU/GPU temperatures**:
+  ```powershell
+  tool temp
+  ```
+
+### Direct Module Routing (Fallback)
+If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
 ```powershell
 python main.py dashboard      # Launches the side-by-side System Dashboard
 python main.py search         # Launches the Universal Search Engine
