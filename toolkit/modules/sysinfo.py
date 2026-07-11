@@ -82,12 +82,13 @@ def sys_battery():
             print("Time Left:    Unlimited (Plugged In)")
             
         # Natively parse and show Battery Health and Cycles
-        temp_xml = "bat_temp.xml"
+        import tempfile
+        temp_xml = os.path.join(tempfile.gettempdir(), "bat_temp.xml")
         try:
             import xml.etree.ElementTree as ET
-            # Run powercfg XML output silently
-            subprocess.run(["powercfg", "/batteryreport", "/xml", "/output", temp_xml], capture_output=True, check=True)
-            if os.path.exists(temp_xml):
+            # Run powercfg XML output silently, writing to system Temp folder
+            res = subprocess.run(["powercfg", "/batteryreport", "/xml", "/output", temp_xml], capture_output=True, text=True)
+            if res.returncode == 0 and os.path.exists(temp_xml):
                 tree = ET.parse(temp_xml)
                 root = tree.getroot()
                 battery_node = root.find(".//Battery")
@@ -104,8 +105,13 @@ def sys_battery():
                             print(f"Battery Health: {health}% (Full Capacity vs. Design)")
                     if cycles is not None and cycles.text != "0":
                         print(f"Cycle Count:    {cycles.text} cycles")
+                else:
+                    print(f"{Colors.BLUE}[INFO]{Colors.RESET} No battery details found in system report.")
                 os.remove(temp_xml)
-        except Exception:
+            else:
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not retrieve battery health: {res.stderr.strip()}")
+        except Exception as e:
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not retrieve battery health: {e}")
             if os.path.exists(temp_xml):
                 try:
                     os.remove(temp_xml)
