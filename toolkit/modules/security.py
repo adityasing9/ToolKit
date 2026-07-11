@@ -128,7 +128,7 @@ def show_menu():
         elif choice == '2':
             unblock_website()
         elif choice == '3':
-            subprocess.Popen(["firewall.cpl"])
+            subprocess.Popen(["control", "firewall.cpl"])
         elif choice == '4':
             open_windows_security()
         elif choice == '5':
