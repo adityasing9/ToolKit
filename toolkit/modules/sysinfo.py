@@ -290,11 +290,29 @@ def show_dashboard():
     except Exception:
         uptime_str = "Unknown"
         
-    # 2. CPU
+    # 2. CPU & Temperatures
     cpu_usage = psutil.cpu_percent()
     cpufreq = psutil.cpu_freq()
     freq_str = f" @ {cpufreq.current/1000:.2f} GHz" if cpufreq else ""
     cores = psutil.cpu_count(logical=True)
+    
+    cpu_temp_val = "N/A"
+    try:
+        ps_cmd = "Get-Counter -Counter '\\Thermal Zone Information(*)\\Temperature' -ErrorAction Stop | Select-Object -ExpandProperty CounterSamples | ForEach-Object { $_.CookedValue } | Select-Object -First 1"
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0 and res.stdout.strip():
+            k_temp = float(res.stdout.strip())
+            cpu_temp_val = f"{round(k_temp - 273.15, 1)}°C"
+    except Exception:
+        pass
+    
+    gpu_temp_val = "N/A"
+    try:
+        gpu_temp = subprocess.check_output(["nvidia-smi", "--query-gpu=temperature.gpu", "--format=csv,noheader"], text=True, errors="ignore").strip()
+        if gpu_temp.isdigit():
+            gpu_temp_val = f"{gpu_temp}°C"
+    except Exception:
+        pass
     
     # 3. GPU
     gpus_str = "N/A"
@@ -302,7 +320,10 @@ def show_dashboard():
         gpu_out = subprocess.check_output(["wmic", "path", "win32_VideoController", "get", "name"], text=True, errors="ignore")
         gpus = [g.strip() for g in gpu_out.split('\n')[1:] if g.strip()]
         if gpus:
-            gpus_str = ", ".join(gpus)
+            # Clean up names for dashboard space
+            gpu_clean = ", ".join(gpus).replace("NVIDIA GeForce ", "Nvidia ").replace("Intel(R) ", "Intel ")
+            # Take primary GPU name
+            gpus_str = gpu_clean.split(",")[0].strip()
     except Exception:
         pass
         
@@ -415,7 +436,6 @@ def show_dashboard():
         winget_count = "Timeout"
         
     # 9. Format Dashboard Grid
-    # Helper to print columns safely
     def print_row(left_str, right_str):
         l_padded = f"{left_str:<36}"[:36]
         r_padded = f"{right_str:<36}"[:36]
@@ -426,15 +446,20 @@ def show_dashboard():
     print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
     
     os_name = get_os_caption()
-    print_row(f"OS:      {os_name}", f"CPU:     {cores} Logical Cores")
+    cpu_title = f"CPU:     {cores} Cores"
+    if cpu_temp_val != "N/A":
+        cpu_title += f" | Temp: {cpu_temp_val}"
+    print_row(f"OS:      {os_name}", cpu_title)
     
     cpu_bar_len = 8
     num_blocks = int(cpu_usage / (100 / cpu_bar_len))
     cpu_bar = "█" * num_blocks + "░" * (cpu_bar_len - num_blocks)
     print_row(f"Host:    {uname.node}", f"Load:    [{cpu_bar}] {cpu_usage}%{freq_str}")
     
-    gpu_short = gpus_str if len(gpus_str) < 29 else gpus_str[:26] + "..."
-    print_row(f"Uptime:  {uptime_str}", f"GPU:     {gpu_short}")
+    gpu_desc = f"GPU:     {gpus_str}"
+    if gpu_temp_val != "N/A":
+        gpu_desc += f" | Temp: {gpu_temp_val}"
+    print_row(f"Uptime:  {uptime_str}", gpu_desc)
     
     print(f"{Colors.CYAN}├──────────────────────────────────────┼──────────────────────────────────────┤{Colors.RESET}")
     print(f"{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  NETWORK CONNECTIONS                 {Colors.RESET}{Colors.CYAN}│{Colors.RESET}{Colors.BOLD}{Colors.YELLOW}  MEMORY & STORAGE UTILIZATION        {Colors.RESET}{Colors.CYAN}│{Colors.RESET}")
