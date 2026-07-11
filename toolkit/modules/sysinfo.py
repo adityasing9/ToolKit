@@ -390,6 +390,47 @@ def show_dashboard():
     print(f"{Colors.GREEN}[UPDATES]{Colors.RESET}  Winget Packages Outdated: {winget_count}")
     print(f"{Colors.CYAN}============================================================={Colors.RESET}")
 
+def list_installed_programs():
+    print(f"\n{Colors.CYAN}--- Installed Applications Registry Search ---{Colors.RESET}")
+    ps_cmd = (
+        'Get-ItemProperty '
+        'HKLM:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*, '
+        'HKLM:\\Software\\Wow6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\*, '
+        'HKCU:\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\* '
+        '-ErrorAction SilentlyContinue | '
+        'Select-Object DisplayName, DisplayVersion | '
+        'Where-Object { $_.DisplayName } | '
+        'Sort-Object DisplayName | '
+        'ConvertTo-Json -Compress'
+    )
+    try:
+        print("[INFO] Querying system registry for installed programs...")
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0 and res.stdout.strip():
+            import json
+            data = json.loads(res.stdout.strip())
+            if isinstance(data, dict):
+                data = [data]
+                
+            print(f"\nFound {len(data)} installed applications.")
+            print(f"{'Application Name':<60} | Version")
+            print("-" * 75)
+            
+            page_size = 30
+            for i, app in enumerate(data):
+                name = app.get("DisplayName", "")
+                version = app.get("DisplayVersion", "") or "Unknown"
+                print(f"{name[:60]:<60} | {version}")
+                
+                if (i + 1) % page_size == 0 and i < len(data) - 1:
+                    choice = input(f"\n{Colors.YELLOW}[Page {(i+1)//page_size} of {len(data)//page_size + 1}] Press Enter for more, or 'q' to quit: {Colors.RESET}").strip().lower()
+                    if choice == 'q':
+                        break
+        else:
+            print("[INFO] No registry programs found or query timed out.")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to fetch installed programs: {e}")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -434,7 +475,7 @@ def show_menu():
         elif choice == '8':
             sys_windows_version()
         elif choice == '9':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Installed Programs coming soon...")
+            list_installed_programs()
         elif choice == '10':
             import datetime
             boot_time_timestamp = psutil.boot_time()
