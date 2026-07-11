@@ -97,14 +97,14 @@ run_toolkit() {
     if [ ! -d "$target_dir" ]; then
         echo -e "${RED}[ERROR] Toolkit is not installed at $target_dir!${RESET}"
         echo -e "${YELLOW}Please select option 1 to install it first.${RESET}"
-        read -n 1 -s -r -p "Press any key to continue..."
+        read -n 1 -s -r -p "Press any key to continue..." < /dev/tty
         return
     fi
     
     cd "$target_dir" || exit 1
     if [ ! -f "venv/bin/python" ]; then
         echo -e "${RED}[ERROR] Virtual environment not found. Please select option 1 to reinstall.${RESET}"
-        read -n 1 -s -r -p "Press any key to continue..."
+        read -n 1 -s -r -p "Press any key to continue..." < /dev/tty
         return
     fi
     
@@ -136,7 +136,7 @@ run_portable() {
 
 uninstall_toolkit() {
     echo -e "${YELLOW}[WARNING] This will completely delete the Linux Toolkit from your machine.${RESET}"
-    read -p "Are you sure? (y/n) " confirm
+    read -p "Are you sure? (y/n) " confirm < /dev/tty
     if [ "$confirm" != "y" ]; then
         echo -e "${GREEN}Uninstallation cancelled.${RESET}"
         return
@@ -176,13 +176,13 @@ uninstall_toolkit() {
     else
         echo -e "${YELLOW}[INFO] No Toolkit installation found.${RESET}"
     fi
-    read -n 1 -s -r -p "Press any key to continue..."
+    read -n 1 -s -r -p "Press any key to continue..." < /dev/tty
 }
 
 # Main Loop
 while true; do
     show_menu
-    read -p "Select an option (1-5): " choice
+    read -p "Select an option (1-5): " choice < /dev/tty
     case "$choice" in
         1)
             install_toolkit
