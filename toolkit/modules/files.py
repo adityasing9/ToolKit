@@ -223,10 +223,10 @@ def find_duplicates():
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Deleted {deleted_count} duplicate files.")
 
 def change_file_timestamps():
-    print(f"\n{Colors.CYAN}--- Change File Timestamps ---{Colors.RESET}")
-    path = input("Enter file path: ").strip().replace('"', '')
+    print(f"\n{Colors.CYAN}--- Change File/Folder Timestamps ---{Colors.RESET}")
+    path = input("Enter path: ").strip().replace('"', '')
     if not os.path.exists(path):
-        print(f"{Colors.RED}[ERROR]{Colors.RESET} File does not exist.")
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Path does not exist.")
         return
         
     print("\nFormat: YYYY-MM-DD HH:MM:SS (e.g. 2026-07-11 17:00:00)")
@@ -234,13 +234,16 @@ def change_file_timestamps():
     modified = input("Enter New Modification Date/Time (press Enter to skip): ").strip()
     accessed = input("Enter New Last Access Date/Time (press Enter to skip): ").strip()
     
+    is_dir = os.path.isdir(path)
+    io_class = "Directory" if is_dir else "File"
+    
     commands = []
     if created:
-        commands.append(f'$(Get-Item "{path}").CreationTime = "{created}"')
+        commands.append(f'[System.IO.{io_class}]::SetCreationTime("{path}", "{created}")')
     if modified:
-        commands.append(f'$(Get-Item "{path}").LastWriteTime = "{modified}"')
+        commands.append(f'[System.IO.{io_class}]::SetLastWriteTime("{path}", "{modified}")')
     if accessed:
-        commands.append(f'$(Get-Item "{path}").LastAccessTime = "{accessed}"')
+        commands.append(f'[System.IO.{io_class}]::SetLastAccessTime("{path}", "{accessed}")')
         
     if not commands:
         print("[INFO] No changes specified.")
@@ -250,9 +253,9 @@ def change_file_timestamps():
     try:
         res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
         if res.returncode == 0:
-            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} File timestamps updated successfully.")
+            print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Timestamps updated successfully.")
         else:
-            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update timestamps: {res.stderr}")
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to update timestamps: {res.stderr.strip()}")
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Command execution failed: {e}")
 
