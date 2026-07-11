@@ -31,6 +31,7 @@ def print_menu():
     print(f"{Colors.GREEN}[14]{Colors.RESET} System Information")
     print(f"{Colors.GREEN}[15]{Colors.RESET} User Management")
     print(f"{Colors.GREEN}[16]{Colors.RESET} Windows Toolkit")
+    print(f"{Colors.GREEN}[17]{Colors.RESET} Universal Search")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -93,6 +94,14 @@ def main():
         elif module_name in ['16', 'windows', 'toolkit']:
             from toolkit.modules import windows_tools
             windows_tools.show_menu()
+        elif module_name in ['17', 'search', 'find', 'query']:
+            from toolkit.modules import dashboard
+            print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+            print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 UNIVERSAL SEARCH ENGINE{Colors.RESET}")
+            print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+            query = input(f"{Colors.MAGENTA}Search Anything... > {Colors.RESET}").strip()
+            if query:
+                dashboard.search_everything(query)
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -157,6 +166,14 @@ def main():
         elif choice == '16':
             from toolkit.modules import windows_tools
             windows_tools.show_menu()
+        elif choice == '17':
+            from toolkit.modules import dashboard
+            print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+            print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 UNIVERSAL SEARCH ENGINE{Colors.RESET}")
+            print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+            query = input(f"{Colors.MAGENTA}Search Anything... > {Colors.RESET}").strip()
+            if query:
+                dashboard.search_everything(query)
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 

@@ -268,28 +268,9 @@ def search_everything(query):
     if not found:
         print(f"  No items matched your search query in notes, commands, links, or snippets.")
     print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-    input("\nPress Enter to return to Dashboard...")
+    input("\nPress Enter to return to Main Menu...")
 
 def show_dashboard():
-    while True:
-        print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 UNIVERSAL SEARCH & COMMAND CENTER{Colors.RESET}")
-        print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-        print("  Type a query to search bookmarks, notes, snippets, or commands.")
-        print("  Or press Enter directly to view the consolidated dashboard.")
-        print("  Type 'q', 'exit', or 'quit' to return to the main menu.")
-        print(f"{Colors.CYAN}─────────────────────────────────────────────────────────────{Colors.RESET}")
-        
-        try:
-            query = input(f"{Colors.MAGENTA}Search Anything... > {Colors.RESET}").strip()
-            if not query:
-                break
-            if query.lower() in ('q', 'exit', 'quit'):
-                return
-            search_everything(query)
-        except (KeyboardInterrupt, EOFError):
-            return
-
     # Gathering Data
     uname = platform.uname()
     now = datetime.datetime.now()
