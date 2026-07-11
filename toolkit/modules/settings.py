@@ -3,34 +3,6 @@ import os
 import sys
 import subprocess
 
-def apply_theme(color_hex):
-    print(f"\n[INFO] Applying Theme...")
-    try:
-        if os.name == 'nt':
-            # Convert hex color code (e.g. 'F0' or '07') to integer attribute
-            bg = int(color_hex[0], 16)
-            fg = int(color_hex[1], 16)
-            attribute = (bg << 4) | fg
-            
-            import ctypes
-            # Retrieve active console handle
-            hStdOut = ctypes.windll.kernel32.GetStdHandle(-11) # STD_OUTPUT_HANDLE
-            
-            # Set console text attribute for all future prints
-            ctypes.windll.kernel32.SetConsoleTextAttribute(hStdOut, attribute)
-            
-            # Repaint the screen buffer to the active attribute using cls
-            os.system("cls")
-        else:
-            print(f"[INFO] Themes are only supported on Windows consoles.")
-        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Theme applied.")
-    except Exception as e:
-        print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not apply theme: {e}")
-
-def change_font_size():
-    print("\n[INFO] Font size cannot be changed programmatically in all terminals.")
-    print("Please use 'Ctrl + Mouse Wheel' or Terminal settings to change font size.")
-
 def update_toolkit():
     print("\n[INFO] Checking for Toolkit updates from Github...")
     try:
@@ -48,10 +20,9 @@ def check_version():
     print("Build: Latest GitHub Main Branch")
 
 def reset_toolkit():
-    print("\n[WARNING] This will reset your theme and settings.")
+    print("\n[WARNING] This will reset your settings configurations.")
     confirm = input("Are you sure? (y/n): ").strip().lower()
     if confirm == 'y':
-        os.system("color 07")
         print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Settings reset to default.")
 
 from toolkit.db import get_setting, set_setting
@@ -95,24 +66,16 @@ def configure_keys():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [12] SETTINGS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [20] SETTINGS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.GREEN}[1]{Colors.RESET} Theme (Current)")
-        print(f"{Colors.GREEN}[2]{Colors.RESET} Theme: Light")
-        print(f"{Colors.GREEN}[3]{Colors.RESET} Theme: Dark")
-        print(f"{Colors.GREEN}[4]{Colors.RESET} Theme: Cyberpunk")
-        print(f"{Colors.GREEN}[5]{Colors.RESET} Theme: Green Matrix")
-        print(f"{Colors.GREEN}[6]{Colors.RESET} Theme: Purple")
-        print(f"{Colors.GREEN}[7]{Colors.RESET} Theme: Blue")
-        print(f"{Colors.GREEN}[8]{Colors.RESET} Font Size")
-        print(f"{Colors.GREEN}[9]{Colors.RESET} Update Toolkit")
-        print(f"{Colors.GREEN}[10]{Colors.RESET} Backup")
-        print(f"{Colors.GREEN}[11]{Colors.RESET} Restore")
-        print(f"{Colors.GREEN}[12]{Colors.RESET} Check Version")
-        print(f"{Colors.GREEN}[13]{Colors.RESET} Plugins")
-        print(f"{Colors.GREEN}[14]{Colors.RESET} Extensions")
-        print(f"{Colors.GREEN}[15]{Colors.RESET} Reset")
-        print(f"{Colors.GREEN}[16]{Colors.RESET} Configure API / Cloud Keys")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Update Toolkit")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Backup")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Restore")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} Check Version")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Plugins")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Extensions")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Reset")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} Configure API / Cloud Keys")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -120,34 +83,18 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Use options 2-7 to change the theme.")
-        elif choice == '2':
-            apply_theme("F0") # White bg, black text
-        elif choice == '3':
-            apply_theme("07") # Black bg, white text
-        elif choice == '4':
-            apply_theme("0D") # Black bg, Light Magenta text
-        elif choice == '5':
-            apply_theme("0A") # Black bg, Light Green text
-        elif choice == '6':
-            apply_theme("05") # Black bg, Purple text
-        elif choice == '7':
-            apply_theme("09") # Black bg, Light Blue text
-        elif choice == '8':
-            change_font_size()
-        elif choice == '9':
             update_toolkit()
-        elif choice == '10':
+        elif choice == '2':
             backup_toolkit()
-        elif choice == '11':
+        elif choice == '3':
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} Restore functionality coming soon...")
-        elif choice == '12':
+        elif choice == '4':
             check_version()
-        elif choice == '13' or choice == '14':
+        elif choice == '5' or choice == '6':
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} Plugin/Extension system coming in v2.0.")
-        elif choice == '15':
+        elif choice == '7':
             reset_toolkit()
-        elif choice == '16':
+        elif choice == '8':
             configure_keys()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
