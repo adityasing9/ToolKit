@@ -229,12 +229,111 @@ def search_everything(query):
     c.execute("SELECT name, url, description FROM github_repos WHERE name LIKE ? OR url LIKE ? OR description LIKE ?", (f"%{query}%", f"%{query}%", f"%{query}%"))
     repos = c.fetchall()
     conn.close()
-    
+
+    # 6. Search Local Files & Folders (Bounded walk)
+    matched_files = []
+    file_count = 0
+    max_scan = 1000
+    for root, dirs, files in os.walk(".", topdown=True):
+        # Limit depth
+        depth = root.count(os.sep)
+        if depth > 3:
+            continue
+            
+        for d in dirs:
+            file_count += 1
+            if query.lower() in d.lower():
+                matched_files.append((os.path.join(root, d), "Folder"))
+            if file_count >= max_scan:
+                break
+                
+        for f in files:
+            file_count += 1
+            if query.lower() in f.lower():
+                matched_files.append((os.path.join(root, f), "File"))
+            if file_count >= max_scan:
+                break
+                
+        if file_count >= max_scan:
+            break
+
+    # 7. Search Running Processes & Services
+    matched_processes = []
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            if query.lower() in (proc.info['name'] or "").lower():
+                matched_processes.append((proc.info['pid'], proc.info['name']))
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            continue
+
+    matched_services = []
+    try:
+        for svc in psutil.win_service_iter():
+            try:
+                name = svc.name()
+                display = svc.display_name()
+                if query.lower() in name.lower() or query.lower() in display.lower():
+                    matched_services.append((name, display, svc.status()))
+            except Exception:
+                continue
+    except Exception:
+        pass
+
+    # 8. Search Environment Variables
+    matched_env = []
+    for k, v in os.environ.items():
+        if query.lower() in k.lower() or query.lower() in v.lower():
+            matched_env.append((k, v))
+
+    # 9. Search Git Repositories
+    git_commits = []
+    git_untracked = []
+    if os.path.exists(".git"):
+        try:
+            # Search commit messages
+            git_cmd = f"git log --oneline --grep=\"{query}\" -n 5"
+            res = subprocess.run(git_cmd, shell=True, capture_output=True, text=True, errors="ignore")
+            if res.returncode == 0:
+                git_commits = [line.strip() for line in res.stdout.split("\n") if line.strip()]
+                
+            # Search untracked files
+            status_cmd = "git status -s"
+            status_res = subprocess.run(status_cmd, shell=True, capture_output=True, text=True, errors="ignore")
+            if status_res.returncode == 0:
+                for line in status_res.stdout.split("\n"):
+                    if line.strip() and query.lower() in line.lower():
+                        git_untracked.append(line.strip())
+        except Exception:
+            pass
+
+    # 10. Search Docker Containers & Images
+    docker_containers = []
+    docker_images = []
+    try:
+        # Check if docker is installed
+        dock_check = subprocess.run(["docker", "--version"], capture_output=True, text=True)
+        if dock_check.returncode == 0:
+            # Search containers
+            ps_res = subprocess.run(["docker", "ps", "-a", "--format", "{{.ID}}\t{{.Names}}\t{{.Status}}"], capture_output=True, text=True, errors="ignore")
+            for line in ps_res.stdout.split("\n"):
+                if line.strip() and query.lower() in line.lower():
+                    docker_containers.append(line.strip())
+            # Search images
+            img_res = subprocess.run(["docker", "images", "--format", "{{.Repository}}:{{.Tag}}\t{{.ID}}"], capture_output=True, text=True, errors="ignore")
+            for line in img_res.stdout.split("\n"):
+                if line.strip() and query.lower() in line.lower():
+                    docker_images.append(line.strip())
+    except Exception:
+        pass
+
+    # Print Dashboard Results
     print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-    print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 UNIVERSAL SEARCH RESULTS: '{query}'{Colors.RESET}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}              🔍 EVERYTHING++ UNIVERSAL SEARCH: '{query}'{Colors.RESET}")
     print(f"{Colors.CYAN}============================================================={Colors.RESET}")
     
     found = False
+    
+    # DB Results
     if cmds:
         found = True
         print(f"\n{Colors.BOLD}{Colors.GREEN}[Commands]{Colors.RESET}")
@@ -264,11 +363,52 @@ def search_everything(query):
         print(f"\n{Colors.BOLD}{Colors.GREEN}[GitHub Repos]{Colors.RESET}")
         for row in repos[:5]:
             print(f"  - {row['name']} ({row['url']}): {row['description']}")
+
+    # System Results
+    if matched_files:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Local Files & Folders]{Colors.RESET}")
+        for path, ftype in matched_files[:5]:
+            print(f"  - [{ftype}] {path}")
+            
+    if matched_processes:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Active Processes]{Colors.RESET}")
+        for pid, name in matched_processes[:5]:
+            print(f"  - PID {pid}: {name}")
+            
+    if matched_services:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Windows Services]{Colors.RESET}")
+        for name, display, status in matched_services[:5]:
+            print(f"  - {display} ({name}) : status=[{status}]")
+            
+    if matched_env:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Environment Variables]{Colors.RESET}")
+        for k, v in matched_env[:5]:
+            print(f"  - {k} = {v[:80]}")
+
+    if git_commits or git_untracked:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Git Repository]{Colors.RESET}")
+        for commit in git_commits:
+            print(f"  - [Commit] {commit}")
+        for untracked in git_untracked:
+            print(f"  - [Status] {untracked}")
+
+    if docker_containers or docker_images:
+        found = True
+        print(f"\n{Colors.BOLD}{Colors.GREEN}[Docker Containers & Images]{Colors.RESET}")
+        for container in docker_containers[:5]:
+            print(f"  - [Container] {container}")
+        for img in docker_images[:5]:
+            print(f"  - [Image] {img}")
             
     if not found:
-        print(f"  No items matched your search query in notes, commands, links, or snippets.")
-    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-    input("\nPress Enter to return to Main Menu...")
+        print(f"  No items matched your search query in files, processes, services, environment variables, git, docker, notes, commands, links, or snippets.")
+    print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
+    input("\nPress Enter to return...")
 
 def show_dashboard():
     # Gathering Data
