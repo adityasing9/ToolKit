@@ -46,15 +46,30 @@ function Add-ToPath {
 
 function Install-Toolkit {
     Check-Prerequisites
-    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
+    
+    Write-Host ""
+    Write-Host "Which Toolkit edition would you like to install?" -ForegroundColor Yellow
+    Write-Host "1) Windows Toolkit (This repository)"
+    Write-Host "2) Linux Toolkit (Separate repository)"
+    $EditionChoice = Read-Host "Select [1 or 2]"
+    
+    if ($EditionChoice -eq "2") {
+        $RepoUrl = "https://github.com/adityasing9/ToolKit-Linux.git"
+        $TargetDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
+        $EditionName = "Linux Toolkit"
+    } else {
+        $RepoUrl = "https://github.com/adityasing9/ToolKit.git"
+        $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
+        $EditionName = "Windows Toolkit"
+    }
 
     if (Test-Path "$TargetDir\.git") {
-        Write-Host "[INFO] ToolKit already exists at $TargetDir. Pulling latest changes..." -ForegroundColor Green
+        Write-Host "[INFO] $EditionName already exists at $TargetDir. Pulling latest changes..." -ForegroundColor Green
         Set-Location $TargetDir
         git pull
     } else {
-        Write-Host "[INFO] Cloning ToolKit to $TargetDir..." -ForegroundColor Green
-        git clone https://github.com/adityasing9/ToolKit.git $TargetDir
+        Write-Host "[INFO] Cloning $EditionName to $TargetDir..." -ForegroundColor Green
+        git clone $RepoUrl $TargetDir
         Set-Location $TargetDir
     }
 
@@ -75,12 +90,26 @@ function Install-Toolkit {
     }
 
     Add-ToPath $TargetDir
-    Write-Host "[INFO] Setup complete! Launching Toolkit..." -ForegroundColor Cyan
+    Write-Host "[INFO] Setup complete! Launching $EditionName..." -ForegroundColor Cyan
     & ".\venv\Scripts\python.exe" main.py
 }
 
 function Run-Toolkit {
-    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
+    $WinDir = "$env:USERPROFILE\Desktop\ToolKit"
+    $LinDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
+    
+    if ((Test-Path $WinDir) -and (Test-Path $LinDir)) {
+        Write-Host "Both Windows & Linux Toolkit repositories are installed." -ForegroundColor Yellow
+        Write-Host "1) Run Windows Toolkit"
+        Write-Host "2) Run Linux Toolkit"
+        $RunChoice = Read-Host "Select [1 or 2]"
+        $TargetDir = if ($RunChoice -eq "2") { $LinDir } else { $WinDir }
+    } elseif (Test-Path $LinDir) {
+        $TargetDir = $LinDir
+    } else {
+        $TargetDir = $WinDir
+    }
+    
     if (-Not (Test-Path $TargetDir)) {
         Write-Host "[ERROR] Toolkit is not installed at $TargetDir!" -ForegroundColor Red
         Write-Host "Please select option 1 to install it first." -ForegroundColor Yellow
@@ -96,7 +125,7 @@ function Run-Toolkit {
     }
     
     Add-ToPath $TargetDir
-    Write-Host "[INFO] Launching Toolkit..." -ForegroundColor Cyan
+    Write-Host "[INFO] Launching Toolkit from $TargetDir..." -ForegroundColor Cyan
     & ".\venv\Scripts\python.exe" main.py
 }
 
@@ -132,12 +161,19 @@ function Uninstall-Toolkit {
     }
 
     $DesktopDir = "$env:USERPROFILE\Desktop\ToolKit"
+    $LinuxDir = "$env:USERPROFILE\Desktop\ToolKit-Linux"
     $TempDir = "$env:TEMP\ToolKit_Portable"
     $deleted = $false
 
     if (Test-Path $DesktopDir) {
-        Write-Host "[INFO] Deleting permanent installation at $DesktopDir..." -ForegroundColor Cyan
+        Write-Host "[INFO] Deleting permanent Windows installation at $DesktopDir..." -ForegroundColor Cyan
         Remove-Item -Recurse -Force $DesktopDir -ErrorAction SilentlyContinue
+        $deleted = $true
+    }
+    
+    if (Test-Path $LinuxDir) {
+        Write-Host "[INFO] Deleting permanent Linux installation at $LinuxDir..." -ForegroundColor Cyan
+        Remove-Item -Recurse -Force $LinuxDir -ErrorAction SilentlyContinue
         $deleted = $true
     }
     
