@@ -102,8 +102,10 @@ def sys_battery():
                         d = int(design_cap.text)
                         f = int(full_cap.text)
                         if d > 0:
-                            health = min(100.0, round((f / d) * 100, 2))
-                            print(f"Battery Health: {health}% (Full Capacity vs. Design)")
+                            health = round((f / d) * 100, 2)
+                            print(f"Design Capacity:      {d:,} mWh")
+                            print(f"Full Charge Capacity: {f:,} mWh")
+                            print(f"Battery Health:       {health}%")
                     if cycles is not None and cycles.text != "0":
                         print(f"Cycle Count:    {cycles.text} cycles")
                 else:
