@@ -624,6 +624,7 @@ def show_menu():
         elif choice == '15':
             sys_health_wmi()
         elif choice == '16':
-            show_dashboard()
+            from toolkit.modules import dashboard
+            dashboard.show_dashboard()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
