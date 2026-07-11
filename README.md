@@ -234,14 +234,18 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Windows Repair (SFC + DISM RestoreHealth)
   ├── Environment Variables Editor
   └── Create System Restore Point
+
+- [17] Universal Search [NEW]
+  └── Keyword Search (scans notes, snippets, commands, links, and repositories)
 ```
 
 ---
 
 ## 🚀 Direct Module Routing
-You can bypass the interactive menu and jump straight into a module or launch the console dashboard by passing arguments to the python script:
+You can bypass the interactive menu and jump straight into a module, launch the console dashboard, or perform a search by passing arguments to the python script:
 ```powershell
 python main.py dashboard      # Launches the side-by-side System Dashboard
+python main.py search         # Launches the Universal Search Engine
 python main.py sysinfo        # Launches the System Information menu
 python main.py downloads      # Launches the Downloads menu
 python main.py cleanup        # Launches the Cleanup menu
