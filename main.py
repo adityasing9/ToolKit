@@ -35,6 +35,7 @@ def print_menu():
     print(f"{Colors.GREEN}[18]{Colors.RESET} Media Tools")
     print(f"{Colors.GREEN}[19]{Colors.RESET} Cheat Sheets & Docs")
     print(f"{Colors.GREEN}[20]{Colors.RESET} Process Manager")
+    print(f"{Colors.GREEN}[21]{Colors.RESET} Network Monitor")
     print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
 
 def main():
@@ -114,6 +115,9 @@ def main():
         elif module_name in ['20', 'process', 'proc', 'kill', 'taskmgr', 'monitor', 'pstree', 'startup']:
             from toolkit.modules import process_manager
             process_manager.show_menu()
+        elif module_name in ['21', 'networkmonitor', 'netmon', 'traffic', 'bandwidth', 'latency', 'dns', 'vpn']:
+            from toolkit.modules import network_monitor
+            network_monitor.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Unknown module '{module_name}'")
         sys.exit(0)
@@ -195,6 +199,9 @@ def main():
         elif choice == '20':
             from toolkit.modules import process_manager
             process_manager.show_menu()
+        elif choice == '21':
+            from toolkit.modules import network_monitor
+            network_monitor.show_menu()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice. Please try again.")
 

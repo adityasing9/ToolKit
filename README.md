@@ -276,6 +276,14 @@ Below is the complete tree layout of all nested settings and options available i
   ├── Startup Applications (HKCU & HKLM Run registry key listings)
   ├── High Utilization Scanners (CPU/RAM threshold alerts)
   └── Live Task Monitor (refreshing console statistics dashboard)
+
+- [21] Network Monitor [NEW]
+  ├── Bandwidth Tracking (real-time upload and download byte counters)
+  ├── Top Connections Map (lists socket descriptors mapping back to active processes)
+  ├── Blocked Hosts Scanner (parses blocked targets inside the Windows hosts file)
+  ├── System DNS Configuration (resolves configured DNS servers on active adaptors)
+  ├── VPN Connection Detector (automatically scans active interfaces for VPN tags)
+  └── Latency Graph Monitor (live pings to 1.1.1.1 matched to an ASCII sparkline graph)
 ```
 
 ---
@@ -321,6 +329,7 @@ You can pass any of the following parameters to the **`tool`** command to trigge
 | **[18] Media Tools** | `tool media`, `tool pdf`, `tool ocr`, `tool convert`, `tool resize` |
 | **[19] Cheat Sheets & Docs** | `tool docs`, `tool cheat`, `tool cheatsheet`, `tool git`, `tool sql`, `tool regex` |
 | **[20] Process Manager** | `tool process`, `tool proc`, `tool kill`, `tool taskmgr`, `tool monitor`, `tool pstree`, `tool startup` |
+| **[21] Network Monitor** | `tool networkmonitor`, `tool netmon`, `tool traffic`, `tool bandwidth`, `tool latency`, `tool dns`, `tool vpn` |
 
 ### Direct Module Routing (Fallback)
 If you are manually running scripts from within the repository root, you can bypass the interactive menu by calling `main.py` directly:
