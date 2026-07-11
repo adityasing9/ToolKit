@@ -76,6 +76,61 @@ def check_open_ports():
     except Exception as e:
         print(f"{Colors.RED}[ERROR]{Colors.RESET} Could not run netstat: {e}")
 
+def dns_whois_lookup():
+    domain = input("Enter domain name (e.g. google.com): ").strip()
+    if not domain:
+        return
+        
+    print(f"\n{Colors.CYAN}--- DNS Lookup ({domain}) ---{Colors.RESET}")
+    try:
+        ips = socket.gethostbyname_ex(domain)
+        print(f"Hostname: {ips[0]}")
+        if ips[1]:
+            print(f"Aliases:  {', '.join(ips[1])}")
+        print(f"IPs:      {', '.join(ips[2])}")
+    except Exception as e:
+        print(f"DNS lookup failed: {e}")
+        
+    print(f"\n{Colors.CYAN}--- WHOIS/RDAP Registration Info ---{Colors.RESET}")
+    try:
+        import requests
+        url = f"https://rdap.org/domain/{domain}"
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            events = data.get("events", [])
+            for event in events:
+                action = event.get("eventAction", "")
+                date = event.get("eventDate", "")
+                print(f"  {action.capitalize()}: {date}")
+                
+            entities = data.get("entities", [])
+            for ent in entities:
+                roles = ent.get("roles", [])
+                if "registrar" in roles:
+                    print(f"  Registrar: {ent.get('handle')}")
+        else:
+            print(f"  No WHOIS data found or server returned error code {r.status_code}.")
+    except Exception as e:
+        print(f"  WHOIS lookup failed: {e}")
+
+import time
+import urllib.request
+
+def run_speed_test():
+    print(f"\n{Colors.CYAN}--- Network Speed Test ---{Colors.RESET}")
+    print("[INFO] Downloading a 10MB test file from Cloudflare speed test server...")
+    url = "https://speed.cloudflare.com/__down?bytes=10000000"
+    start_time = time.time()
+    try:
+        with urllib.request.urlopen(url, timeout=30) as r:
+            _ = r.read()
+        duration = time.time() - start_time
+        speed_mbps = (10 * 8) / duration
+        print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Download Speed: {speed_mbps:.2f} Mbps")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Speed test failed: {e}")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -88,7 +143,7 @@ def show_menu():
         print(f"{Colors.GREEN}[5]{Colors.RESET} Flush DNS")
         print(f"{Colors.GREEN}[6]{Colors.RESET} Ping")
         print(f"{Colors.GREEN}[7]{Colors.RESET} Traceroute")
-        print(f"{Colors.GREEN}[8]{Colors.RESET} Port Check")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} DNS & WHOIS Lookup")
         print(f"{Colors.GREEN}[9]{Colors.RESET} WiFi Passwords")
         print(f"{Colors.GREEN}[10]{Colors.RESET} Connected Devices")
         print(f"{Colors.GREEN}[11]{Colors.RESET} Open Ports")
@@ -116,7 +171,7 @@ def show_menu():
         elif choice == '7':
             run_traceroute()
         elif choice == '8':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Use the Port Scanner in the [4] Security module.")
+            dns_whois_lookup()
         elif choice == '9':
             check_wifi_passwords()
         elif choice == '10':
@@ -124,7 +179,7 @@ def show_menu():
         elif choice == '11':
             check_open_ports()
         elif choice == '12':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Network Speed Test coming soon...")
+            run_speed_test()
         elif choice == '13':
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} Proxy Settings coming soon...")
         elif choice == '14':

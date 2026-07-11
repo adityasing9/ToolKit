@@ -103,7 +103,57 @@ def create_restore_point():
 
 def open_env_vars():
     print("\n[INFO] Opening Environment Variables...")
-    subprocess.Popen(["rundll32", "sysdm.cpl,EditEnvironmentVariables"])
+    try:
+        os.startfile("rundll32.exe", arguments="sysdm.cpl,EditEnvironmentVariables")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to open Environment Variables: {e}")
+
+def manage_winget():
+    while True:
+        print(f"\n{Colors.CYAN}--- Winget Package Manager ---{Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Search Package")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Install Package")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} Uninstall Package")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} List Outdated Packages")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Upgrade All Packages")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back")
+        
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            query = input("Search query: ").strip()
+            if query:
+                subprocess.run(["winget", "search", query])
+        elif choice == '2':
+            package = input("Enter Package ID (e.g. Google.Chrome): ").strip()
+            if package:
+                subprocess.run(["winget", "install", package])
+        elif choice == '3':
+            package = input("Enter Package ID to Uninstall: ").strip()
+            if package:
+                subprocess.run(["winget", "uninstall", package])
+        elif choice == '4':
+            print("\n[INFO] Checking for outdated packages...")
+            subprocess.run(["winget", "upgrade"])
+        elif choice == '5':
+            confirm = input("This will update all upgradable packages on your system. Continue? (y/n): ").strip().lower()
+            if confirm == 'y':
+                subprocess.run(["winget", "upgrade", "--all"])
+
+def view_event_logs():
+    print(f"\n{Colors.CYAN}--- System Event Log Viewer ---{Colors.RESET}")
+    print("[INFO] Querying the latest 15 Windows System Event Log Errors...")
+    
+    ps_cmd = "Get-WinEvent -FilterHashtable @{LogName='System'; Level=2} -MaxEvents 15 | Select-Object TimeCreated, Id, Message | Format-List"
+    try:
+        res = subprocess.run(["powershell", "-NoProfile", "-Command", ps_cmd], capture_output=True, text=True, errors="ignore")
+        if res.returncode == 0:
+            print(res.stdout)
+        else:
+            print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to fetch event logs: {res.stderr}")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Command failed: {e}")
 
 def show_menu():
     while True:
@@ -122,6 +172,8 @@ def show_menu():
         print(f"{Colors.GREEN}[10]{Colors.RESET} Disk Check (chkdsk)")
         print(f"{Colors.GREEN}[11]{Colors.RESET} Create Restore Point")
         print(f"{Colors.GREEN}[12]{Colors.RESET} Environment Variables")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Winget Package Manager")
+        print(f"{Colors.GREEN}[14]{Colors.RESET} Event Log Viewer")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -152,5 +204,9 @@ def show_menu():
             create_restore_point()
         elif choice == '12':
             open_env_vars()
+        elif choice == '13':
+            manage_winget()
+        elif choice == '14':
+            view_event_logs()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

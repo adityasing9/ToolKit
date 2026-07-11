@@ -198,6 +198,89 @@ def run_startup_scan():
                 
     input("\nPress Enter to return...")
 
+def manage_firewall_rules():
+    if not is_admin():
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Firewall rules management requires Administrator privileges.")
+        return
+        
+    while True:
+        print(f"\n{Colors.CYAN}--- Firewall Rules Manager ---{Colors.RESET}")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} Block Port")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} Block Application")
+        print(f"{Colors.GREEN}[0]{Colors.RESET} Back")
+        
+        choice = input(f"{Colors.MAGENTA}Select > {Colors.RESET}").strip()
+        if choice == '0':
+            break
+        elif choice == '1':
+            port = input("Enter port number to block: ").strip()
+            proto = input("Protocol (TCP/UDP, default TCP): ").strip().upper() or "TCP"
+            direction = input("Direction (Inbound/Outbound/Both, default Both): ").strip().lower() or "both"
+            
+            if not port.isdigit():
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid port.")
+                continue
+                
+            dirs = ["in", "out"] if direction == "both" else ["in"] if direction == "inbound" else ["out"]
+            
+            try:
+                for d in dirs:
+                    rule_name = f"Toolkit_Block_Port_{port}_{proto}_{d.upper()}"
+                    cmd = ["netsh", "advfirewall", "firewall", "add", "rule", 
+                           f"name={rule_name}", "dir=" + d, "action=block", f"protocol={proto}", f"localport={port}"]
+                    subprocess.run(cmd, check=True)
+                print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Port {port} ({proto}) blocked successfully.")
+            except Exception as e:
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to add rule: {e}")
+                
+        elif choice == '2':
+            app_path = input("Enter absolute path to Application (.exe): ").strip().replace('"', '')
+            if not os.path.exists(app_path):
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} File path does not exist.")
+                continue
+                
+            direction = input("Direction (Inbound/Outbound/Both, default Both): ").strip().lower() or "both"
+            dirs = ["in", "out"] if direction == "both" else ["in"] if direction == "inbound" else ["out"]
+            
+            try:
+                app_name = os.path.basename(app_path)
+                for d in dirs:
+                    rule_name = f"Toolkit_Block_App_{app_name}_{d.upper()}"
+                    cmd = ["netsh", "advfirewall", "firewall", "add", "rule", 
+                           f"name={rule_name}", "dir=" + d, "action=block", f"program={app_path}"]
+                    subprocess.run(cmd, check=True)
+                print(f"{Colors.GREEN}[SUCCESS]{Colors.RESET} Application {app_name} blocked successfully.")
+            except Exception as e:
+                print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to add rule: {e}")
+
+def process_port_mapping():
+    print(f"\n{Colors.CYAN}--- Active Network Connections & PIDs ---{Colors.RESET}")
+    print(f"{'Proto':<5} | {'Local Address':<21} | {'Remote Address':<21} | {'Status':<12} | {'PID':<5} | Process")
+    print("-" * 90)
+    
+    try:
+        connections = psutil.net_connections(kind="inet")
+        connections.sort(key=lambda x: x.laddr.port if x.laddr else 0)
+        
+        for conn in connections:
+            proto = "TCP" if conn.type == socket.SOCK_STREAM else "UDP"
+            laddr = f"{conn.laddr.ip}:{conn.laddr.port}" if conn.laddr else "*"
+            raddr = f"{conn.raddr.ip}:{conn.raddr.port}" if conn.raddr else "*"
+            status = conn.status
+            pid = conn.pid or "-"
+            
+            pname = "-"
+            if conn.pid:
+                try:
+                    p = psutil.Process(conn.pid)
+                    pname = p.name()
+                except (psutil.NoSuchProcess, psutil.AccessDenied):
+                    pname = "[Access Denied]"
+                    
+            print(f"{proto:<5} | {laddr:<21} | {raddr:<21} | {status:<12} | {pid:<5} | {pname}")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to audit network connections: {e}")
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -213,6 +296,8 @@ def show_menu():
         print(f"{Colors.GREEN}[8]{Colors.RESET} Kill Process")
         print(f"{Colors.GREEN}[9]{Colors.RESET} Startup Malware Scan")
         print(f"{Colors.GREEN}[10]{Colors.RESET} Windows Security Status")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Firewall Rules Creator")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Active Connections Mapping")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -242,5 +327,9 @@ def show_menu():
             run_startup_scan()
         elif choice == '10':
             open_windows_security()
+        elif choice == '11':
+            manage_firewall_rules()
+        elif choice == '12':
+            process_port_mapping()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")

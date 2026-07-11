@@ -117,6 +117,57 @@ def sys_processes():
     for p in processes[:10]:
         print(f"{p['pid']:<8} | {str(p['name'])[:25]:<25} | {get_size(p['memory_info'].rss)}")
 
+def sys_health_wmi():
+    print(f"\n{Colors.CYAN}--- System & Storage Health Check (WMI) ---{Colors.RESET}")
+    
+    print(f"\n{Colors.BOLD}Storage SMART Drive Status:{Colors.RESET}")
+    try:
+        output = subprocess.check_output(["wmic", "diskdrive", "get", "model,status"], text=True, errors="ignore")
+        print(output.strip())
+    except Exception as e:
+        print(f"  Failed to retrieve disk health: {e}")
+        
+    print(f"\n{Colors.BOLD}Windows System Integrity Status:{Colors.RESET}")
+    try:
+        output = subprocess.check_output(["wmic", "os", "get", "status,numberofprocesses,FreePhysicalMemory"], text=True, errors="ignore")
+        lines = [l.strip() for l in output.strip().split("\n") if l.strip()]
+        if len(lines) > 1:
+            headers = lines[0].split()
+            # Split values safely handling whitespace
+            values = re.split(r'\s{2,}', lines[1])
+            # If length mismatch, just print the raw lines
+            if len(headers) == len(values):
+                for h, v in zip(headers, values):
+                    if h == "FreePhysicalMemory":
+                        mb = int(v) // 1024
+                        print(f"  Free Physical Memory: {mb} MB")
+                    else:
+                        print(f"  {h}: {v}")
+            else:
+                print(f"  OS Health Status: {lines[1]}")
+        else:
+            print("  Unable to parse OS status.")
+    except Exception as e:
+        print(f"  Failed to retrieve OS health: {e}")
+
+def list_running_services():
+    print(f"\n{Colors.CYAN}--- Active Windows Services ---{Colors.RESET}")
+    print(f"{'Service Name':<30} | {'Display Name':<40} | Status")
+    print("-" * 85)
+    
+    try:
+        services = list(psutil.win_service_iter())
+        running_services = [s for s in services if s.status() == "running"]
+        running_services.sort(key=lambda s: s.name())
+        
+        for s in running_services[:30]:
+            print(f"{s.name()[:30]:<30} | {s.display_name()[:40]:<40} | {s.status()}")
+        print(f"\n[INFO] Displayed {min(len(running_services), 30)} out of {len(running_services)} running services.")
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR]{Colors.RESET} Failed to fetch services: {e}")
+
+import re
+
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
@@ -136,7 +187,7 @@ def show_menu():
         print(f"{Colors.GREEN}[12]{Colors.RESET} Running Services")
         print(f"{Colors.GREEN}[13]{Colors.RESET} Disk Usage")
         print(f"{Colors.GREEN}[14]{Colors.RESET} Temperature")
-        print(f"{Colors.GREEN}[15]{Colors.RESET} Health")
+        print(f"{Colors.GREEN}[15]{Colors.RESET} Health (WMI)")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -169,12 +220,12 @@ def show_menu():
         elif choice == '11':
             sys_processes()
         elif choice == '12':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Running Services coming soon...")
+            list_running_services()
         elif choice == '13':
             sys_disk()
         elif choice == '14':
             print(f"{Colors.BLUE}[INFO]{Colors.RESET} Hardware Temperature coming soon...")
         elif choice == '15':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} System Health Check coming soon...")
+            sys_health_wmi()
         else:
             print(f"{Colors.RED}[ERROR]{Colors.RESET} Invalid choice.")
