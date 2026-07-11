@@ -1,18 +1,7 @@
 <div align="center">
 
-```text
- __________________________________________________________________________________________________ 
-|      _,-''''''-,_                                                                                |
-|    ,'  /\    /\  ',    _______                  _             _      _______           _ _  ___ _   |
-|   /   (  )  (  )   \  |__   __|                (_)           | |    |__   __|         | | |/ (_) |  |
-|  |      \    /      |    | | ___ _ __ _ __ ___  _ _ __   __ _| |       | | ___   ___  | | ' / _| |_ |
-|  |       \  /       |    | |/ _ \ '__| '_ ` _ \| | '_ \ / _` | |       | |/ _ \ / _ \ | |  < | | __||
-|   \       \/       /     | |  __/ |  | | | | | | | | | | (_| | |       | | (_) | (_) || | . \| | |_ |
-|    ',   ______   ,'      |_|\___|_|  |_| |_| |_|_|_| |_|\__,_|_|       |_|\___/ \___/ |_|_|\_\_|\__||
-|      '-,______,-'                                                                                |
-|                            v1.0 (Windows Professional CLI)                                       |
-|__________________________________________________________________________________________________|
-```
+![Terminal ToolKit Banner](toolkit_github_banner.png)
+
 
 **A production-quality, pure Python CLI toolkit for Windows.**
 It functions as a complete operating system utility, allowing you to manage Windows, run commands, view system stats, extract media, and more—all without leaving your terminal.
