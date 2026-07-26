@@ -8,8 +8,6 @@ It functions as a complete operating system utility, allowing you to manage Wind
 
 </div>
 
----
-
 ## ⚡ Quick Install (One-Line)
 
 Run the following command in PowerShell to instantly download, install, and configure the Toolkit on your machine:
@@ -17,6 +15,11 @@ Run the following command in PowerShell to instantly download, install, and conf
 ```powershell
 iwr -useb https://raw.githubusercontent.com/adityasing9/ToolKit/main/install.ps1 | iex
 ```
+
+> [!IMPORTANT]
+> **No Git or Python required!** The installer auto-detects your system configuration:
+> - If **Git or Python is missing**, it will automatically download the **Standalone EXE Edition** (a pre-compiled 15MB binary containing all dependencies).
+> - If **both are present**, it will prompt you to choose between the Standalone EXE or the full Developer Source Edition.
 
 *Optional shortened shortcut link:*
 ```powershell
