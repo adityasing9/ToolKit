@@ -14,21 +14,18 @@ function Show-Menu {
 }
 
 function Check-Prerequisites {
+    $global:HasGit = $false
+    $global:HasPython = $false
+    
     try {
         $null = Get-Command git -ErrorAction Stop
-    } catch {
-        Write-Host "[ERROR] Git is not installed or not in your PATH." -ForegroundColor Red
-        Write-Host "Please install Git from https://git-scm.com/downloads" -ForegroundColor Yellow
-        exit 1
-    }
+        $global:HasGit = $true
+    } catch {}
 
     try {
         $null = Get-Command python -ErrorAction Stop
-    } catch {
-        Write-Host "[ERROR] Python is not installed or not in your PATH." -ForegroundColor Red
-        Write-Host "Please install Python 3.10+ from https://www.python.org/downloads/" -ForegroundColor Yellow
-        exit 1
-    }
+        $global:HasPython = $true
+    } catch {}
 }
 
 function Add-ToPath {
@@ -44,15 +41,45 @@ function Add-ToPath {
     }
 }
 
-function Install-Toolkit {
-    Check-Prerequisites
+function Install-StandaloneEXE {
+    param($TargetDir)
+    
+    $ExeUrl = "https://github.com/adityasing9/ToolKit/raw/main/dist/tool.exe"
+    $TargetExe = Join-Path $TargetDir "tool.exe"
+    
+    Write-Host "[INFO] Downloading standalone tool.exe from GitHub..." -ForegroundColor Green
+    try {
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+        Invoke-WebRequest -Uri $ExeUrl -OutFile $TargetExe -UseBasicParsing
+        Write-Host "[SUCCESS] Standalone EXE downloaded successfully!" -ForegroundColor Green
+    } catch {
+        Write-Host "[ERROR] Failed to download standalone EXE: $_" -ForegroundColor Red
+        pause
+        return
+    }
+    
+    # Set up global PATH so user can type `tool` from anywhere
+    Add-ToPath $TargetDir
+    
+    # Create batch and PowerShell helper scripts in target directory
+    $BatchFile = Join-Path $TargetDir "tool.bat"
+    "@echo off`r`n`\"$TargetExe`\" %*" | Out-File -FilePath $BatchFile -Encoding ascii -Force
+    
+    $PsFile = Join-Path $TargetDir "tool.ps1"
+    "& `\"$TargetExe`\" `$args" | Out-File -FilePath $PsFile -Encoding ascii -Force
+    
+    Write-Host "[INFO] Launching Standalone Toolkit..." -ForegroundColor Cyan
+    & $TargetExe
+}
+
+function Install-DeveloperSource {
+    param($TargetDir)
     
     $RepoUrl = "https://github.com/adityasing9/ToolKit.git"
-    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
-    $EditionName = "Windows Toolkit"
-
+    $EditionName = "Windows Toolkit (Developer Edition)"
+    
     if (Test-Path "$TargetDir\.git") {
-        Write-Host "[INFO] $EditionName already exists at $TargetDir. Pulling latest changes..." -ForegroundColor Green
+        Write-Host "[INFO] $EditionName already exists. Pulling latest changes..." -ForegroundColor Green
         Set-Location $TargetDir
         git pull
     } else {
@@ -66,7 +93,8 @@ function Install-Toolkit {
         python -m venv venv
         if ($LASTEXITCODE -ne 0) {
             Write-Host "[ERROR] Failed to create virtual environment." -ForegroundColor Red
-            exit 1
+            pause
+            return
         }
     }
 
@@ -74,12 +102,43 @@ function Install-Toolkit {
     & ".\venv\Scripts\pip.exe" install -r requirements.txt | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] Failed to install requirements." -ForegroundColor Red
-        exit 1
+        pause
+        return
     }
 
     Add-ToPath $TargetDir
     Write-Host "[INFO] Setup complete! Launching $EditionName..." -ForegroundColor Cyan
     & ".\venv\Scripts\python.exe" main.py
+}
+
+function Install-Toolkit {
+    Check-Prerequisites
+    
+    $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
+    if (-Not (Test-Path $TargetDir)) {
+        New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
+    }
+    
+    # If they don't have git or python, default to Standalone EXE
+    if (-Not $global:HasGit -Or -Not $global:HasPython) {
+        Write-Host "[INFO] Git or Python is not installed. Defaulting to Standalone EXE Edition..." -ForegroundColor Yellow
+        Install-StandaloneEXE $TargetDir
+        return
+    }
+    
+    # Both are installed, ask the user for their preference
+    Write-Host ""
+    Write-Host "Both Git and Python are available on this system." -ForegroundColor Green
+    Write-Host "Select installation type:" -ForegroundColor Cyan
+    Write-Host "1) Standalone EXE Edition (Fast, no external requirements, single file)" -ForegroundColor Yellow
+    Write-Host "2) Developer Source Edition (Clones repo, creates venv, requires git/python)" -ForegroundColor White
+    $InstallChoice = Read-Host "Choice (1 or 2)"
+    
+    if ($InstallChoice -eq "2") {
+        Install-DeveloperSource $TargetDir
+    } else {
+        Install-StandaloneEXE $TargetDir
+    }
 }
 
 function Run-Toolkit {
@@ -93,38 +152,87 @@ function Run-Toolkit {
     }
     
     Set-Location $TargetDir
-    if (-Not (Test-Path "venv\Scripts\python.exe")) {
-        Write-Host "[ERROR] Virtual environment not found. Please select option 1 to reinstall." -ForegroundColor Red
-        pause
-        return
-    }
     
-    Add-ToPath $TargetDir
-    Write-Host "[INFO] Launching Toolkit from $TargetDir..." -ForegroundColor Cyan
-    & ".\venv\Scripts\python.exe" main.py
+    if (Test-Path "tool.exe") {
+        Write-Host "[INFO] Launching Standalone Toolkit..." -ForegroundColor Cyan
+        & ".\tool.exe"
+    } elseif (Test-Path "venv\Scripts\python.exe") {
+        Add-ToPath $TargetDir
+        Write-Host "[INFO] Launching Developer Toolkit..." -ForegroundColor Cyan
+        & ".\venv\Scripts\python.exe" main.py
+    } else {
+        Write-Host "[ERROR] Neither tool.exe nor virtual environment found in $TargetDir." -ForegroundColor Red
+        Write-Host "Please choose option 1 to reinstall." -ForegroundColor Yellow
+        pause
+    }
 }
 
 function Run-Portable {
     Check-Prerequisites
     $TargetDir = "$env:TEMP\ToolKit_Portable"
-    
-    if (Test-Path "$TargetDir\.git") {
-        Write-Host "[INFO] Portable Toolkit found in Temp. Updating..." -ForegroundColor Green
-        Set-Location $TargetDir
-        git pull --quiet
-    } else {
-        Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
-        git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
-        Set-Location $TargetDir
+    if (-Not (Test-Path $TargetDir)) {
+        New-Item -ItemType Directory -Force -Path $TargetDir | Out-Null
     }
     
-    Write-Host "[INFO] Installing Temporary Dependencies (this may take a minute)..." -ForegroundColor Green
-    # We use --user to ensure it doesn't require Admin rights for global Python installs.
-    # Removed --quiet so you can see the progress bar.
-    python -m pip install -r requirements.txt --user
+    # If they don't have git or python, default to downloading tool.exe
+    if (-Not $global:HasGit -Or -Not $global:HasPython) {
+        Write-Host "[INFO] Git or Python is not installed. Defaulting to Portable Standalone EXE..." -ForegroundColor Yellow
+        $ExeUrl = "https://github.com/adityasing9/ToolKit/raw/main/dist/tool.exe"
+        $TargetExe = Join-Path $TargetDir "tool.exe"
+        
+        Write-Host "[INFO] Downloading Portable standalone tool.exe..." -ForegroundColor Green
+        try {
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+            Invoke-WebRequest -Uri $ExeUrl -OutFile $TargetExe -UseBasicParsing
+        } catch {
+            Write-Host "[ERROR] Failed to download standalone EXE: $_" -ForegroundColor Red
+            pause
+            return
+        }
+        
+        Write-Host "[INFO] Launching Portable Standalone Toolkit..." -ForegroundColor Cyan
+        & $TargetExe
+        return
+    }
     
-    Write-Host "[INFO] Launching Portable Toolkit..." -ForegroundColor Cyan
-    python main.py
+    # Otherwise, ask the user
+    Write-Host ""
+    Write-Host "Select Portable type to run:" -ForegroundColor Cyan
+    Write-Host "1) Standalone EXE Edition (Fast, no requirements, no install)" -ForegroundColor Yellow
+    Write-Host "2) Developer Source Edition (Clones to temp, requires python/pip)" -ForegroundColor White
+    $PortableChoice = Read-Host "Choice (1 or 2)"
+    
+    if ($PortableChoice -eq "2") {
+        if (Test-Path "$TargetDir\.git") {
+            Write-Host "[INFO] Portable Toolkit found in Temp. Updating..." -ForegroundColor Green
+            Set-Location $TargetDir
+            git pull --quiet
+        } else {
+            Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
+            git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
+            Set-Location $TargetDir
+        }
+        
+        Write-Host "[INFO] Installing Temporary Dependencies..." -ForegroundColor Green
+        python -m pip install -r requirements.txt --user
+        
+        Write-Host "[INFO] Launching Portable Toolkit..." -ForegroundColor Cyan
+        python main.py
+    } else {
+        $ExeUrl = "https://github.com/adityasing9/ToolKit/raw/main/dist/tool.exe"
+        $TargetExe = Join-Path $TargetDir "tool.exe"
+        Write-Host "[INFO] Downloading Portable standalone tool.exe..." -ForegroundColor Green
+        try {
+            [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12
+            Invoke-WebRequest -Uri $ExeUrl -OutFile $TargetExe -UseBasicParsing
+        } catch {
+            Write-Host "[ERROR] Failed to download: $_" -ForegroundColor Red
+            pause
+            return
+        }
+        Write-Host "[INFO] Launching Portable Standalone Toolkit..." -ForegroundColor Cyan
+        & $TargetExe
+    }
 }
 
 function Uninstall-Toolkit {
