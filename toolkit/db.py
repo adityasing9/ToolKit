@@ -1,13 +1,7 @@
 import sqlite3
 import os
 
-DB_DIR = os.path.expanduser(r"~\.toolkit")
-if not os.path.exists(DB_DIR):
-    try:
-        os.makedirs(DB_DIR, exist_ok=True)
-    except Exception:
-        pass
-DB_PATH = os.path.join(DB_DIR, "toolkit.db")
+DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "toolkit.db")
 
 def get_connection():
     """Returns a connection to the SQLite database."""
