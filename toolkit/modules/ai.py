@@ -10,7 +10,7 @@ def call_gemini(prompt, system_instruction=None, image_data=None, mime_type=None
     api_key = get_setting("gemini_api_key")
     if not api_key:
         print(f"\n{Colors.RED}[ERROR]{Colors.RESET} Gemini API Key is not set.")
-        print("Please configure your API Key in [16] Settings -> [16] Configure API / Cloud Keys.")
+        print("Please configure your API Key in [20] Settings -> [1] Configure API / Cloud Keys.")
         return None
         
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"

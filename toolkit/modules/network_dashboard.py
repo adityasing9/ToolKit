@@ -585,7 +585,7 @@ def scan_network():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [25] LOCAL NETWORK DASHBOARD{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [10] LOCAL NETWORK DASHBOARD{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Scan Local Subnet Devices")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")

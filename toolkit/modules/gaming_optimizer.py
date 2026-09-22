@@ -154,7 +154,7 @@ def toggle_fps_mode():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [23] GAMING OPTIMIZER TWEAKS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [9] GAMING OPTIMIZER TWEAKS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Disable Telemetry & Background Apps")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Enable Ultimate Performance Power Profile")

@@ -12,7 +12,7 @@ def update_toolkit():
 
 def backup_toolkit():
     print("\n[INFO] Backing up Toolkit...")
-    print("Run Export in [1] Storage & Notes to backup the Database.")
+    print("Run Export in [21] Storage & Notes or [4] Cloud Workspace to backup your database.")
 
 def check_version():
     print(f"\n{Colors.CYAN}--- TERMINAL TOOLKIT VERSION ---{Colors.RESET}")

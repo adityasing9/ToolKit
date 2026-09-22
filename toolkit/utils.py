@@ -11,5 +11,13 @@ class Colors:
     @staticmethod
     def init():
         import os
+        import sys
         if os.name == 'nt':
             os.system('color') # Enables ANSI escape codes in Windows cmd
+        try:
+            if hasattr(sys.stdout, 'reconfigure'):
+                sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+            if hasattr(sys.stderr, 'reconfigure'):
+                sys.stderr.reconfigure(encoding='utf-8', errors='replace')
+        except Exception:
+            pass

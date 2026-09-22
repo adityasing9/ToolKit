@@ -184,7 +184,7 @@ def export_db():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [13] STORAGE & NOTES{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [21] STORAGE & NOTES{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Links")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Github")
@@ -207,11 +207,11 @@ def show_menu():
         elif choice == '2':
             manage_github()
         elif choice == '3':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the main [13] Run Commands module for this.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the main [18] Run Commands module for this.")
         elif choice == '4':
             manage_snippets()
         elif choice == '5':
-            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the [9] Productivity module for Clipboard operations.")
+            print(f"{Colors.BLUE}[INFO]{Colors.RESET} Please use the [15] Productivity module for Clipboard operations.")
         elif choice == '6':
             manage_notes()
         elif choice == '7' or choice == '8' or choice == '9':

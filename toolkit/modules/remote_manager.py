@@ -371,7 +371,7 @@ def connect_device(alias):
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [26] REMOTE DEVICE MANAGER{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [17] REMOTE DEVICE MANAGER{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Launch Standby Remote Agent Server (Listen)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Pair Remote Computer (Using IP + Pair Code)")

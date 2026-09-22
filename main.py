@@ -8,40 +8,45 @@ init_db()
 if sys.stdout.encoding != 'utf-8':
     sys.stdout.reconfigure(encoding='utf-8')
 
+MENU_ITEMS = [
+    (1, "AI Assistant"), (2, "Cheat Sheets & Docs"), (3, "Cleanup & Maintenance"),
+    (4, "Cloud Workspace"), (5, "Developer Tools"), (6, "Downloads"),
+    (7, "Driver Manager"), (8, "File & Folder"), (9, "Gaming Optimizer"),
+    (10, "Local Network Dashboard"), (11, "Media Tools"), (12, "Network Monitor"),
+    (13, "Networking"), (14, "Process Manager"), (15, "Productivity"),
+    (16, "QR / Barcode"), (17, "Remote Device Manager"), (18, "Run Commands"),
+    (19, "Security"), (20, "Settings"), (21, "Storage & Notes"),
+    (22, "System Information"), (23, "Universal Search"), (24, "User Management"),
+    (25, "Windows Analytics"), (26, "Windows Toolkit"), (0, "Exit")
+]
+
+TOTAL_MENU_WIDTH = 85
+
 def print_header():
-    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-    print(f"{Colors.BOLD}{Colors.YELLOW}              ⚡ TERMINAL TOOLKIT v1.0{Colors.RESET}")
-    print(f"{Colors.CYAN}============================================================={Colors.RESET}")
+    print(f"{Colors.CYAN}{'=' * TOTAL_MENU_WIDTH}{Colors.RESET}")
+    print(f"{Colors.BOLD}{Colors.YELLOW}{'⚡ TERMINAL TOOLKIT v1.0'.center(TOTAL_MENU_WIDTH)}{Colors.RESET}")
+    print(f"{Colors.CYAN}{'=' * TOTAL_MENU_WIDTH}{Colors.RESET}")
 
 def print_menu():
     print_header()
-    print(f"\n{Colors.GREEN}[1]{Colors.RESET} AI Assistant")
-    print(f"{Colors.GREEN}[2]{Colors.RESET} Cheat Sheets & Docs")
-    print(f"{Colors.GREEN}[3]{Colors.RESET} Cleanup & Maintenance")
-    print(f"{Colors.GREEN}[4]{Colors.RESET} Cloud Workspace")
-    print(f"{Colors.GREEN}[5]{Colors.RESET} Developer Tools")
-    print(f"{Colors.GREEN}[6]{Colors.RESET} Downloads")
-    print(f"{Colors.GREEN}[7]{Colors.RESET} Driver Manager")
-    print(f"{Colors.GREEN}[8]{Colors.RESET} File & Folder")
-    print(f"{Colors.GREEN}[9]{Colors.RESET} Gaming Optimizer")
-    print(f"{Colors.GREEN}[10]{Colors.RESET} Local Network Dashboard")
-    print(f"{Colors.GREEN}[11]{Colors.RESET} Media Tools")
-    print(f"{Colors.GREEN}[12]{Colors.RESET} Network Monitor")
-    print(f"{Colors.GREEN}[13]{Colors.RESET} Networking")
-    print(f"{Colors.GREEN}[14]{Colors.RESET} Process Manager")
-    print(f"{Colors.GREEN}[15]{Colors.RESET} Productivity")
-    print(f"{Colors.GREEN}[16]{Colors.RESET} QR / Barcode")
-    print(f"{Colors.GREEN}[17]{Colors.RESET} Remote Device Manager")
-    print(f"{Colors.GREEN}[18]{Colors.RESET} Run Commands")
-    print(f"{Colors.GREEN}[19]{Colors.RESET} Security")
-    print(f"{Colors.GREEN}[20]{Colors.RESET} Settings")
-    print(f"{Colors.GREEN}[21]{Colors.RESET} Storage & Notes")
-    print(f"{Colors.GREEN}[22]{Colors.RESET} System Information")
-    print(f"{Colors.GREEN}[23]{Colors.RESET} Universal Search")
-    print(f"{Colors.GREEN}[24]{Colors.RESET} User Management")
-    print(f"{Colors.GREEN}[25]{Colors.RESET} Windows Analytics")
-    print(f"{Colors.GREEN}[26]{Colors.RESET} Windows Toolkit")
-    print(f"{Colors.GREEN}[0]{Colors.RESET} Exit\n")
+    col1 = MENU_ITEMS[0:9]
+    col2 = MENU_ITEMS[9:18]
+    col3 = MENU_ITEMS[18:27]
+
+    def format_item(num, title, width):
+        text = f"[{num}] {title}"
+        colored = f"{Colors.GREEN}[{num}]{Colors.RESET} {title}"
+        padding = " " * max(0, width - len(text))
+        return colored + padding
+
+    w1, w2, w3 = 29, 31, 25
+    print()
+    for i in range(9):
+        c1 = format_item(*col1[i], w1)
+        c2 = format_item(*col2[i], w2)
+        c3 = format_item(*col3[i], w3)
+        print(f"{c1}{c2}{c3}")
+    print()
 
 def main():
     parser = argparse.ArgumentParser(description="Terminal Toolkit CLI")

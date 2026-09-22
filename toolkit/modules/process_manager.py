@@ -250,7 +250,7 @@ def live_task_monitor():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [20] SYSTEM PROCESS MANAGER{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [14] SYSTEM PROCESS MANAGER{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} View Active Running Processes (RAM Sorted)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} View Active Running Processes (CPU Sorted)")

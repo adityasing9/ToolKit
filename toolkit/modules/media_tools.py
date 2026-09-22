@@ -381,7 +381,7 @@ def metadata_viewer():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [18] MEDIA TOOLS{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [11] MEDIA TOOLS{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Image Optimizer")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Resize Image")

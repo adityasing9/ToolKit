@@ -136,7 +136,7 @@ def show_keyboard_shortcuts():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [19] CHEAT SHEETS & DOCUMENTATION{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [2] CHEAT SHEETS & DOCUMENTATION{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Windows Commands Cheat Sheet")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Linux Commands Cheat Sheet")

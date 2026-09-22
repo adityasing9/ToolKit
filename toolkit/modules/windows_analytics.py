@@ -243,7 +243,7 @@ def show_menu():
     
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [24] WINDOWS ANALYTICS HISTORY{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [25] WINDOWS ANALYTICS HISTORY{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} System Boot Time History")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Battery Health & Capacity Stats")

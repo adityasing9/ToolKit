@@ -222,7 +222,7 @@ def view_event_logs():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [16] WINDOWS TOOLKIT{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [26] WINDOWS TOOLKIT{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Windows Activation & Key Manager")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Drivers Manager")

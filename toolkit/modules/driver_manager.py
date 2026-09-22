@@ -129,7 +129,7 @@ def list_installed_oem_drivers():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [22] SYSTEM DRIVER MANAGER{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [7] SYSTEM DRIVER MANAGER{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Export Active Drivers (DISM)")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Backup System Drivers (PnpUtil)")

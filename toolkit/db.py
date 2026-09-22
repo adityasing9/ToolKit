@@ -78,28 +78,27 @@ def init_db():
         )
     ''')
 
-def get_setting(key, default=None):
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
-        row = cursor.fetchone()
-        conn.close()
-        if row:
-            return row['value']
-    except Exception:
-        pass
-    return default
+    # Create todos table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS todos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            task TEXT NOT NULL,
+            priority TEXT DEFAULT 'Medium',
+            status TEXT DEFAULT 'Pending',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
 
-def set_setting(key, value):
-    try:
-        conn = get_connection()
-        cursor = conn.cursor()
-        cursor.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", (key, value))
-        conn.commit()
-        conn.close()
-    except Exception:
-        pass
+    # Create expenses table
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS expenses (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            amount REAL NOT NULL,
+            category TEXT DEFAULT 'General',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
 
     # Seed initial data for commands if empty
     cursor.execute("SELECT COUNT(*) FROM commands")
@@ -150,6 +149,28 @@ def set_setting(key, value):
             "INSERT INTO commands (name, command, description, category, risk_level, purpose) VALUES (?, ?, ?, ?, ?, ?)",
             seed_data
         )
-        conn.commit()
-
+    conn.commit()
     conn.close()
+
+def get_setting(key, default=None):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM settings WHERE key = ?", (key,))
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+            return row['value']
+    except Exception:
+        pass
+    return default
+
+def set_setting(key, value):
+    try:
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)", (key, value))
+        conn.commit()
+        conn.close()
+    except Exception:
+        pass

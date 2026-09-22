@@ -138,7 +138,7 @@ def run_speed_test():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [7] NETWORKING{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [13] NETWORKING{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Public IP")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Local IP")

@@ -215,7 +215,7 @@ def live_network_monitor():
 def show_menu():
     while True:
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.BOLD}{Colors.YELLOW}              [21] NETWORK MONITOR{Colors.RESET}")
+        print(f"{Colors.BOLD}{Colors.YELLOW}              [12] NETWORK MONITOR{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.GREEN}[1]{Colors.RESET} Live Network Speed & Ping Summary")
         print(f"{Colors.GREEN}[2]{Colors.RESET} Top Apps & Active Connections")
