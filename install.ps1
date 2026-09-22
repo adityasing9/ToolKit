@@ -111,20 +111,51 @@ function Run-Portable {
     if (Test-Path "$TargetDir\.git") {
         Write-Host "[INFO] Portable Toolkit found in Temp. Updating..." -ForegroundColor Green
         Set-Location $TargetDir
-        git pull --quiet
+        try {
+            git pull --quiet
+        } catch {
+            Write-Host "[WARNING] Failed to update portable copy. Running current version..." -ForegroundColor Yellow
+        }
     } else {
+        if (Test-Path $TargetDir) {
+            Write-Host "[INFO] Cleaning up existing portable folder..." -ForegroundColor Yellow
+            Remove-Item -Recurse -Force $TargetDir -ErrorAction SilentlyContinue
+        }
         Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
         git clone --depth 1 https://github.com/adityasing9/ToolKit.git $TargetDir
+        if ($LASTEXITCODE -ne 0 -or -not (Test-Path $TargetDir)) {
+            Write-Host "[ERROR] Failed to download Portable Toolkit." -ForegroundColor Red
+            pause
+            return
+        }
         Set-Location $TargetDir
     }
     
-    Write-Host "[INFO] Installing Temporary Dependencies (this may take a minute)..." -ForegroundColor Green
-    # We use --user to ensure it doesn't require Admin rights for global Python installs.
-    # Removed --quiet so you can see the progress bar.
-    python -m pip install -r requirements.txt --user
+    if (-Not (Test-Path "venv\Scripts\activate.ps1")) {
+        Write-Host "[INFO] Creating temporary virtual environment..." -ForegroundColor Green
+        python -m venv venv
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "[ERROR] Failed to create virtual environment." -ForegroundColor Red
+            pause
+            return
+        }
+    }
+    
+    Write-Host "[INFO] Installing/Updating temporary dependencies..." -ForegroundColor Green
+    & ".\venv\Scripts\pip.exe" install -r requirements.txt | Out-Null
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "[ERROR] Failed to install dependencies." -ForegroundColor Red
+        pause
+        return
+    }
     
     Write-Host "[INFO] Launching Portable Toolkit..." -ForegroundColor Cyan
-    python main.py
+    & ".\venv\Scripts\python.exe" main.py
+    
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "[WARNING] Portable Toolkit exited with code $LASTEXITCODE" -ForegroundColor Yellow
+        pause
+    }
 }
 
 function Uninstall-Toolkit {
