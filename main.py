@@ -119,7 +119,10 @@ def main():
         elif module_name in ['21', 'storage', 'notes', 'links', 'snippets', 'db']:
             from toolkit.modules import storage
             storage.show_menu()
-        elif module_name in ['22', 'sysinfo', 'info', 'specs', 'temp', 'temperature', 'cpu', 'ram', 'gpu', 'battery', 'dashboard', 'dash', 'status']:
+        elif module_name in ['deep', 'inspect', 'specs', 'spec', 'audit', 'hardware', 'fullspecs']:
+            from toolkit.modules import deep_inspect
+            deep_inspect.run_deep_inspection()
+        elif module_name in ['22', 'sysinfo', 'info', 'temp', 'temperature', 'cpu', 'ram', 'gpu', 'battery', 'dashboard', 'dash', 'status']:
             if module_name in ['dashboard', 'dash', 'status']:
                 from toolkit.modules import dashboard
                 dashboard.show_dashboard()
@@ -159,6 +162,9 @@ def main():
         if choice == '0':
             print("Exiting...")
             break
+        elif choice.lower() in ['deep', 'inspect', 'specs', 'spec', 'audit', 'hardware', 'fullspecs']:
+            from toolkit.modules import deep_inspect
+            deep_inspect.run_deep_inspection()
         elif choice == '1':
             from toolkit.modules import ai
             ai.show_menu()

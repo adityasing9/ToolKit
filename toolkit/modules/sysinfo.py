@@ -568,22 +568,22 @@ def show_menu():
         print(f"\n{Colors.CYAN}============================================================={Colors.RESET}")
         print(f"{Colors.BOLD}{Colors.YELLOW}              [22] SYSTEM INFORMATION{Colors.RESET}")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
-        print(f"{Colors.GREEN}[1]{Colors.RESET} CPU")
-        print(f"{Colors.GREEN}[2]{Colors.RESET} RAM")
-        print(f"{Colors.GREEN}[3]{Colors.RESET} GPU")
-        print(f"{Colors.GREEN}[4]{Colors.RESET} Disk")
-        print(f"{Colors.GREEN}[5]{Colors.RESET} Battery")
-        print(f"{Colors.GREEN}[6]{Colors.RESET} Motherboard")
-        print(f"{Colors.GREEN}[7]{Colors.RESET} BIOS")
-        print(f"{Colors.GREEN}[8]{Colors.RESET} Windows Version")
-        print(f"{Colors.GREEN}[9]{Colors.RESET} Installed Programs")
-        print(f"{Colors.GREEN}[10]{Colors.RESET} Startup Time")
-        print(f"{Colors.GREEN}[11]{Colors.RESET} Processes")
-        print(f"{Colors.GREEN}[12]{Colors.RESET} Running Services")
-        print(f"{Colors.GREEN}[13]{Colors.RESET} Disk Usage")
+        print(f"{Colors.GREEN}[1]{Colors.RESET} {Colors.BOLD}Deep System & Hardware Inspection (All-in-One Report){Colors.RESET}")
+        print(f"{Colors.GREEN}[2]{Colors.RESET} CPU")
+        print(f"{Colors.GREEN}[3]{Colors.RESET} RAM")
+        print(f"{Colors.GREEN}[4]{Colors.RESET} GPU")
+        print(f"{Colors.GREEN}[5]{Colors.RESET} Disk & Partitions")
+        print(f"{Colors.GREEN}[6]{Colors.RESET} Battery")
+        print(f"{Colors.GREEN}[7]{Colors.RESET} Motherboard")
+        print(f"{Colors.GREEN}[8]{Colors.RESET} BIOS")
+        print(f"{Colors.GREEN}[9]{Colors.RESET} Windows Version")
+        print(f"{Colors.GREEN}[10]{Colors.RESET} Installed Programs")
+        print(f"{Colors.GREEN}[11]{Colors.RESET} Startup Time")
+        print(f"{Colors.GREEN}[12]{Colors.RESET} Processes")
+        print(f"{Colors.GREEN}[13]{Colors.RESET} Running Services")
         print(f"{Colors.GREEN}[14]{Colors.RESET} Temperature")
         print(f"{Colors.GREEN}[15]{Colors.RESET} Health (WMI)")
-        print(f"{Colors.GREEN}[16]{Colors.RESET} System Dashboard")
+        print(f"{Colors.GREEN}[16]{Colors.RESET} Real-Time System Dashboard")
         print(f"{Colors.GREEN}[0]{Colors.RESET} Back to Main Menu")
         print(f"{Colors.CYAN}============================================================={Colors.RESET}")
         
@@ -591,34 +591,35 @@ def show_menu():
         if choice == '0':
             break
         elif choice == '1':
-            sys_cpu()
+            from toolkit.modules import deep_inspect
+            deep_inspect.run_deep_inspection()
         elif choice == '2':
-            sys_ram()
+            sys_cpu()
         elif choice == '3':
-            sys_gpu()
+            sys_ram()
         elif choice == '4':
-            sys_disk()
+            sys_gpu()
         elif choice == '5':
-            sys_battery()
+            sys_disk()
         elif choice == '6':
-            sys_motherboard()
+            sys_battery()
         elif choice == '7':
-            sys_bios()
+            sys_motherboard()
         elif choice == '8':
-            sys_windows_version()
+            sys_bios()
         elif choice == '9':
-            list_installed_programs()
+            sys_windows_version()
         elif choice == '10':
+            list_installed_programs()
+        elif choice == '11':
             import datetime
             boot_time_timestamp = psutil.boot_time()
             bt = datetime.datetime.fromtimestamp(boot_time_timestamp)
             print(f"\nSystem Boot Time: {bt.year}/{bt.month}/{bt.day} {bt.hour}:{bt.minute}:{bt.second}")
-        elif choice == '11':
-            sys_processes()
         elif choice == '12':
-            list_running_services()
+            sys_processes()
         elif choice == '13':
-            sys_disk()
+            list_running_services()
         elif choice == '14':
             sys_temperature()
         elif choice == '15':

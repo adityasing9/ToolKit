@@ -72,7 +72,7 @@ Select >
 19. **Security**: Multi-threaded TCP Port Scanner, process killer, and local Hosts file blocker.
 20. **Settings**: Configures API credentials (Gemini, Supabase), resets local configurations, and manages automated toolkit updates.
 21. **Storage & Notes**: Database-backed Links, GitHub Repos, Code Snippets, and Notes.
-22. **System Information**: Real-time `psutil` diagnostics covering CPU, RAM, Disk, Battery, and the Top 10 Memory Consuming Processes.
+22. **System Information & Deep Inspection**: Real-time diagnostics plus the 1-command **Deep Hardware & System Audit** (`tool deep` or `tool specs`), detailing Motherboard, BIOS, per-core CPU load meters, physical RAM slot models, GPU VRAM & refresh rates, NVMe/SSD S.M.A.R.T health, network links, and 1-click HTML/TXT report exports.
 23. **Universal Search**: Everything++ system-wide scanner matching files, active processes, services, environment variables, git history, and docker targets.
 24. **User Management**: Instant PowerShell wrappers to add/delete users and toggle Administrator rights.
 25. **Windows Analytics**: Local usage analytics log (CPU, RAM, disk, network), battery health degradation diagnostics, boot duration metrics, and vertical ASCII telemetry charts.
