@@ -44,6 +44,15 @@ function Add-ToPath {
     }
 }
 
+function Test-ValidGitRepo {
+    param ($Folder)
+    if (-Not (Test-Path "$Folder\.git")) {
+        return $false
+    }
+    $null = git -C $Folder rev-parse --is-inside-work-tree 2>$null
+    return ($LASTEXITCODE -eq 0)
+}
+
 function Install-Toolkit {
     Check-Prerequisites
     
@@ -51,14 +60,29 @@ function Install-Toolkit {
     $TargetDir = "$env:USERPROFILE\Desktop\ToolKit"
     $EditionName = "Windows Toolkit"
 
-    if (Test-Path "$TargetDir\.git") {
+    if (Test-ValidGitRepo $TargetDir) {
         Write-Host "[INFO] $EditionName already exists at $TargetDir. Pulling latest changes..." -ForegroundColor Green
         Set-Location $TargetDir
         git pull
     } else {
+        if (Test-Path $TargetDir) {
+            Write-Host "[INFO] Cleaning up invalid or corrupted installation folder..." -ForegroundColor Yellow
+            Remove-Item -Recurse -Force $TargetDir -ErrorAction SilentlyContinue
+        }
         Write-Host "[INFO] Cloning $EditionName to $TargetDir..." -ForegroundColor Green
         git clone $RepoUrl $TargetDir
+        if ($LASTEXITCODE -ne 0 -or -not (Test-Path $TargetDir)) {
+            Write-Host "[ERROR] Failed to clone repository to $TargetDir." -ForegroundColor Red
+            pause
+            return
+        }
         Set-Location $TargetDir
+    }
+
+    if (-Not (Test-Path "requirements.txt") -or -Not (Test-Path "main.py")) {
+        Write-Host "[ERROR] Cloned files are incomplete in $TargetDir." -ForegroundColor Red
+        pause
+        return
     }
 
     if (-Not (Test-Path "venv\Scripts\activate.ps1")) {
@@ -66,7 +90,8 @@ function Install-Toolkit {
         python -m venv venv
         if ($LASTEXITCODE -ne 0) {
             Write-Host "[ERROR] Failed to create virtual environment." -ForegroundColor Red
-            exit 1
+            pause
+            return
         }
     }
 
@@ -74,7 +99,8 @@ function Install-Toolkit {
     & ".\venv\Scripts\pip.exe" install -r requirements.txt | Out-Null
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[ERROR] Failed to install requirements." -ForegroundColor Red
-        exit 1
+        pause
+        return
     }
 
     Add-ToPath $TargetDir
@@ -108,7 +134,7 @@ function Run-Portable {
     Check-Prerequisites
     $TargetDir = "$env:TEMP\ToolKit_Portable"
     
-    if (Test-Path "$TargetDir\.git") {
+    if (Test-ValidGitRepo $TargetDir) {
         Write-Host "[INFO] Portable Toolkit found in Temp. Updating..." -ForegroundColor Green
         Set-Location $TargetDir
         try {
@@ -118,7 +144,7 @@ function Run-Portable {
         }
     } else {
         if (Test-Path $TargetDir) {
-            Write-Host "[INFO] Cleaning up existing portable folder..." -ForegroundColor Yellow
+            Write-Host "[INFO] Cleaning up invalid or corrupted portable folder..." -ForegroundColor Yellow
             Remove-Item -Recurse -Force $TargetDir -ErrorAction SilentlyContinue
         }
         Write-Host "[INFO] Downloading Portable Toolkit to Temp Directory..." -ForegroundColor Green
@@ -129,6 +155,15 @@ function Run-Portable {
             return
         }
         Set-Location $TargetDir
+    }
+    
+    if (-Not (Test-Path "requirements.txt") -or -Not (Test-Path "main.py")) {
+        Write-Host "[ERROR] Downloaded files are incomplete." -ForegroundColor Red
+        Write-Host "[INFO] Cleaning up corrupted folder..." -ForegroundColor Yellow
+        Set-Location $env:TEMP
+        Remove-Item -Recurse -Force $TargetDir -ErrorAction SilentlyContinue
+        pause
+        return
     }
     
     if (-Not (Test-Path "venv\Scripts\activate.ps1")) {
